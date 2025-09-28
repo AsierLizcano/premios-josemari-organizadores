@@ -1035,6 +1035,22 @@ footer {
 .login-media { animation-delay: .07s; }
 
 
+/* Por defecto: en pantallas grandes (PC) se muestra todo */
+.login-media {
+  display: block;
+}
+
+/* En móviles (pantallas de hasta 768px) ocultamos las fotos */
+@media (max-width: 768px) {
+  .login-media {
+    display: none;
+  }
+
+  .login-card {
+    width: 100%; /* ocupa todo el ancho */
+    margin: 0 auto;
+  }
+}
 
 
 
