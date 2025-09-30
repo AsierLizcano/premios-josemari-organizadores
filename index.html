@@ -16,13 +16,32 @@
 
 <div class="login-wrap">
   <!-- Panel de fotos (izquierda) -->
-  <div class="login-media">
-    <div class="polaroid"><img src="fotos/Playa.jpeg" alt=""></div>
-    <div class="polaroid"><img src="fotos/Carnaval.jpeg" alt=""></div>
-    <div class="polaroid"><img src="fotos/Lodres.jpeg" alt=""></div>
-    <div class="polaroid"><img src="fotos/Zurra.jpeg" alt=""></div>
-    <div class="polaroid"><img src="fotos/fin_año.jpeg" alt=""></div>
-  </div>
+<div class="login-media">
+    <div class="scroll-stage">
+  <div class="polaroid"><img src="fotos/login/foto2.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto1.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto3.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto4.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto5.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto6.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto7.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto8.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto9.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto10.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto11.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto12.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto13.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto14.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto15.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto16.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto17.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto18.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto19.jpeg" alt=""></div>
+  <div class="polaroid"><img src="fotos/login/foto20.jpeg" alt=""></div>
+
+</div>
+</div>
+
 
   <!-- Tarjeta de acceso (derecha) -->
   <div class="login-card">
@@ -555,6 +574,70 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 </div>
+
+<script>
+(() => {
+  const media = document.querySelector('.login-media');
+  const stage = media?.querySelector('.scroll-stage');
+  if (!media || !stage) return;
+
+  const SPEED = 30; // px/seg
+  let lastT = 0;
+  let limit = 0;
+
+  function computeLoopLimit() {
+    const cards = stage.querySelectorAll('.polaroid');
+    if (!cards.length) {
+      limit = Math.max(0, media.scrollHeight - media.clientHeight);
+      return;
+    }
+    // bottom real más bajo entre todas las polaroids
+    let maxBottom = 0;
+    cards.forEach(card => {
+      const bottom = card.offsetTop + card.offsetHeight;
+      if (bottom > maxBottom) maxBottom = bottom;
+    });
+
+    // suma offset del stage por si tiene padding/borde y resta el viewport
+    const theoretical = media.scrollHeight - media.clientHeight;
+    limit = Math.max(0, Math.min(maxBottom + stage.offsetTop - media.clientHeight, theoretical));
+  }
+
+  // Recalcular en cambios de tamaño/imagenes
+  const ro = new ResizeObserver(computeLoopLimit);
+  ro.observe(media);
+  ro.observe(stage);
+
+  // cuando carguen las imágenes, recalcula
+  stage.querySelectorAll('img').forEach(img => {
+    if (img.complete) return;
+    img.addEventListener('load', computeLoopLimit, { once: true });
+    img.addEventListener('error', computeLoopLimit, { once: true });
+  });
+
+  computeLoopLimit();
+
+  function tick(t) {
+    const dt = (t - (lastT || t)) / 1000;
+    lastT = t;
+
+    media.scrollTop += SPEED * dt;
+
+    // cuando llegue al final real, vuelve arriba
+    if (media.scrollTop >= limit - 1) {
+      media.scrollTop = 0;
+      lastT = t; // evita salto de velocidad tras el reset
+    }
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
+</script>
+
+
+
+
 
 
     <!-- VOTACIÓN -->
