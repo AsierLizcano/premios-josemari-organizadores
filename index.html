@@ -1225,8 +1225,23 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "8", foto: "fotos/meme/8.jpeg" },
     { nombre: "Diamantes", foto: "fotos/meme/diamantes.jpeg" },
 
+
   
-  ]
+  ],
+
+        "Baile del año": [
+    { nombre: "Gamepro por la banda", video: "fotos/bailes/gamepro.mp4", poster: "fotos/bailes/gamepro.jpeg" },
+    { nombre: "Ivanp x Mozos", video: "fotos/bailes/ivanp.mp4", poster: "fotos/bailes/ivanp.jpeg" },
+    { nombre: "Asier Bailando con un negro", video: "fotos/bailes/asier.mp4", poster: "fotos/bailes/asier.jpeg" },
+    { nombre: "Rulas bailongo", video: "fotos/bailes/rulas.mp4", poster: "fotos/bailes/rulas.jpeg" },
+    { nombre: "Dani perchero", video: "fotos/bailes/dani.mp4", poster: "fotos/bailes/dani.jpeg" },
+    { nombre: "Shiny", video: "fotos/bailes/lucia.mp4", poster: "fotos/bailes/lucia.jpeg" },
+    { nombre: "Los encocaos", video: "fotos/bailes/iker.mp4", poster: "fotos/bailes/iker.jpeg" },
+    { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
+    { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
+    { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
+
+]
 };
 
 // (Opcional) Máximo por categoría (si alguna NO es 3)
@@ -1518,7 +1533,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 3;
+const LOTE_ACTIVO = 4;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
