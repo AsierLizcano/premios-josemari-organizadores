@@ -1098,6 +1098,61 @@ footer {
   .login-media { order: 2; }
 }
 
+/* Ajustes para las imágenes de los participantes y nominados en móvil */
+@media (max-width: 768px) {
+  .grid-participantes {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Reduce el tamaño de las columnas */
+  }
+
+  .participante img, 
+  .nominado img {
+    width: 80%; /* Ajusta el tamaño de las imágenes */
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  /* Ajustes de la grid de nominados */
+  .grid-nominados {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* También en los nominados */
+  }
+
+  /* Mejorar el espaciado y la organización */
+  .grid-participantes .participante,
+  .grid-nominados .nominado {
+    margin: 10px; /* Aumenta el espacio entre los elementos */
+    padding: 12px; /* Reduce el padding para evitar que se vean demasiado grandes */
+  }
+
+  .nominado h3 {
+    font-size: 1rem; /* Ajusta el tamaño del texto */
+  }
+
+  /* Ajustes de botones */
+  .voto, .btn {
+    font-size: 1rem; /* Reduce el tamaño de los botones */
+    padding: 10px 14px; /* Ajusta el tamaño del padding */
+  }
+}
+
+/* Para pantallas aún más pequeñas */
+@media (max-width: 480px) {
+  .grid-participantes .participante img,
+  .grid-nominados .nominado img {
+    width: 100%; /* Ocupa el 100% del ancho en pantallas muy pequeñas */
+  }
+
+  .grid-participantes .participante,
+  .grid-nominados .nominado {
+    padding: 8px; /* Reduce el padding aún más */
+  }
+  
+  .voto, .btn {
+    width: 100%; /* Los botones ocupan todo el ancho */
+    padding: 12px; /* Aumenta el padding para que se vean bien en móvil */
+    font-size: 1rem;
+  }
+}
 
 
 
