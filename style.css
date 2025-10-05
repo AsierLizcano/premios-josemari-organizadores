@@ -1153,55 +1153,61 @@ footer {
     font-size: 1rem;
   }
 }
-/* ===== SOLO NOMINADOS EN MÓVIL: 3 por fila y más pequeños ===== */
+/* ===== NOMINADOS EN MÓVIL (3 POR FILA, PERO MÁS GRANDES Y LEGIBLES) ===== */
 @media (max-width: 768px) {
   #votacion-nominados .grid-nominados {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; /* 3 columnas */
-    gap: 10px !important;                                       /* hueco compacto */
-    margin: 12px 0 !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* 3 por fila */
+    gap: 12px !important;
+    margin: 16px 0 !important;
   }
+
   #votacion-nominados .nominado {
-    padding: 6px !important;
-    border-radius: 10px !important;
+    padding: 8px !important;
+    border-radius: 12px !important;
+    border: 2px solid var(--gold);
+    background: #1a1a1a; /* fondo oscuro por defecto */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
+
   #votacion-nominados .nominado img,
   #votacion-nominados .nominado video {
     width: 100% !important;
-    aspect-ratio: 1 / 1 !important;   /* cuadradas: rinden mejor en 3 columnas */
+    aspect-ratio: 1 / 1 !important; /* cuadradas */
     object-fit: cover !important;
     border-radius: 10px !important;
   }
+
   #votacion-nominados .nominado > span {
     display: block;
-    margin-top: 6px;
-    font-size: 0.9rem;                /* título más compacto */
-    line-height: 1.2;
+    margin-top: 8px;
+    font-size: 1rem; /* 🔹 texto más grande */
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1.3;
   }
-  /* Botón de “ver en grande” más discreto */
+
+  /* Cuando se selecciona: fondo dorado y texto negro */
+  #votacion-nominados .nominado.selected {
+    background: var(--gold) !important;
+    color: black !important;
+    border-color: var(--gold) !important;
+  }
+  #votacion-nominados .nominado.selected span,
+  #votacion-nominados .nominado.selected h3 {
+    color: black !important;
+  }
+
+  /* Botón de ampliar más visible */
   #votacion-nominados .btn-expand {
     right: 6px !important;
     bottom: 6px !important;
     padding: 6px 8px !important;
-    transform: scale(.9);
+    font-size: 18px;
+    border-radius: 8px;
+    background: rgba(0,0,0,.6);
   }
 }
-/* ===== FIX: NOMINADO SELECCIONADO EN MÓVIL ===== */
-@media (max-width: 768px) {
-  .grid-nominados .nominado.selected {
-    background: var(--gold) !important;
-    color: var(--gold) !important; /* letras doradas */
-    border-color: var(--gold) !important;
-  }
-
-  /* Si el texto queda difícil de leer, añade contraste al fondo */
-  .grid-nominados .nominado.selected span,
-  .grid-nominados .nominado.selected h3 {
-    color: var(--gold) !important;
-  }
-}
-
-
 
 
   
