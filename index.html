@@ -1310,11 +1310,19 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Sala vip chino Juan", foto: "fotos/m_momento/chino.jpeg" },
     { nombre: "Dj Rulas sesión", foto: "fotos/m_momento/djrulas.jpeg" },
     { nombre: "Carrera con tio borrcaho", foto: "fotos/m_momento/carrera.jpeg" },
-    { nombre: "Rulas vs Ivanp", foto: "fotos/m_momento/lucia.jpeg" },
+    { nombre: "Rulas vs Ivanp", foto: "fotos/m_momento/ivanp.jpeg" },
     { nombre: "Previa Alicante", foto: "fotos/m_momento/rulas.jpeg" },
     { nombre: "Mandanga style carnaval", foto: "fotos/m_momento/mandanga.jpeg" },
 
-  ]
+  ],
+          "Autistada del año": [
+    { nombre: "Foto de Perfil fervico", foto: "fotos/autistada/foto.jpeg" },
+    { nombre: "Robo de botellas X", foto: "fotos/autistada/.jpeg" },
+    { nombre: "Ludopatia capibara", foto: "fotos/autistada/ludopatia.jpeg" },
+    { nombre: "Reformas Poru y Enano", foto: "fotos/autistada/reformas.jpeg" },
+    { nombre: "Rulas en aviones", foto: "fotos/autistada/marco.jpeg" },
+  ],
+
 };
 
 // (Opcional) Máximo por categoría (si alguna NO es 3)
@@ -1606,7 +1614,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 6;
+const LOTE_ACTIVO = 5;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
