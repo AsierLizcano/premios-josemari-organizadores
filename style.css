@@ -1186,6 +1186,20 @@ footer {
     transform: scale(.9);
   }
 }
+/* ===== FIX: NOMINADO SELECCIONADO EN MÓVIL ===== */
+@media (max-width: 768px) {
+  .grid-nominados .nominado.selected {
+    background: var(--gold) !important;
+    color: var(--gold) !important; /* letras doradas */
+    border-color: var(--gold) !important;
+  }
+
+  /* Si el texto queda difícil de leer, añade contraste al fondo */
+  .grid-nominados .nominado.selected span,
+  .grid-nominados .nominado.selected h3 {
+    color: var(--gold) !important;
+  }
+}
 
 
 
