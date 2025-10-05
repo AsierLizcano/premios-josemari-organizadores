@@ -1153,6 +1153,39 @@ footer {
     font-size: 1rem;
   }
 }
+/* ===== SOLO NOMINADOS EN MÓVIL: 3 por fila y más pequeños ===== */
+@media (max-width: 768px) {
+  #votacion-nominados .grid-nominados {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; /* 3 columnas */
+    gap: 10px !important;                                       /* hueco compacto */
+    margin: 12px 0 !important;
+  }
+  #votacion-nominados .nominado {
+    padding: 6px !important;
+    border-radius: 10px !important;
+  }
+  #votacion-nominados .nominado img,
+  #votacion-nominados .nominado video {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;   /* cuadradas: rinden mejor en 3 columnas */
+    object-fit: cover !important;
+    border-radius: 10px !important;
+  }
+  #votacion-nominados .nominado > span {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.9rem;                /* título más compacto */
+    line-height: 1.2;
+  }
+  /* Botón de “ver en grande” más discreto */
+  #votacion-nominados .btn-expand {
+    right: 6px !important;
+    bottom: 6px !important;
+    padding: 6px 8px !important;
+    transform: scale(.9);
+  }
+}
 
 
 
