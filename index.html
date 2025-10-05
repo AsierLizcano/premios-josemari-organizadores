@@ -448,9 +448,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/palabra.jpeg" alt="Palabra del año">
       <h3> Palabra/Frase del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Trío del Año: Ese trio que mas tiempo ha estado juntos, que creaas que no se separan ni para atras o que hacen muy buen trio(no en sentido sexual), si no que pegan mucho o tienen muy buena quimica, un ejemplo claro de trio es el de la foto, uf que pechotes, solo para entendidios.">
-      <img src="fotos/trio.jpeg" alt="trio del año">
-      <h3> Trio del año</h3>
+    <div class="categoria" data-descripcion="Trío/Cuarteto del Año: Ese trio o cuarteto que mas tiempo ha estado juntos, que creas que no se separan ni para atras o que hacen muy buen trio o cuarteto(no en sentido sexual), si no que pegan mucho o tienen muy buena quimica, un ejemplo claro de trio o un cuarteto es el de la foto, uf que pechotes, solo para entendidios.">
+      <img src="fotos/trio.jpeg" alt="trio/Cuarteto del año">
+      <h3> /Cuarteto del año</h3>
     </div>
     <div class="categoria" data-descripcion="Mejor Personaje fuera de JYP: La persona fuera del grupo que nos ha dado risas y buenos momentos y que creais que ha destacado potencialmente a lo largo del año.">
       <img src="fotos/mpersonaje.jpeg" alt="Mejor Personaje fuera de JyP">
@@ -488,8 +488,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/fail.jpeg" alt="Fail del año">
       <h3> Fail del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Mejor Momento del Año: El momento mas divertido o mas historico del año y que todos recordamos con felicidad y con epicidad.">
-      <img src="fotos/m_momento.jpeg" alt="Mejor Momento del año">
+    <div class="categoria" data-descripcion="Mejor momento del Año: El momento mas divertido o mas historico del año y que todos recordamos con felicidad y con epicidad.">
+      <img src="fotos/m_momento.jpeg" alt="Mejor momento del año">
       <h3> Mejor momento del año</h3>
     </div>
     <div class="categoria" data-descripcion="Meme del Año: Una de las nuevas categorias donde la gracia es ver quien ha hehco el mejor meme, ya puede ser el Make it memem o alguna glilipollez que consideremos como meme del año.">
@@ -1093,24 +1093,26 @@ async function guardarVoto(categoria, opcionElegida) {
 // Si una categoría aparece aquí, usará ESTOS nominados en vez de los del grid #participantes
 const NOMINADOS_ESPECIALES = {
   "Brainhot del año": [
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/fermo.jpeg" },
-    { nombre: "", foto: "fotos/brainhot/fer.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/gamepro.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/ivanp.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/rulas.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/poru.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/dario.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/marco.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/manu.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/dani.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/iker.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/rober.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/labrada.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/lucia.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/asier.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/maria.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/ines.jpeg" },
-    { nombre: "Fermorini quesini", foto: "fotos/brainhot/mario.jpeg" }
+
+    { nombre: "Fermorini quesini", video: "fotos/brainhot/fermo.mp4", poster: "fotos/brainhot/fermo.jpeg" },
+    { nombre: "Fervico il inano", video: "fotos/brainhot/fer.mp4", poster: "fotos/brainhot/fer.jpeg" },
+    { nombre: "Geimpro e geimpra", video: "fotos/brainhot/gamepro.mp4", poster: "fotos/brainhot/gamepro.jpeg" },
+    { nombre: "Ivanpi qui ivanpi", video: "fotos/brainhot/ivanp.mp4", poster: "fotos/brainhot/ivanp.jpeg" },
+    { nombre: "Rulas e rulossino", video: "fotos/brainhot/rulas.mp4", poster: "fotos/brainhot/rulas.jpeg" },
+    { nombre: "Poru ropu tropu sopu popu", video: "fotos/brainhot/poru.mp4", poster: "fotos/brainhot/poru.jpeg" },
+    { nombre: "Pam Darió", video: "fotos/brainhot/dario.mp4", poster: "fotos/brainhot/dario.jpeg" },
+    { nombre: "Pocoyo yopoco marcotu", video: "fotos/brainhot/marco.mp4", poster: "fotos/brainhot/marco.jpeg" },
+    { nombre: "Manuelerini Panterini", video: "fotos/brainhot/manu.mp4", poster: "fotos/brainhot/manu.jpeg" },
+    { nombre: "Danielo el bombardero", video: "fotos/brainhot/dani.mp4", poster: "fotos/brainhot/dani.jpeg" },
+    { nombre: "Quinito quinatu", video: "fotos/brainhot/iker.mp4", poster: "fotos/brainhot/iker.jpeg" },
+    { nombre: "Parralero Roberta", video: "fotos/brainhot/rober.mp4", poster: "fotos/brainhot/rober.jpeg" },
+    { nombre: "Abuelero abueloso", video: "fotos/brainhot/labrada.mp4", poster: "fotos/brainhot/labrada.jpeg" },
+    { nombre: "Lúcia lusosos con Sergio Ramosos", video: "fotos/brainhot/lucia.mp4", poster: "fotos/brainhot/lucia.jpeg" },
+    { nombre: "Castora castori", video: "fotos/brainhot/asier.mp4", poster: "fotos/brainhot/asier.jpeg" },
+    { nombre: "Baggete Mariete letrete", video: "fotos/brainhot/maria.mp4", poster: "fotos/brainhot/maria.jpeg" },
+    { nombre: "Caminote Inesote", video: "fotos/brainhot/ines.mp4", poster: "fotos/brainhot/ines.jpeg" },
+    { nombre: "Garbanzino chiquitino", video: "fotos/brainhot/mario.mp4", poster: "fotos/brainhot/mario.jpeg" },
+
   ],
 
   "Mejor Personaje fuera de JyP del año": [
@@ -1255,6 +1257,62 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Subjetividad ", foto: "fotos/mensaje/poru.jpeg" },
     { nombre: "Kastor picada ", foto: "fotos/mensaje/mario.jpeg" },
     
+
+  ],
+
+  "Trio/Cuarteto del año": [
+    { nombre: "Pibas", foto: "fotos/trio/pibas.jpeg" },
+    { nombre: "Fervico, Dario, Mario y Poru(EL escuadron salchichon)", foto: "fotos/trio/salchichon.jpeg" },
+    { nombre: "Labrada, Lucia y Gamepro(Los gofreros)", foto: "fotos/trio/gofres.jpeg" },
+    { nombre: "Rulas, Asier y Marco(Los veterinarios)", foto: "fotos/trio/primes.jpeg" },
+    { nombre: "Fervico, Ivanp y Maria(Jueguen quien Jueguen)", foto: "fotos/trio/jueguen.jpeg" },
+    { nombre: "Rober,Fermo y Marco(Los enfermeros)", foto: "fotos/trio/enfermeros.jpeg" },
+    { nombre: "Dani,Iker,Asier y Gamepro(Los tomelloseros)", foto: "fotos/trio/tomelloseros.jpeg" },
+    { nombre: "Fervico, Labrada y Ivanp(Los paninis)", foto: "fotos/trio/panini.jpeg" },
+    { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/trio/procesioneros.jpeg" },
+     { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/trio/labrada.jpeg" },
+
+  ],
+
+    "Soltero del año": [
+    { nombre: "Fermoriv", foto: "fotos/soltero/fermo.jpeg" },
+    { nombre: "Rulas", foto: "fotos/soltero/rulas.jpeg" },    
+    { nombre: "Darío", foto: "fotos/soltero/dario.jpeg" },
+    { nombre: "Fervico", foto: "fotos/soltero/fer.jpeg" },
+    { nombre: "Marco", foto: "fotos/soltero/marco.jpeg" },
+    { nombre: "Iker", foto: "fotos/soltero/iker.jpeg" },
+    { nombre: "Poru", foto: "fotos/soltero/poru.jpeg" },
+  ],
+
+      "Correon del año": [
+    { nombre: "La correa de Rober", foto: "fotos/correon/rober.jpeg" },
+    { nombre: "La correa de Asier", foto: "fotos/correon/asier.jpeg" },
+    { nombre: "La correa de Gamepro", foto: "fotos/correon/gamepro.jpeg" },
+    { nombre: "La correa de Manu", foto: "fotos/correon/manu.jpeg" },
+    { nombre: "La correa de Dani", foto: "fotos/correon/dani.jpeg" },
+    { nombre: "La correa de Mario", foto: "fotos/correon/mario.jpeg" },
+    { nombre: "La correa de Labrada", foto: "fotos/correon/Labrada.jpeg" },
+    { nombre: "La correa de Ivanp", foto: "fotos/correon/ivanp.jpeg" },
+
+  ],
+        "Broma del año": [
+    { nombre: "Oye Siri", foto: "fotos/broma/lucia.jpeg" },
+    { nombre: "Patatas contra la cama de labrada", foto: "fotos/broma/patata.jpeg" },
+    { nombre: "Grabaciones cagada", foto: "fotos/broma/lab.jpeg" },
+    { nombre: "Lanzamiento de Objetos a piscina", foto: "fotos/broma/lanzamiento.jpeg" },
+    { nombre: "Cono a Javichu vol 2", foto: "fotos/broma/cono.jpeg" },
+    { nombre: "Rotura de camisetas", foto: "fotos/broma/camisetas.jpeg" },
+
+  ],
+
+          "Mejor momento del año": [
+    { nombre: "Marco Pagando", foto: "fotos/m_momento/marco.jpeg" },
+    { nombre: "Sala vip chino Juan", foto: "fotos/m_momento/chino.jpeg" },
+    { nombre: "Dj Rulas sesión", foto: "fotos/m_momento/djrulas.jpeg" },
+    { nombre: "Carrera con tio borrcaho", foto: "fotos/m_momento/carrera.jpeg" },
+    { nombre: "Rulas vs Ivanp", foto: "fotos/m_momento/lucia.jpeg" },
+    { nombre: "Previa Alicante", foto: "fotos/m_momento/rulas.jpeg" },
+    { nombre: "Mandanga style carnaval", foto: "fotos/m_momento/mandanga.jpeg" },
 
   ]
 };
@@ -1501,7 +1559,7 @@ const LOTE_2 = [
   "Meme del año",
   "Brainhot del año",
   "Correon del año",
-  "Trio del año",
+  "Trio/Cuarteto del año",
   "Soltero del año"
 ];
 
@@ -1548,7 +1606,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 4;
+const LOTE_ACTIVO = 6;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
