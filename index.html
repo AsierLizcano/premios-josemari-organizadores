@@ -426,6 +426,13 @@ window.addEventListener("DOMContentLoaded", async () => {
   </div>
 </div>
 
+<!-- Lightbox de imagen -->
+<div id="imageLightbox" class="image-modal" hidden>
+  <div class="image-modal__inner">
+    <button class="image-modal__close" aria-label="Cerrar">&times;</button>
+    <img id="lightboxImage" alt="">
+  </div>
+</div>
 
 
 <!-- CATEGORÍAS -->
@@ -1375,6 +1382,34 @@ lista.forEach(item => {
 
   div.innerHTML = `${media}<span>${nombre}</span>`;
   contenedor.appendChild(div);
+  // Si es la categoría "Mensaje del año" y el item tiene imagen -> botón lupa
+if (categoriaNombre === "Mensaje del año" && foto) {
+  const btn = document.createElement('div');
+  btn.className = 'btn-zoom';
+  btn.setAttribute('role', 'button');
+  btn.setAttribute('aria-label', 'Ver imagen en grande');
+
+  // icono lupa SVG
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", "18");
+  svg.setAttribute("height", "18");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  const path = document.createElementNS(svgNS, "path");
+  path.setAttribute("d","M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z");
+  svg.appendChild(path);
+  btn.appendChild(svg);
+
+  // abrir lightbox y NO seleccionar la tarjeta
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openImageLightbox(foto, nombre);
+  });
+
+  div.appendChild(btn);
+}
+
 });
 
 // engancha los vídeos de este contenedor al lightbox
@@ -1550,6 +1585,37 @@ btn.addEventListener('click', (e) => {
     });
   });
 }
+// --- Lightbox de imagen ---
+function openImageLightbox(src, alt = ''){
+  const modal = document.getElementById('imageLightbox');
+  const img   = document.getElementById('lightboxImage');
+  if (!modal || !img) return;
+  img.src = src; img.alt = alt || '';
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeImageLightbox(){
+  const modal = document.getElementById('imageLightbox');
+  const img   = document.getElementById('lightboxImage');
+  if (!modal || !img) return;
+  img.removeAttribute('src');
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+// cerrar por botón / fondo / ESC
+(() => {
+  const modal = document.getElementById('imageLightbox');
+  if (!modal) return;
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'imageLightbox') closeImageLightbox();
+  });
+  const btn = modal.querySelector('.image-modal__close');
+  if (btn) btn.addEventListener('click', closeImageLightbox);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeImageLightbox();
+  });
+})();
+
 
 // ===== LOTES DE CATEGORÍAS (6 lotes x 5 categorías) =====
 
@@ -1614,7 +1680,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 5;
+const LOTE_ACTIVO = 4;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
