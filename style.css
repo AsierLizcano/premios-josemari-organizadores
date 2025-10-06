@@ -1191,19 +1191,20 @@ footer {
   transform: scale(1.1);
 }
 
-/* ======== MÓVIL GRANDE (fotos y recuadros como la segunda imagen) ======== */
+/* ======== MÓVIL GRANDE (fotos y recuadros, AHORA 3 COLUMNAS) ======== */
 @media (max-width: 768px) {
 
-  /* GRID: 2 columnas grandes y espacio cómodo */
+  /* GRID: 3 columnas y espacio cómodo */
   #votacion-nominados .grid-nominados,
+  #votacion-nominados2 .grid-nominados,
   .grid-nominados {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* ✅ solo 2 columnas */
+    grid-template-columns: repeat(3, 1fr) !important; /* ✅ tres columnas */
     gap: 18px !important;
     margin: 18px 0 30px !important;
   }
 
-  /* TARJETAS más anchas, con borde visible y fondo suave */
+  /* TARJETAS (mismos colores y estilo) */
   .grid-nominados .nominado {
     background: rgba(255, 255, 255, 0.08) !important;
     border: 2.5px solid rgba(255, 215, 0, 0.6) !important;
@@ -1219,11 +1220,11 @@ footer {
     box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
   }
 
-  /* IMÁGENES o VIDEOS GRANDES */
+  /* IMÁGENES o VIDEOS GRANDES en 4:5 */
   .grid-nominados .nominado img,
   .grid-nominados .nominado video {
     width: 100% !important;
-    aspect-ratio: 4 / 5 !important; /* retrato vertical */
+    aspect-ratio: 4 / 5 !important;
     object-fit: cover !important;
     border-radius: 12px !important;
     border: 2px solid var(--gold);
@@ -1239,7 +1240,7 @@ footer {
     color: var(--text) !important;
   }
 
-  /* SELECCIONADO: fondo dorado, texto negro */
+  /* SELECCIONADO: dorado */
   .grid-nominados .nominado.selected {
     background: var(--gold) !important;
     color: #000 !important;
@@ -1268,7 +1269,7 @@ footer {
     height: 22px;
   }
 
-  /* TITULOS */
+  /* TÍTULOS */
   .cat-header .title-group h2 {
     font-size: 1.5rem !important;
   }
@@ -1276,5 +1277,3 @@ footer {
     font-size: 1rem !important;
   }
 }
-
-  
