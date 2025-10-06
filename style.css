@@ -1191,120 +1191,90 @@ footer {
   transform: scale(1.1);
 }
 
-/* ======== MÓVIL – estilo como la captura ======== */
+/* ======== MÓVIL GRANDE (fotos y recuadros como la segunda imagen) ======== */
 @media (max-width: 768px) {
 
-  /* Cabecera de categoría centrada con badge arriba */
-  .cat-header {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 8px !important;
-    margin: 18px 0 10px !important;
-    padding-bottom: 12px !important;
-    border-bottom: none !important;
-    width: 100%;
-  }
-  .cat-badge {
-    width: 52px !important;
-    height: 52px !important;
-    border-radius: 12px !important;
-  }
-  .cat-header .title-group h2 {
-    font-size: 1.35rem !important;      /* “Mensaje del año” grande */
-    font-weight: 800 !important;
-    margin: 0 !important;
-  }
-  .cat-header .title-group p {
-    margin: 4px 0 10px !important;       /* “Selecciona hasta 3 candidatos.” */
-    font-size: 0.98rem !important;
-    opacity: .9;
-  }
-  /* Línea dorada fina bajo la cabecera como separador */
-  .cat-header + p + .grid-nominados,
-  .cat-header + .grid-nominados {
-    margin-top: 14px;
-    position: relative;
-  }
-  .cat-header::after {
-    content: "";
-    width: 92%;
-    height: 2px;
-    background: var(--gold);
-    opacity: .9;
-    border-radius: 2px;
-    margin-top: 6px;
-  }
-
-  /* Grid en 3 columnas, hueco cómodo */
+  /* GRID: 2 columnas grandes y espacio cómodo */
   #votacion-nominados .grid-nominados,
   .grid-nominados {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;  /* ✅ 3 columnas como la foto */
-    gap: 12px !important;
-    margin: 14px 0 20px !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* ✅ solo 2 columnas */
+    gap: 18px !important;
+    margin: 18px 0 30px !important;
   }
 
-  /* Tarjeta estilo “pastilla” con borde suave e interior con imagen cuadrada */
+  /* TARJETAS más anchas, con borde visible y fondo suave */
   .grid-nominados .nominado {
-    background: rgba(255,255,255,.06) !important;      /* grisáceo sobre rojo oscuro */
-    border: 2px solid rgba(255,255,255,.25) !important;/* borde clarito como en la foto */
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 2.5px solid rgba(255, 215, 0, 0.6) !important;
     border-radius: 14px !important;
-    padding: 8px !important;
-    box-shadow:
-      0 4px 12px rgba(0,0,0,.35),
-      inset 0 0 0 2px rgba(0,0,0,.15) !important;
-    transition: transform .2s ease, box-shadow .2s ease;
+    padding: 12px !important;
+    text-align: center !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .grid-nominados .nominado:hover { transform: translateY(-2px); }
 
-  /* Imagen/Video cuadrado con esquinas redondeadas */
+  .grid-nominados .nominado:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+  }
+
+  /* IMÁGENES o VIDEOS GRANDES */
   .grid-nominados .nominado img,
   .grid-nominados .nominado video {
     width: 100% !important;
-    aspect-ratio: 1 / 1 !important;      /* cuadradas como la captura */
+    aspect-ratio: 4 / 5 !important; /* retrato vertical */
     object-fit: cover !important;
-    border-radius: 10px !important;
-    display: block !important;
+    border-radius: 12px !important;
+    border: 2px solid var(--gold);
     background: #000;
   }
 
-  /* Nombre centrado dentro de la tarjeta */
+  /* NOMBRE debajo, grande y legible */
   .grid-nominados .nominado > span {
     display: block !important;
-    margin-top: 6px !important;
-    font-size: 0.95rem !important;
+    margin-top: 8px !important;
+    font-size: 1.1rem !important;
     font-weight: 700 !important;
-    color: #ffffff !important;
-    text-align: center !important;
+    color: var(--text) !important;
   }
 
-  /* Seleccionado: dorado de fondo y texto negro (como tu tema) */
+  /* SELECCIONADO: fondo dorado, texto negro */
   .grid-nominados .nominado.selected {
     background: var(--gold) !important;
+    color: #000 !important;
     border-color: var(--gold) !important;
+    transform: scale(1.02);
+  }
+  .grid-nominados .nominado.selected span {
     color: #000 !important;
   }
-  .grid-nominados .nominado.selected > span { color: #000 !important; }
 
-  /* Botón de ampliar (lupa) bien colocado sobre la imagen */
+  /* BOTÓN DE AMPLIAR */
   .grid-nominados .btn-expand,
   .grid-nominados .btn-zoom {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
+    right: 12px;
+    bottom: 12px;
     padding: 8px 10px;
     border-radius: 10px;
-    background: rgba(0,0,0,.65);
+    background: rgba(0, 0, 0, 0.6);
     color: var(--gold);
     z-index: 3;
   }
   .grid-nominados .btn-expand svg,
-  .grid-nominados .btn-zoom svg { width: 20px; height: 20px; }
+  .grid-nominados .btn-zoom svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* TITULOS */
+  .cat-header .title-group h2 {
+    font-size: 1.5rem !important;
+  }
+  .cat-header .title-group p {
+    font-size: 1rem !important;
+  }
 }
-
-
-
-
 
   
