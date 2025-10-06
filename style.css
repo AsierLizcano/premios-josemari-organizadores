@@ -1191,140 +1191,116 @@ footer {
   transform: scale(1.1);
 }
 
-/* ======================
-   BOOSTER MÓVIL (todo más grande)
-   ====================== */
+/* ======== MÓVIL – estilo como la captura ======== */
 @media (max-width: 768px) {
-  html {
-    font-size: 18px; /* sube la base (por defecto son 16px) */
-  }
 
-  /* TITULOS y texto */
-  h1 { font-size: clamp(2rem, 7vw, 2.6rem); }
-  h2 { font-size: clamp(1.5rem, 5vw, 2rem); }
-  h3, p, span { font-size: 1.1rem; line-height: 1.4; }
-
-  /* NAV */
-  .nav-inner {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  .nav-actions {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-  .nav-actions .btn {
-    flex: 1 1 calc(50% - 8px);
-    text-align: center;
-    font-size: 1rem;
-    padding: 0.8rem 1rem;
-  }
-
-  /* HERO */
-  .hero-inner {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.2rem;
-  }
-  .hero-imagen img {
-    width: 90vw;
-    max-width: 380px;
-    height: auto;
-  }
-  .subtitle {
-    font-size: 1.1rem;
-    max-width: 90%;
-    margin: 0 auto;
-  }
-
-  /* PARTICIPANTES Y NOMINADOS */
-  .grid-participantes,
-  .grid-nominados {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* ✅ dos columnas gordas */
-    gap: 14px;
-    margin: 16px 0;
-  }
-
-  .participante,
-  .nominado {
-    padding: 12px;
-    border-radius: 14px;
-    border: 2px solid var(--gold);
-    background: rgba(0,0,0,.3);
-  }
-
-  .participante img,
-  .nominado img,
-  .nominado video {
+  /* Cabecera de categoría centrada con badge arriba */
+  .cat-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 8px !important;
+    margin: 18px 0 10px !important;
+    padding-bottom: 12px !important;
+    border-bottom: none !important;
     width: 100%;
-    aspect-ratio: 1 / 1; /* cuadradas y grandes */
-    object-fit: cover;
-    border-radius: 10px;
   }
-
-  .nominado span,
-  .participante h3 {
-    display: block;
-    font-size: 1.05rem;
+  .cat-badge {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 12px !important;
+  }
+  .cat-header .title-group h2 {
+    font-size: 1.35rem !important;      /* “Mensaje del año” grande */
+    font-weight: 800 !important;
+    margin: 0 !important;
+  }
+  .cat-header .title-group p {
+    margin: 4px 0 10px !important;       /* “Selecciona hasta 3 candidatos.” */
+    font-size: 0.98rem !important;
+    opacity: .9;
+  }
+  /* Línea dorada fina bajo la cabecera como separador */
+  .cat-header + p + .grid-nominados,
+  .cat-header + .grid-nominados {
+    margin-top: 14px;
+    position: relative;
+  }
+  .cat-header::after {
+    content: "";
+    width: 92%;
+    height: 2px;
+    background: var(--gold);
+    opacity: .9;
+    border-radius: 2px;
     margin-top: 6px;
-    text-align: center;
   }
 
-  /* BOTONES */
-  .btn, .voto {
-    font-size: 1.05rem;
-    padding: 0.9rem 1rem;
+  /* Grid en 3 columnas, hueco cómodo */
+  #votacion-nominados .grid-nominados,
+  .grid-nominados {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;  /* ✅ 3 columnas como la foto */
+    gap: 12px !important;
+    margin: 14px 0 20px !important;
+  }
+
+  /* Tarjeta estilo “pastilla” con borde suave e interior con imagen cuadrada */
+  .grid-nominados .nominado {
+    background: rgba(255,255,255,.06) !important;      /* grisáceo sobre rojo oscuro */
+    border: 2px solid rgba(255,255,255,.25) !important;/* borde clarito como en la foto */
+    border-radius: 14px !important;
+    padding: 8px !important;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,.35),
+      inset 0 0 0 2px rgba(0,0,0,.15) !important;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .grid-nominados .nominado:hover { transform: translateY(-2px); }
+
+  /* Imagen/Video cuadrado con esquinas redondeadas */
+  .grid-nominados .nominado img,
+  .grid-nominados .nominado video {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;      /* cuadradas como la captura */
+    object-fit: cover !important;
+    border-radius: 10px !important;
+    display: block !important;
+    background: #000;
+  }
+
+  /* Nombre centrado dentro de la tarjeta */
+  .grid-nominados .nominado > span {
+    display: block !important;
+    margin-top: 6px !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+  }
+
+  /* Seleccionado: dorado de fondo y texto negro (como tu tema) */
+  .grid-nominados .nominado.selected {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: #000 !important;
+  }
+  .grid-nominados .nominado.selected > span { color: #000 !important; }
+
+  /* Botón de ampliar (lupa) bien colocado sobre la imagen */
+  .grid-nominados .btn-expand,
+  .grid-nominados .btn-zoom {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 8px 10px;
     border-radius: 10px;
-    width: 100%;
+    background: rgba(0,0,0,.65);
+    color: var(--gold);
+    z-index: 3;
   }
-
-  /* MODALES */
-  .modal-contenido,
-  .image-modal__inner,
-  .video-modal__inner {
-    width: 95vw;
-    max-width: 95vw;
-    border-radius: 16px;
-    padding: 1rem;
-  }
-  .modal-body {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  .modal-body img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-  }
-  .modal-texto p {
-    font-size: 1.05rem;
-    line-height: 1.5;
-  }
-
-  /* CATEGORÍAS */
-  #categorias .grid-participantes {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .categoria img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-  }
-
-  /* FOOTER */
-  footer {
-    font-size: 1rem;
-    padding: 1.2rem;
-  }
-}
-
-/* Teléfonos muy pequeños */
-@media (max-width: 400px) {
-  html { font-size: 19px; } /* un poquito más de zoom */
+  .grid-nominados .btn-expand svg,
+  .grid-nominados .btn-zoom svg { width: 20px; height: 20px; }
 }
 
 
