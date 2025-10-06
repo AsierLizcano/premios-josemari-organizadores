@@ -1137,89 +1137,55 @@ footer {
   transform: scale(1.1);
 }
 
-/* ======== MÓVIL GRANDE (fotos y recuadros, AHORA 3 COLUMNAS) ======== */
+/* ======== VIDEO: ajustes SOLO para móvil ======== */
 @media (max-width: 768px) {
-
-  /* GRID: 3 columnas y espacio cómodo */
-  #votacion-nominados .grid-nominados,
-  #votacion-nominados2 .grid-nominados,
-  .grid-nominados {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important; /* ✅ tres columnas */
-    gap: 18px !important;
-    margin: 18px 0 30px !important;
+  /* La tarjeta permite posicionar el botón flotante */
+  .grid-nominados .nominado{
+    position: relative;
+    padding: 6px;              /* un poco menos de padding en móvil */
   }
 
-  /* TARJETAS (mismos colores y estilo) */
-  .grid-nominados .nominado {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 2.5px solid rgba(255, 215, 0, 0.6) !important;
-    border-radius: 14px !important;
-    padding: 12px !important;
-    text-align: center !important;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-
-  .grid-nominados .nominado:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
-  }
-
-  /* IMÁGENES o VIDEOS GRANDES en 4:5 */
-  .grid-nominados .nominado img,
-  .grid-nominados .nominado video {
-    width: 100% !important;
-    aspect-ratio: 4 / 5 !important;
-    object-fit: cover !important;
-    border-radius: 12px !important;
-    border: 2px solid var(--gold);
+  /* Reproductor pequeño, uniforme y táctil */
+  .grid-nominados .nominado video{
+    width: 100%;
+    aspect-ratio: 4 / 5;       /* misma proporción que tus imágenes */
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
     background: #000;
   }
 
-  /* NOMBRE debajo, grande y legible */
-  .grid-nominados .nominado > span {
-    display: block !important;
-    margin-top: 8px !important;
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    color: var(--text) !important;
-  }
-
-  /* SELECCIONADO: dorado */
-  .grid-nominados .nominado.selected {
-    background: var(--gold) !important;
-    color: #000 !important;
-    border-color: var(--gold) !important;
-    transform: scale(1.02);
-  }
-  .grid-nominados .nominado.selected span {
-    color: #000 !important;
-  }
-
-  /* BOTÓN DE AMPLIAR */
-  .grid-nominados .btn-expand,
-  .grid-nominados .btn-zoom {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
+  /* Botón “ver en grande” más cómodo en táctil */
+  .btn-expand{
+    right: 8px;
+    bottom: 8px;
     padding: 8px 10px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    color: var(--gold);
-    z-index: 3;
+    font-size: 20px;
+    border-radius: 8px;
+    background: rgba(0,0,0,.65);
   }
-  .grid-nominados .btn-expand svg,
-  .grid-nominados .btn-zoom svg {
-    width: 22px;
-    height: 22px;
-  }
+  .btn-expand:hover{ background: rgba(0,0,0,.8); }
 
-  /* TÍTULOS */
-  .cat-header .title-group h2 {
-    font-size: 1.5rem !important;
+  /* Lightbox optimizado para móvil y con safe-areas */
+  .video-modal{
+    padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom);
+    background: rgb(0 0 0 / 80%);
   }
-  .cat-header .title-group p {
-    font-size: 1rem !important;
+  .video-modal__inner{
+    width: 100%;
+    max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    border-radius: 10px;
+    border-width: 1px;
+    padding: 8px;
+  }
+  #lightboxVideo{
+    max-height: calc(100vh - 80px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .video-modal__close{
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
   }
 }
