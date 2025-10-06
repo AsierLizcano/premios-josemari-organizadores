@@ -1135,24 +1135,6 @@ footer {
   }
 }
 
-/* Para pantallas aún más pequeñas */
-@media (max-width: 480px) {
-  .grid-participantes .participante img,
-  .grid-nominados .nominado img {
-    width: 100%; /* Ocupa el 100% del ancho en pantallas muy pequeñas */
-  }
-
-  .grid-participantes .participante,
-  .grid-nominados .nominado {
-    padding: 8px; /* Reduce el padding aún más */
-  }
-  
-  .voto, .btn {
-    width: 100%; /* Los botones ocupan todo el ancho */
-    padding: 12px; /* Aumenta el padding para que se vean bien en móvil */
-    font-size: 1rem;
-  }
-}
 
 
 /* ===== LIGHTBOX DE IMAGEN (versión fija y funcional) ===== */
@@ -1209,63 +1191,142 @@ footer {
   transform: scale(1.1);
 }
 
-/* ===== NOMINADOS EN MÓVIL: proporciones iguales a escritorio ===== */
+/* ======================
+   BOOSTER MÓVIL (todo más grande)
+   ====================== */
 @media (max-width: 768px) {
-  #votacion-nominados .grid-nominados {
+  html {
+    font-size: 18px; /* sube la base (por defecto son 16px) */
+  }
+
+  /* TITULOS y texto */
+  h1 { font-size: clamp(2rem, 7vw, 2.6rem); }
+  h2 { font-size: clamp(1.5rem, 5vw, 2rem); }
+  h3, p, span { font-size: 1.1rem; line-height: 1.4; }
+
+  /* NAV */
+  .nav-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .nav-actions .btn {
+    flex: 1 1 calc(50% - 8px);
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  /* HERO */
+  .hero-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  .hero-imagen img {
+    width: 90vw;
+    max-width: 380px;
+    height: auto;
+  }
+  .subtitle {
+    font-size: 1.1rem;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  /* PARTICIPANTES Y NOMINADOS */
+  .grid-participantes,
+  .grid-nominados {
     display: grid;
-    grid-template-columns: repeat(3, 1fr) !important; /* 3 columnas */
-    gap: 10px !important;
-    margin: 14px 0 !important;
+    grid-template-columns: repeat(2, 1fr); /* ✅ dos columnas gordas */
+    gap: 14px;
+    margin: 16px 0;
   }
 
-  #votacion-nominados .nominado {
-    padding: 10px !important;
-    border-radius: 14px !important;
+  .participante,
+  .nominado {
+    padding: 12px;
+    border-radius: 14px;
     border: 2px solid var(--gold);
-    background: #1a1a1a;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0,0,0,.3);
   }
 
-  #votacion-nominados .nominado img,
-  #votacion-nominados .nominado video {
-    width: 100% !important;
-    aspect-ratio: 4 / 5 !important;  /* ✅ MISMA PROPORCIÓN QUE “Nunca Follo” */
-    object-fit: cover !important;
-    border-radius: 10px !important;
+  .participante img,
+  .nominado img,
+  .nominado video {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* cuadradas y grandes */
+    object-fit: cover;
+    border-radius: 10px;
   }
 
-  #votacion-nominados .nominado > span {
+  .nominado span,
+  .participante h3 {
     display: block;
-    margin-top: 8px;
-    font-size: 1.1rem;     /* texto grande pero equilibrado */
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1.3;
+    font-size: 1.05rem;
+    margin-top: 6px;
     text-align: center;
   }
 
-  /* Fondo dorado + texto negro al seleccionar */
-  #votacion-nominados .nominado.selected {
-    background: var(--gold) !important;
-    color: black !important;
-    border-color: var(--gold) !important;
-  }
-  #votacion-nominados .nominado.selected span,
-  #votacion-nominados .nominado.selected h3 {
-    color: black !important;
+  /* BOTONES */
+  .btn, .voto {
+    font-size: 1.05rem;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    width: 100%;
   }
 
-  /* Botón lupa o expandir */
-  #votacion-nominados .btn-expand,
-  #votacion-nominados .btn-zoom {
-    right: 10px !important;
-    bottom: 10px !important;
-    padding: 8px 10px !important;
-    font-size: 20px !important;
-    border-radius: 10px !important;
-    background: rgba(0,0,0,.6);
+  /* MODALES */
+  .modal-contenido,
+  .image-modal__inner,
+  .video-modal__inner {
+    width: 95vw;
+    max-width: 95vw;
+    border-radius: 16px;
+    padding: 1rem;
+  }
+  .modal-body {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .modal-body img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+  .modal-texto p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
+  /* CATEGORÍAS */
+  #categorias .grid-participantes {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .categoria img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* FOOTER */
+  footer {
+    font-size: 1rem;
+    padding: 1.2rem;
   }
 }
+
+/* Teléfonos muy pequeños */
+@media (max-width: 400px) {
+  html { font-size: 19px; } /* un poquito más de zoom */
+}
+
 
 
 

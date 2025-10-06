@@ -1233,9 +1233,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Pelusa", foto: "fotos/meme/pelusa.jpeg" },
     { nombre: "8", foto: "fotos/meme/8.jpeg" },
     { nombre: "Diamantes", foto: "fotos/meme/diamantes.jpeg" },
-
-
-  
+    { nombre: "Gusano saca lenguas", video: "fotos/meme/lengua.mp4", poster: "fotos/meme/lengua.jpg" }
   ],
 
         "Baile del año": [
@@ -1316,7 +1314,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Marco Pagando", foto: "fotos/m_momento/marco.jpeg" },
     { nombre: "Sala vip chino Juan", foto: "fotos/m_momento/chino.jpeg" },
     { nombre: "Dj Rulas sesión", foto: "fotos/m_momento/djrulas.jpeg" },
-    { nombre: "Carrera con tio borrcaho", foto: "fotos/m_momento/carrera.jpeg" },
+    { nombre: "Carrera con tio borrcho", foto: "fotos/m_momento/carrera.jpeg" },
     { nombre: "Rulas vs Ivanp", foto: "fotos/m_momento/ivanp.jpeg" },
     { nombre: "Previa Alicante", foto: "fotos/m_momento/rulas.jpeg" },
     { nombre: "Mandanga style carnaval", foto: "fotos/m_momento/mandanga.jpeg" },
@@ -1324,11 +1322,20 @@ const NOMINADOS_ESPECIALES = {
   ],
           "Autistada del año": [
     { nombre: "Foto de Perfil fervico", foto: "fotos/autistada/foto.jpeg" },
-    { nombre: "Robo de botellas X", foto: "fotos/autistada/.jpeg" },
+    { nombre: "Robo de botellas X", foto: "fotos/autistada/yoryo.jpeg" },
     { nombre: "Ludopatia capibara", foto: "fotos/autistada/ludopatia.jpeg" },
     { nombre: "Reformas Poru y Enano", foto: "fotos/autistada/reformas.jpeg" },
     { nombre: "Rulas en aviones", foto: "fotos/autistada/marco.jpeg" },
   ],
+            "Peor momento del año del año": [
+    { nombre: "La muerte de Dani en la tortuga", foto: "fotos/p_momento/foto.jpeg" },
+    { nombre: "LA caseta de la esperanza(Feria de Abril)", foto: "fotos/p_momento/foto.jpeg" },
+    { nombre: "Vecina casi nos denuncia", foto: "fotos/p_momento/foto.jpeg" },
+     { nombre: "La cola de magma", foto: "fotos/p_momento/foto.jpeg" },
+     { nombre: "Fermoriv en Carnavales", foto: "fotos/p_momento/foto.jpeg" },
+    { nombre: "El desastre de la yedra", foto: "fotos/p_momento/foto.jpeg" },
+  ],
+
 
 };
 
@@ -1680,7 +1687,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 4;
+const LOTE_ACTIVO = 2;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
