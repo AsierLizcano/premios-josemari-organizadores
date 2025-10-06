@@ -1138,12 +1138,18 @@ footer {
 }
 
 /* ======== VIDEO: ajustes SOLO para móvil ======== */
+/* MÓVIL: grid de NOMINADOS en 3 columnas */
 @media (max-width: 768px) {
-  /* La tarjeta permite posicionar el botón flotante */
-  .grid-nominados .nominado{
-    position: relative;
-    padding: 6px;              /* un poco menos de padding en móvil */
+  #votacion-nominados .grid-nominados,
+  #votacion-nominados2 .grid-nominados,
+  .grid-nominados {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px !important;              /* mismo aire que ya usas */
+    margin: 18px 0 30px !important;
   }
+}
+
 
   /* Reproductor pequeño, uniforme y táctil */
   .grid-nominados .nominado video{
