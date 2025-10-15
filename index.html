@@ -419,12 +419,31 @@ window.addEventListener("DOMContentLoaded", async () => {
     </div>
   </div>
   <!-- Lightbox de vídeo -->
-<div id="videoLightbox" class="video-modal" hidden>
-  <div class="video-modal__inner">
-    <button class="video-modal__close" aria-label="Cerrar">&times;</button>
+<!-- Lightbox de vídeo (UNO solo) -->
+<div id="videoLightbox" class="video-modal" hidden
+     onclick="if (event.target === this) window.closeVideoLightboxHard()">
+  <div class="video-modal__inner" onclick="event.stopPropagation()">
+    <button class="video-modal__close" aria-label="Cerrar" type="button"
+            onclick="window.closeVideoLightboxHard()">×</button>
     <video id="lightboxVideo" controls playsinline></video>
   </div>
 </div>
+<script>
+  window.closeVideoLightboxHard = function () {
+    const modal = document.getElementById('videoLightbox');
+    const video = document.getElementById('lightboxVideo');
+    if (!modal || !video) return;
+
+    try { video.pause(); } catch {}
+    video.removeAttribute('src');
+    video.removeAttribute('poster');
+    video.load?.();
+
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+</script>
+
 
 <!-- Lightbox de imagen -->
 <div id="imageLightbox" class="image-modal" hidden>
@@ -433,6 +452,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     <img id="lightboxImage" alt="">
   </div>
 </div>
+
 
 
 <!-- CATEGORÍAS -->
@@ -515,9 +535,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/objeto.jpg" alt="Objeto del año">
       <h3> Objeto del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Loco del Año: La persona que hace más locuras, estando sobria o ebria, un ejemplo del año pasado pues cuando el año pasado mario se puso a congelar objetos, vaya tio mas crazyyy.">
-      <img src="fotos/loco.jpg" alt="Loco del año">
-      <h3> Loco del año</h3>
+    <div class="categoria" data-descripcion="Llorón del Año: La persona que hace más locuras, estando sobria o ebria, un ejemplo del año pasado pues cuando el año pasado mario se puso a congelar objetos, vaya tio mas crazyyy.">
+      <img src="fotos/lloron.jpeg" alt="Llorón del año">
+      <h3> Llorón del año</h3>
     </div>
     <div class="categoria" data-descripcion="El que Mejor Viste del Año: El tio con el mejor oufit durante todo el año, es una categoria algo subjetiva, ya que cada uno tiene su estilo de vestir, aqui se premia al que siempre vaya guapete.">
       <img src="fotos/mejorviste.jpeg" alt="El que mejor viste del año">
@@ -558,16 +578,45 @@ window.addEventListener("DOMContentLoaded", async () => {
   </div>
 </section>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.grid-nominados video').forEach(v => {
-    v.controls = true;
-    v.muted = true;
-    v.setAttribute('playsinline','');
-    v.setAttribute('webkit-playsinline','');
-    v.setAttribute('preload','metadata');
+(() => {
+  const modal = document.getElementById('videoLightbox');
+  if (!modal || modal.dataset.bound) return; // <- solo sal si YA estaba vinculado
+  modal.dataset.bound = '1';
+
+  const video = document.getElementById('lightboxVideo');
+
+  function closeVideoLightbox() {
+    try { video.pause(); } catch {}
+    video.removeAttribute('src');
+    video.removeAttribute('poster');
+    video.load?.();
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  // Cerrar clicando fuera (overlay)
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'videoLightbox') closeVideoLightbox();
   });
-});
+
+  // Evitar que clics dentro del contenido cierren el modal
+  modal.querySelector('.video-modal__inner')?.addEventListener('click', (e) => e.stopPropagation());
+
+  // Botón X
+  modal.querySelector('.video-modal__close')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeVideoLightbox();
+  });
+
+  // Tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeVideoLightbox();
+  });
+})();
+
 </script>
+
 
 <!-- Modal para mostrar categoría -->
 <div id="modalCategoria" class="modal">
@@ -646,42 +695,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+<section id="votacion" class="seccion">
+  <h2>Votación</h2>
+  <p>Selecciona un ganador por categoría (4 nominados por categoría).</p>
+  <div id="votacionWrapper"></div>
+  <button id="enviarVotacion" class="btn gold" style="margin-top:20px;">Enviar votación</button>
+</section>
 
-    <!-- VOTACIÓN -->
-    <section id="votacion" class="seccion" style="display:none;">
-      <div style="padding:50px; text-align:center; font-size:1.5em; font-weight:bold;">
-        🚧 Esta parte aún no está disponible.  
-        <br>¡Pronto podrás votar aquí!
-      </div>
-    </section>
-    
-    <section id="votacion" class="seccion">
-      <h2>Votación</h2>
-      <p>Selecciona tus nominados y pulsa “VOTAR”.</p>
 
-      <div class="categoria">
-        <h3>Mejor amigo</h3>
-        <button class="voto" data-categoria="Mejor amigo" data-nominado="Asieras">Asieras</button>
-        <button class="voto" data-categoria="Mejor amigo" data-nominado="Rulillas">Rulillas</button>
-        <button class="voto" data-categoria="Mejor amigo" data-nominado="Darawayas">Darawayas</button>
-      </div>
-
-      <div class="categoria">
-        <h3>Más divertido</h3>
-        <button class="voto" data-categoria="Más divertido" data-nominado="Asieras">Asieras</button>
-        <button class="voto" data-categoria="Más divertido" data-nominado="Rulillas">Rulillas</button>
-        <button class="voto" data-categoria="Más divertido" data-nominado="Darawayas">Darawayas</button>
-      </div>
-
-      <div class="categoria">
-        <h3>Más creativo</h3>
-        <button class="voto" data-categoria="Más creativo" data-nominado="Asieras">Asieras</button>
-        <button class="voto" data-categoria="Más creativo" data-nominado="Rulillas">Rulillas</button>
-        <button class="voto" data-categoria="Más creativo" data-nominado="Darawayas">Darawayas</button>
-      </div>
-
-      <button id="enviarVoto" class="btn gold">VOTAR</button>
-    </section>
 
 <section id="votacion-nominados" class="seccion" style="display:none;">
   <div id="nominadosWrapper"></div>
@@ -804,6 +825,11 @@ if (typeof enhanceCategoryHeaders === 'function') {
   if (seccion === "tu-votacion" && typeof cargarTuVotacion === "function") {
   cargarTuVotacion();
 }
+  if (seccion === 'votacion') {
+    document.body.classList.add('tab-votacion');
+  } else {
+    document.body.classList.remove('tab-votacion');
+  }
 
 };
 
@@ -940,21 +966,21 @@ const DEFAULT_PLACA = "fotos/placa-default.png";
 const categoryImages = {
   // Lote 1
   "Viajero/a del año": "fotos/viajero.jpeg",
-  "Loco/a del año":   "fotos/loco.jpg",
   "Competitivo/a del año": "fotos/competititivo.png",
   "Guarrete del año":          "fotos/guarrete.jpeg",
   "Papi/Mami del año":     "fotos/papi.jpg",
+    "Meme del año":             "fotos/meme.jpeg",
 
   // Lote 2
-  "Meme del año":             "fotos/meme.jpeg",
   "Brainhot del año":              "fotos/brainhot.jpeg",
   "Correon del año":     "fotos/correon.jpeg",
   "Trio del año":              "fotos/trio.jpeg",
   "Soltero del año":            "fotos/soltero.jpeg",
+    "El que mejor viste del año":    "fotos/mejorviste.jpeg",
 
   // Lote 3
+    "Llorón del año":    "fotos/lloron.jpeg",
   "Fiestero/a del año":                    "fotos/fiestero.jpeg",
-  "El que mejor viste del año":    "fotos/mejorviste.jpeg",
   "Borracho/a del año":                  "fotos/borracho.jpeg",
   "Mejor Personaje fuera de JyP del año":               "fotos/mpersonaje.jpeg",
   "Peor momento del año":                    "fotos/p_momento.jpeg",
@@ -1021,81 +1047,124 @@ function enhanceCategoryHeaders() {
   wrap.dataset.headersEnhanced = "1";
 }
 
-    
-    // =========================
-    // VOTACIÓN NORMAL
-    // =========================
-    const votosSeleccionados = {};
-    document.querySelectorAll('.voto').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const categoria = btn.dataset.categoria;
-        const nominado = btn.dataset.nominado;
-        votosSeleccionados[categoria] = nominado;
-    
-        document.querySelectorAll(`.voto[data-categoria="${categoria}"]`)
-          .forEach(b => b.classList.remove('selected'));
-    
-        btn.classList.add('selected');
-      });
+
+// ======================================
+// NUEVA CONFIGURACIÓN: 5 CATEGORÍAS DE VOTACIÓN
+// ======================================
+const CATEGORIAS_VOTACION = {
+  "Mejor amigo": [
+    { nombre: "Asieras", foto: "fotos/asieras.jpeg" },
+    { nombre: "Rulillas", foto: "fotos/rulillas.jpeg" },
+    { nombre: "Darawayas", foto: "fotos/dario.jpeg" },
+    { nombre: "Ivanpechotes", foto: "fotos/ivanp.jpeg" },
+  ],
+  "Más divertido": [
+    { nombre: "Rober", foto: "fotos/rober.jpeg" },
+    { nombre: "Gamepro", foto: "fotos/gamepro.jpeg" },
+    { nombre: "Fervico", foto: "fotos/fervico.jpeg" },
+    { nombre: "Rulas", foto: "fotos/rulillas.jpeg" },
+  ],
+  "Más creativo": [
+    { nombre: "Lucía", foto: "fotos/lucia.jpeg" },
+    { nombre: "Dani", foto: "fotos/dani.jpeg" },
+    { nombre: "Mario", foto: "fotos/mario.jpeg" },
+    { nombre: "Poru", foto: "fotos/poru.jpeg" },
+  ],
+  "Más fiestero": [
+    { nombre: "Rulas", foto: "fotos/rulillas.jpeg" },
+    { nombre: "Rober", foto: "fotos/rober.jpeg" },
+    { nombre: "Asieras", foto: "fotos/asieras.jpeg" },
+    { nombre: "Fervico", foto: "fotos/fervico.jpeg" },
+  ],
+  "Más responsable": [
+    { nombre: "Manu", foto: "fotos/manu.jpeg" },
+    { nombre: "Maria", foto: "fotos/maria.jpeg" },
+    { nombre: "Labrada", foto: "fotos/labrada.jpeg" },
+    { nombre: "Lucía", foto: "fotos/lucia.jpeg" },
+  ],
+};
+
+// ======================================
+// GENERADOR DE TARJETAS DE VOTACIÓN
+// ======================================
+const wrapper = document.getElementById('votacionWrapper');
+const votosSeleccionados = {};
+
+Object.entries(CATEGORIAS_VOTACION).forEach(([categoria, nominados]) => {
+  const h3 = document.createElement('h3');
+  h3.textContent = categoria;
+  wrapper.appendChild(h3);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid-nominados';
+
+  nominados.forEach(nom => {
+    const card = document.createElement('div');
+    card.className = 'nominado';
+    card.dataset.nombre = nom.nombre;
+    card.dataset.categoria = categoria;
+    card.innerHTML = `
+      <img src="${nom.foto}" alt="${nom.nombre}">
+      <span>${nom.nombre}</span>
+    `;
+
+    // ✅ clic = seleccionar o deseleccionar
+    card.addEventListener('click', () => {
+      // Si ya estaba seleccionada → quitar selección
+      if (card.classList.contains('selected')) {
+        card.classList.remove('selected');
+        delete votosSeleccionados[categoria];
+        return;
+      }
+
+      // Si no lo estaba → seleccionar esta y quitar las demás
+      grid.querySelectorAll('.nominado').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      votosSeleccionados[categoria] = nom.nombre;
     });
-    
-    const enviarBtn = document.getElementById('enviarVoto');
-    if (enviarBtn) {
-      enviarBtn.addEventListener('click', async () => {
-        const categorias = ["Mejor amigo", "Más divertido", "Más creativo"];
-        for (let cat of categorias) {
-          if (!votosSeleccionados[cat]) {
-            alert(`Debes seleccionar un participante para "${cat}"`);
-            return;
-          }
-        }
-        try {
-          enviarBtn.disabled = true;
-          for (let cat of categorias) {
-async function guardarVoto(categoria, opcionElegida) {
-  const usuario = localStorage.getItem("usuarioLogueado"); // 👈 quién está logueado
-  await addDoc(collection(db, "votaciones"), {
-    usuario: usuario,
-    categoria: categoria,
-    voto: opcionElegida,
-    timestamp: serverTimestamp()
+
+    grid.appendChild(card);
   });
-  async function votar(categoria, opcionElegida) {
-  const usuario = localStorage.getItem("usuarioLogueado");
 
-  // 1) Comprobar si ya votó este usuario en esta categoría
-  const q = query(
-    collection(db, "votaciones"),
-    where("usuario", "==", usuario),
-    where("categoria", "==", categoria)
-  );
-  const snapshot = await getDocs(q);
+  wrapper.appendChild(grid);
+});
 
-  if (!snapshot.empty) {
-    alert("Ya has votado en esta categoría");
+// ======================================
+// GUARDAR VOTOS EN FIREBASE
+// ======================================
+document.getElementById('enviarVotacion').addEventListener('click', async () => {
+  const usuario = localStorage.getItem('usuarioLogueado');
+  if (!usuario) {
+    alert("Debes iniciar sesión para votar.");
+    mostrarSeccion('login');
     return;
   }
 
-  // 2) Guardar el voto
-  await guardarVoto(categoria, opcionElegida);
-  alert("Voto registrado correctamente");
-}
+  // Validar que haya votado en todas
+  const pendientes = Object.keys(CATEGORIAS_VOTACION)
+    .filter(cat => !votosSeleccionados[cat]);
+  if (pendientes.length) {
+    alert(`Te falta votar en: ${pendientes.join(', ')}`);
+    return;
+  }
 
-}
-
-
-          }
-          alert("¡Tus votos han sido registrados!");
-          localStorage.removeItem("usuario");
-          location.reload();
-        } catch (e) {
-          console.error("Error guardando votos: ", e);
-          alert("Hubo un error al guardar tus votos.");
-        } finally {
-          enviarBtn.disabled = false;
-        }
+  try {
+    for (const [cat, nom] of Object.entries(votosSeleccionados)) {
+      await addDoc(collection(db, "votaciones"), {
+        usuario,
+        categoria: cat,
+        voto: nom,
+        timestamp: serverTimestamp()
       });
     }
+    alert("✅ Tus votos se han registrado correctamente.");
+    document.querySelectorAll('#votacion .nominado').forEach(c => c.classList.remove('selected'));
+  } catch (e) {
+    console.error(e);
+    alert("❌ Error al guardar los votos.");
+  }
+});
+
     // === NOMINADOS ESPECIALES POR CATEGORÍA ===
 // Si una categoría aparece aquí, usará ESTOS nominados en vez de los del grid #participantes
 const NOMINADOS_ESPECIALES = {
@@ -1245,7 +1314,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Shiny", video: "fotos/bailes/lucia.mp4", poster: "fotos/bailes/lucia.jpeg" },
     { nombre: "Los encocaos", video: "fotos/bailes/iker.mp4", poster: "fotos/bailes/iker.jpeg" },
     { nombre: "El mambo de Labrada", video: "fotos/bailes/labrada.mp4", poster: "fotos/bailes/labrada.jpeg" },
-    { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
+    { nombre: "Señorita Surferita", video: "fotos/bailes/Surferita.mp4", poster: "fotos/bailes/Surferita.jpeg" },
     { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
 
 ],
@@ -1422,78 +1491,106 @@ if (categoriaNombre === "Mensaje del año" && foto) {
 // engancha los vídeos de este contenedor al lightbox
 wireLightboxForVideos(contenedor);
 
-function openVideoLightbox({ src, poster, startAt = 0, autoPlay = true, sourceEl = null, wasPlaying = false }) {
+
+
+
+// --- Lightbox de VÍDEO: compatible con ambas firmas y con botón X funcionando ---
+function openVideoLightbox(arg1, title = '') {
   const modal = document.getElementById('videoLightbox');
-  const v = document.getElementById('lightboxVideo');
-  if (!modal || !v) return;
+  const video = document.getElementById('lightboxVideo');
+  if (!modal || !video) return;
 
-  // Limpia listeners anteriores
-  v.onloadedmetadata = null;
-  v.oncanplay = null;
+  // Soportar ambas firmas: string o objeto
+  let src, poster, startAt = 0, autoPlay = false;
+  if (typeof arg1 === 'object' && arg1) {
+    src = arg1.src;
+    poster = arg1.poster || null;
+    startAt = Number(arg1.startAt || 0);
+    autoPlay = !!arg1.autoPlay;
+    title = arg1.title || title || '';
+  } else {
+    src = arg1; // firma clásica: (src, title)
+  }
+  if (!src) return;
 
-  // Configura media
-  v.src = src;
-  if (poster) v.poster = poster; else v.removeAttribute('poster');
+  // Preparar el vídeo
+  try { video.pause(); } catch {}
+  video.removeAttribute('src');
+  if (poster) video.setAttribute('poster', poster); else video.removeAttribute('poster');
+  video.src = src;
+  video.load();
 
-  // Cuando tenga metadatos, salta al mismo segundo
-  v.onloadedmetadata = () => {
-    try { v.currentTime = startAt || 0; } catch {}
-    if (autoPlay) {
-      v.play().catch(() => {});
-    }
-  };
-
-  // Guarda referencia del pequeño para poder restaurar al cerrar
-  v.dataset.restore = sourceEl ? "1" : "";
-  v._sourceEl = sourceEl || null;
-  v._wasPlaying = !!wasPlaying;
-
+  // Mostrar modal
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
+  if (title) video.setAttribute('aria-label', title);
+
+  // Posicionar/auto reproducir
+  if (startAt > 0) {
+    // Esperar a que tenga metadata para poder hacer seek sin error
+    const onMeta = () => {
+      video.currentTime = Math.min(startAt, (video.duration || startAt));
+      if (autoPlay) video.play().catch(()=>{});
+      video.removeEventListener('loadedmetadata', onMeta);
+    };
+    video.addEventListener('loadedmetadata', onMeta);
+  } else if (autoPlay) {
+    video.play().catch(()=>{});
+  }
 }
 
 function closeVideoLightbox() {
   const modal = document.getElementById('videoLightbox');
-  const v = document.getElementById('lightboxVideo');
-  if (!modal || !v) return;
+  const video = document.getElementById('lightboxVideo');
+  if (!modal || !video) return;
 
-  // (Opcional) restaurar al pequeño en el mismo punto
-  const src = v._sourceEl;
-  if (src) {
-    try { src.currentTime = v.currentTime; } catch {}
-    if (v._wasPlaying) {
-      src.play().catch(()=>{});
-    }
-  }
-
-  try { v.pause(); } catch {}
-  v.removeAttribute('src');
-  v.removeAttribute('poster');
-  v.load();
-  v._sourceEl = null;
-  v._wasPlaying = false;
+  try { video.pause(); } catch {}
+  video.removeAttribute('src');
+  video.removeAttribute('poster');
+  video.load();
 
   modal.hidden = true;
   document.body.style.overflow = '';
-  if (document.fullscreenElement && document.exitFullscreen) {
-    document.exitFullscreen().catch(()=>{});
-  }
 }
 
-
-// listeners del modal (clic en fondo, botón cerrar, ESC)
+// Listeners: clic fuera, ❌ y ESC (solo una vez)
 (() => {
   const modal = document.getElementById('videoLightbox');
-  if (!modal) return;
+  if (!modal || modal.dataset.bound) return;
+  modal.dataset.bound = '1';
+
+  // Cerrar clicando fuera (overlay)
   modal.addEventListener('click', (e) => {
     if (e.target.id === 'videoLightbox') closeVideoLightbox();
   });
-  const btn = modal.querySelector('.video-modal__close');
-  if (btn) btn.addEventListener('click', closeVideoLightbox);
+
+  // Evitar que clics dentro del contenido cierren el modal
+  modal.querySelector('.video-modal__inner')?.addEventListener('click', (e) => e.stopPropagation());
+
+  // Botón X
+  modal.querySelector('.video-modal__close')?.addEventListener('click', closeVideoLightbox);
+
+  // Tecla ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modal.hidden) closeVideoLightbox();
   });
 })();
+
+
+
+
+// (Opcional) Delegación: abrir lightbox cuando se pulse sobre cualquier
+// elemento que tenga data-video-src="ruta/al/video.mp4"
+document.addEventListener('click', (e) => {
+  const trigger = e.target.closest('[data-video-src]');
+  if (!trigger) return;
+  e.preventDefault();
+  const src = trigger.getAttribute('data-video-src');
+  const title = trigger.getAttribute('aria-label') || trigger.getAttribute('title') || '';
+  if (src) openVideoLightbox(src, title);
+});
+
+
 
 function wireLightboxForVideos(scope = document) {
   // Configuración de los vídeos pequeños
@@ -1592,6 +1689,7 @@ btn.addEventListener('click', (e) => {
     });
   });
 }
+
 // --- Lightbox de imagen ---
 function openImageLightbox(src, alt = ''){
   const modal = document.getElementById('imageLightbox');
@@ -1601,6 +1699,7 @@ function openImageLightbox(src, alt = ''){
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
 }
+
 function closeImageLightbox(){
   const modal = document.getElementById('imageLightbox');
   const img   = document.getElementById('lightboxImage');
@@ -1609,6 +1708,7 @@ function closeImageLightbox(){
   modal.hidden = true;
   document.body.style.overflow = '';
 }
+
 // cerrar por botón / fondo / ESC
 (() => {
   const modal = document.getElementById('imageLightbox');
@@ -1624,30 +1724,31 @@ function closeImageLightbox(){
 })();
 
 
+
 // ===== LOTES DE CATEGORÍAS (6 lotes x 5 categorías) =====
 
 // LOTE 1 (inicial)
 const LOTE_1 = [
   "Viajero/a del año",
-  "Loco/a del año",
   "Competitivo/a del año",
   "Guarrete del año",
-  "Papi/Mami del año"
+  "Papi/Mami del año",
+    "Meme del año"
 ];
 
 // LOTE 2
 const LOTE_2 = [
-  "Meme del año",
   "Brainhot del año",
   "Correon del año",
   "Trio/Cuarteto del año",
-  "Soltero del año"
+  "Soltero del año",
+  "El que mejor viste del año",
 ];
 
 // LOTE 3
 const LOTE_3 = [
+  "Llorón del año",
   "Fiestero/a del año",
-  "El que mejor viste del año",
   "Borracho/a del año",
   "Mejor Personaje fuera de JyP del año",
   "Peor momento del año"
@@ -1687,7 +1788,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 4;
+const LOTE_ACTIVO = 5;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
