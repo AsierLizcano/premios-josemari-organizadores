@@ -1964,10 +1964,28 @@ async function onEnviarTodasNominaciones(e) {
   } catch (e) {
     console.error("Error guardando nominaciones:", e);
     alert("Hubo un error al guardar tus nominaciones.");
-  } finally {
-    enviandoNominaciones = false;
-    if (btn) { btn.disabled = false; btn.innerText = "Enviar todas las nominaciones"; }
+} finally {
+  enviandoNominaciones = false;
+
+  // Ajustar SIEMPRE el estado real del botón según si ya se envió
+  const btn = document.getElementById('enviarTodasNominaciones');
+  if (btn) {
+    const usuario = localStorage.getItem('usuarioLogueado');
+    const lote = window.getLoteActual();
+    try {
+      const enviado = await yaHaEnviadoNominaciones(usuario, lote);
+      btn.disabled = enviado;
+      btn.innerText = enviado
+        ? `Ya has enviado tus nominaciones del Lote ${lote}`
+        : `Enviar todas las nominaciones (Lote ${lote})`;
+    } catch {
+      // Si algo falla al comprobar, al menos no dejamos el botón “enviando…”
+      btn.disabled = false;
+      btn.innerText = "Enviar todas las nominaciones";
+    }
   }
+}
+
 }
 
 
@@ -2033,53 +2051,49 @@ window.actualizarEstadoBotonVotacion = actualizarEstadoBotonVotacion;
 // RESULTADOS (nominaciones + votaciones)
 // =========================
 // 🔒 candado para evitar ejecuciones simultáneas/duplicadas
+// 🔒 evita dobles cargas
 let _cargandoResultados = false;
 
 async function cargarResultados() {
   const contenedor = document.getElementById('tabla-resultados');
-
-  // si ya hay una carga en curso, evita otra
   if (_cargandoResultados) return;
   _cargandoResultados = true;
 
   try {
-    // limpia SIEMPRE antes de empezar
     contenedor.innerHTML = "<p>Cargando resultados...</p>";
 
-    // === 1) ciclo a mostrar (si el actual está vacío, usa el anterior) ===
-    let ciclo = await getCicloActual();
+    // 1) SIEMPRE el ciclo actual. Si está vacío, se muestra vacío (no miramos el anterior).
+    const ciclo = await getCicloActual();
 
-    // ---- nominaciones (para el bloque “🏅 Nominaciones …”) ----
-    let snapNom = await getDocs(query(collection(db, "nominaciones"), where("ciclo","==", ciclo)));
-    if (snapNom.empty && ciclo > 1) {
-      const prev = await getDocs(query(collection(db, "nominaciones"), where("ciclo","==", ciclo-1)));
-      if (!prev.empty) { ciclo = ciclo - 1; snapNom = prev; }
-    }
+    // NOMINACIONES (solo ciclo actual)
+    const snapNom = await getDocs(
+      query(collection(db, "nominaciones"), where("ciclo", "==", ciclo))
+    );
 
-    // ---- votaciones finales (para el bloque “🗳️ Votación final …”) ----
-    let snapVotos = await getDocs(query(collection(db, "votaciones"), where("categoria","!=", null)));
-    // (no cambiamos ciclo aquí; las votaciones “normales” no usan campo ciclo en tu modelo actual)
+    // VOTACIONES (si guardas ciclo en votaciones —lo hacemos en tu envío—, filtramos también por ciclo)
+    const snapVotos = await getDocs(
+      query(collection(db, "votaciones"), where("ciclo", "==", ciclo))
+    );
 
-    // ahora sí, limpia y renderiza en un único pase atómico
+    // Render
     contenedor.innerHTML = "";
     const frag = document.createDocumentFragment();
 
-    // ======= BLOQUE: NOMINACIONES =======
+    // ===== NOMINACIONES =====
     const bloqueNom = document.createElement('section');
     bloqueNom.innerHTML = `
       <h3>🏅 Nominaciones Ciclo ${ciclo}</h3>
       <p style="opacity:.8">Cuenta cuántas veces ha sido nominado cada candidato en cada categoría (quién propuso a quién).</p>
     `;
+
     if (snapNom.empty) {
-      const p = document.createElement('p');
-      p.textContent = "No hay nominaciones aún.";
-      bloqueNom.appendChild(p);
+      bloqueNom.insertAdjacentHTML('beforeend', `<p>No hay nominaciones aún.</p>`);
     } else {
       const conteo = {};
       const nominadores = {};
       snapNom.forEach(d => {
         const data = d.data() || {};
-        const cat = data.categoria || "Sin categoría";
+        const cat   = data.categoria || "Sin categoría";
         const lista = Array.isArray(data.nominados) ? data.nominados : [];
         if (!conteo[cat]) conteo[cat] = {};
         if (!nominadores[cat]) nominadores[cat] = {};
@@ -2105,43 +2119,37 @@ async function cargarResultados() {
     }
     frag.appendChild(bloqueNom);
 
-    // ======= BLOQUE: VOTACIÓN FINAL =======
+    // ===== VOTACIÓN FINAL =====
     const bloqueVot = document.createElement('section');
     bloqueVot.innerHTML = `
       <h3>🗳️ Votación final Ciclo ${ciclo}</h3>
       <p style="opacity:.8">Ganador por categoría según los votos emitidos (incluye el detalle de quién votó a quién).</p>
     `;
+
     if (snapVotos.empty) {
-      const p = document.createElement('p');
-      p.textContent = "No hay votos aún.";
-      bloqueVot.appendChild(p);
+      bloqueVot.insertAdjacentHTML('beforeend', `<p>No hay votos aún.</p>`);
     } else {
-      // recolecta por categoría
       const votosPorCat = {};
       const votantesSet = new Set();
       snapVotos.forEach(d => {
         const data = d.data() || {};
-        const cat = data.categoria || "Sin categoría";
+        const cat  = data.categoria || "Sin categoría";
         const voto = data.voto || "(sin voto)";
         const user = data.usuario || "(desconocido)";
         votantesSet.add(user);
         (votosPorCat[cat] ||= []).push({ voto, user });
       });
 
-      // badge de votantes
       const p = document.createElement('p');
       p.style.marginTop = "8px";
       p.innerHTML = `Han votado: ${Array.from(votantesSet).join(', ') || '—'}`;
       bloqueVot.appendChild(p);
 
-      // por categoría
       Object.entries(votosPorCat)
         .sort(([a],[b]) => a.localeCompare(b))
         .forEach(([cat, arr]) => {
           const div = document.createElement('div');
           div.innerHTML = `<h4>${cat}</h4>`;
-
-          // conteo + quiénes votaron a cada opción
           const count = {};
           const quienes = {};
           arr.forEach(({voto, user}) => {
@@ -2150,34 +2158,32 @@ async function cargarResultados() {
           });
 
           const ul = document.createElement('ul');
-          Object.entries(count)
-            .sort((a,b)=>b[1]-a[1])
-            .forEach(([opcion, n]) => {
-              const li = document.createElement('li');
-              li.textContent = `${opcion}: ${n} voto(s)`;
-              const detalle = document.createElement('div');
-              detalle.style.opacity = ".8";
-              detalle.style.marginLeft = "8px";
-              detalle.textContent = `Votaron: ${Array.from(quienes[opcion]).join(', ')}`;
-              li.appendChild(detalle);
-              ul.appendChild(li);
-            });
+          Object.entries(count).sort((a,b)=>b[1]-a[1]).forEach(([opcion, n]) => {
+            const li = document.createElement('li');
+            li.textContent = `${opcion}: ${n} voto(s)`;
+            const detalle = document.createElement('div');
+            detalle.style.opacity = ".8";
+            detalle.style.marginLeft = "8px";
+            detalle.textContent = `Votaron: ${Array.from(quienes[opcion]).join(', ')}`;
+            li.appendChild(detalle);
+            ul.appendChild(li);
+          });
           div.appendChild(ul);
           bloqueVot.appendChild(div);
         });
     }
     frag.appendChild(bloqueVot);
 
-    // pinta de una vez
     contenedor.replaceChildren(frag);
 
   } catch (e) {
     console.error("Error cargando resultados:", e);
-    document.getElementById('tabla-resultados').innerHTML = "<p>Error al cargar resultados.</p>";
+    contenedor.innerHTML = "<p>Error al cargar resultados.</p>";
   } finally {
     _cargandoResultados = false;
   }
 }
+
 
 // expón para tu navegación
 window.cargarResultados = cargarResultados;
@@ -2227,44 +2233,50 @@ async function borrarColeccion(nombreColeccion) {
     delete btn.dataset.prev;
   }
 
-  // Listeners de los 3 botones del panel de resultados
-  const btnBorrarVotos = document.getElementById('borrarVotos');
-  const btnBorrarNomin = document.getElementById('borrarNominaciones');
-  const btnReset       = document.getElementById('restaurarVotaciones');
+// Listeners de los 3 botones del panel de resultados
+const btnBorrarVotos = document.getElementById('borrarVotos');
+const btnBorrarNomin = document.getElementById('borrarNominaciones');
+const btnReset       = document.getElementById('restaurarVotaciones');
 
-  if (btnBorrarVotos && !btnBorrarVotos.dataset.bound) {
-    btnBorrarVotos.dataset.bound = "1";
-    btnBorrarVotos.addEventListener('click', async () => {
-      setBtnLoading(btnBorrarVotos, 'Borrando…');
-      await borrarColeccion('votaciones');   // 👈 borra votos de la votación normal
-      unsetBtnLoading(btnBorrarVotos);
-    });
-  }
+if (btnBorrarVotos && !btnBorrarVotos.dataset.bound) {
+  btnBorrarVotos.dataset.bound = "1";
+  btnBorrarVotos.addEventListener('click', async () => {
+    if (!confirm("Vas a BORRAR definitivamente TODOS los votos de la votación final. ¿Continuar?")) return;
+    setBtnLoading(btnBorrarVotos, 'Borrando…');
+    await borrarColeccion('votaciones');     // ← borra en Firestore (batch)
+    unsetBtnLoading(btnBorrarVotos);
+    if (typeof cargarResultados === 'function') cargarResultados();
+  });
+}
 
-  if (btnBorrarNomin && !btnBorrarNomin.dataset.bound) {
-    btnBorrarNomin.dataset.bound = "1";
-    btnBorrarNomin.addEventListener('click', async () => {
-      setBtnLoading(btnBorrarNomin, 'Borrando…');
-      await borrarColeccion('nominaciones'); // 👈 borra nominaciones
-      unsetBtnLoading(btnBorrarNomin);
-    });
-  }
+if (btnBorrarNomin && !btnBorrarNomin.dataset.bound) {
+  btnBorrarNomin.dataset.bound = "1";
+  btnBorrarNomin.addEventListener('click', async () => {
+    if (!confirm("Vas a BORRAR definitivamente TODAS las nominaciones. ¿Continuar?")) return;
+    setBtnLoading(btnBorrarNomin, 'Borrando…');
+    await borrarColeccion('nominaciones');   // ← borra en Firestore (batch)
+    unsetBtnLoading(btnBorrarNomin);
+    if (typeof cargarResultados === 'function') cargarResultados();
+  });
+}
 
-  if (btnReset && !btnReset.dataset.bound) {
-    btnReset.dataset.bound = "1";
-    btnReset.addEventListener('click', async () => {
-      if (!confirm("Iniciar una NUEVA ronda de votaciones. Los registros anteriores se conservarán. ¿Continuar?")) return;
-      try {
-        const nuevoCiclo = await aumentarCiclo();
-        alert(`¡Listo! Se ha iniciado el ciclo ${nuevoCiclo}. Todos pueden volver a votar.`);
-        if (typeof cargarResultados === 'function') cargarResultados();
-        if (window.actualizarEstadoBotonNominaciones) await window.actualizarEstadoBotonNominaciones();
-      } catch (e) {
-        console.error(e);
-        alert("No se pudo iniciar la nueva ronda.");
-      }
-    });
-  }
+if (btnReset && !btnReset.dataset.bound) {
+  btnReset.dataset.bound = "1";
+  btnReset.addEventListener('click', async () => {
+    if (!confirm("Iniciar una NUEVA ronda de votaciones. Los registros anteriores se conservarán. ¿Continuar?")) return;
+    try {
+      const nuevoCiclo = await aumentarCiclo();
+      alert(`¡Listo! Se ha iniciado el ciclo ${nuevoCiclo}. Todos pueden volver a votar.`);
+      if (typeof cargarResultados === 'function') cargarResultados();
+      if (window.actualizarEstadoBotonNominaciones) await window.actualizarEstadoBotonNominaciones();
+      if (window.actualizarEstadoBotonVotacion) await window.actualizarEstadoBotonVotacion();
+    } catch (e) {
+      console.error(e);
+      alert("No se pudo iniciar la nueva ronda.");
+    }
+  });
+}
+
 
 
 
