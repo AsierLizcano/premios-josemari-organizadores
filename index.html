@@ -105,21 +105,20 @@
     <div class="shine"></div>
 
     <!-- Columna izquierda -->
-    <div class="fotos-lateral izquierda">
-      <img src="fotos/Lagunas.png" alt="">
-      <img src="fotos/Lodres.jpeg" alt="">
-      <img src="fotos/Zurra.jpeg" alt="">
-    </div>
+<div class="hero-marquee izquierda" aria-hidden="true">
+  <div class="hero-stage"></div>
+</div>
 
     <div class="hero-inner">
       <div class="hero-texto">
         <span class="badge">JOSEMARI 2025</span>
         <h1>Bienvenido a los Premios Josemari 2025</h1>
         <p class="subtitle">Esta es la web oficial de los Premios de este año ¡Haz que tu voto cuente!</p>
-        <div class="cta">
-          <button class="btn gold" onclick="mostrarSeccion('votacion')">Votar ahora</button>
-          <button class="btn" onclick="mostrarSeccion('participantes')">Ver participantes</button>
-        </div>
+<div class="cta">
+  <button class="btn gold" onclick="mostrarSeccion('categorias')">Ver categorías</button>
+  <button class="btn" onclick="mostrarSeccion('participantes')">Ver participantes</button>
+</div>
+
       </div>
 
       <div class="hero-imagen">
@@ -128,11 +127,9 @@
     </div>
 
     <!-- Columna derecha -->
-    <div class="fotos-lateral derecha">
-      <img src="fotos/fin_año.jpeg" alt="">
-      <img src="fotos/Playa.jpeg" alt="">
-      <img src="fotos/Carnaval.jpeg" alt="">
-    </div>
+   <div class="hero-marquee derecha" aria-hidden="true">
+  <div class="hero-stage"></div>
+</div>
   </header>
 </div>
   <script>
@@ -140,22 +137,22 @@
 const usuariosPermitidos = {
   Asier: { pass: "Asiercas12", avatar: "fotos/asieras.jpeg" },
   Rulas: { pass: "Rulas34", avatar: "fotos/rulillas.jpeg" },
-  Fervico:  { pass: "Enano56",  avatar: "fotos/fervico.jpeg" },
-  Rober: { pass: "Pinguino78", avatar: "fotos/rober.jpeg" },
-  Maria: { pass: "Francesa90", avatar: "fotos/maria.jpeg" },
-  Manu: { pass: "Pantera12", avatar: "fotos/manu.jpeg" },
-  Iker: { pass: "Chino34", avatar: "fotos/iker.jpeg" },
-  Dani: { pass: "Dani56", avatar: "fotos/dani.jpeg" },
-  Ivanp: { pass: "Gacela78", avatar: "fotos/ivanp.jpeg" },
-  Poru: { pass: "Ropu90", avatar: "fotos/poru.jpeg" },
-  Dario: { pass: "Pam12", avatar: "fotos/dario.jpeg" },
-  Ines: { pass: "Almansa34", avatar: "fotos/ines.jpeg" },
-  Labrada: { pass: "Viejo56", avatar: "fotos/labrada.jpeg" },
-  Fermoriv: { pass: "Cheese78", avatar: "fotos/Fermoriv.jpeg" },
-  Lucia: { pass: "Ramos90", avatar: "fotos/lucia.jpeg" },
-  Marco: { pass: "Pocoyo12", avatar: "fotos/marco.jpeg" },
-  Gamepro: { pass: "Popeye34", avatar: "fotos/gamepro.jpeg" },
-  Mario: { pass: "Garbanzo56", avatar: "fotos/mario.jpeg" },
+  Fervico:  { pass: "Enano729",  avatar: "fotos/fervico.jpeg" },
+  Rober: { pass: "Pinguino129", avatar: "fotos/rober.jpeg" },
+  Maria: { pass: "Francesa846", avatar: "fotos/maria.jpeg" },
+  Manu: { pass: "Pantera175", avatar: "fotos/manu.jpeg" },
+  Iker: { pass: "Chino283", avatar: "fotos/iker.jpeg" },
+  Dani: { pass: "Militar734", avatar: "fotos/dani.jpeg" },
+  Ivanp: { pass: "Gacela983", avatar: "fotos/ivanp.jpeg" },
+  Poru: { pass: "Ropu183", avatar: "fotos/poru.jpeg" },
+  Dario: { pass: "Pam983", avatar: "fotos/dario.jpeg" },
+  Ines: { pass: "Almansa201", avatar: "fotos/ines.jpeg" },
+  Labrada: { pass: "Viejo452", avatar: "fotos/labrada.jpeg" },
+  Fermoriv: { pass: "Cheese120", avatar: "fotos/Fermoriv.jpeg" },
+  Lucia: { pass: "Ramos276", avatar: "fotos/lucia.jpeg" },
+  Marco: { pass: "Pocoyo863", avatar: "fotos/marco.jpeg" },
+  Gamepro: { pass: "Popeye159", avatar: "fotos/gamepro.jpeg" },
+  Mario: { pass: "Garbanzo384", avatar: "fotos/mario.jpeg" },
 };
 function mostrarPerfil(nombre) {
   document.getElementById("nombreUsuario").textContent = nombre;
@@ -354,6 +351,111 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 </script>
 
+<script>
+(() => {
+  // Configuración por panel
+  const PANELS = [
+    { sel: '.fotos-lateral.izquierda',  speed: 30, dir:  1 }, // px/seg arriba
+    { sel: '.fotos-lateral.derecha',    speed: 40, dir: -1 }  // px/seg abajo
+  ];
+
+  function setupInfiniteScroll(panelEl, {speed=30, dir=1} = {}) {
+    if (!panelEl || panelEl.dataset.scroller) return;
+    panelEl.dataset.scroller = '1';
+
+    // 1) Crear contenedor interno (track) y mover imágenes dentro
+    const track = document.createElement('div');
+    track.style.position = 'relative';
+    track.style.willChange = 'transform';
+    panelEl.appendChild(track);
+
+    // Mueve imágenes existentes al track
+    const originals = Array.from(panelEl.querySelectorAll(':scope > img'));
+    originals.forEach(img => track.appendChild(img));
+
+    // 2) Duplica para bucle
+    originals.forEach(img => {
+      const clone = img.cloneNode(true);
+      track.appendChild(clone);
+    });
+
+    let contentHeight = 0;
+    let y = 0;                  // desplazamiento acumulado
+    let lastT = 0;
+    let paused = false;
+
+    // Pausa con hover (mouse) y en táctil usando clase manual si quieres
+    panelEl.addEventListener('mouseenter', () => paused = true);
+    panelEl.addEventListener('mouseleave', () => paused = false);
+
+    // Recalcular altura una vez cargadas las imágenes
+    function computeHeight() {
+      contentHeight = Array.from(track.children)
+        .reduce((sum, el) => sum + el.offsetHeight + parseFloat(getComputedStyle(el).borderBottomWidth || 0), 0) / 2;
+      // contentHeight es la altura del bloque original (sin duplicado)
+    }
+
+    // Observa cambios de tamaño/carga
+    const ro = new ResizeObserver(computeHeight);
+    ro.observe(panelEl);
+    ro.observe(track);
+
+    Array.from(track.querySelectorAll('img')).forEach(img => {
+      if (!img.complete) {
+        img.addEventListener('load', computeHeight, {once:true});
+        img.addEventListener('error', computeHeight, {once:true});
+      }
+    });
+
+    computeHeight();
+
+    // 3) Animación
+    function tick(t) {
+      const dt = (t - (lastT || t)) / 1000;
+      lastT = t;
+
+      if (!paused && contentHeight > 0) {
+        // mover en la dirección: dir=1 (sube), dir=-1 (baja)
+        y += speed * dt * dir;
+
+        // normaliza dentro del rango [0, contentHeight)
+        // Usamos módulo para un bucle suave
+        if (dir === 1) {
+          if (y >= contentHeight) y -= contentHeight;
+        } else {
+          if (y <= -contentHeight) y += contentHeight;
+        }
+
+        // Aplicar transform (mover hacia arriba es negativo en translateY)
+        const ty = dir === 1 ? -y : y;
+        track.style.transform = `translateY(${ty}px)`;
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // Inicializar ambos paneles si existen
+  PANELS.forEach(cfg => {
+    const el = document.querySelector(cfg.sel);
+    if (el && el.querySelector('img')) setupInfiniteScroll(el, cfg);
+  });
+
+  // Si cambias de pestañas con mostrarSeccion, puedes reiniciar cuando vuelvas a "inicio"
+  const _oldMostrarSeccion = window.mostrarSeccion;
+  window.mostrarSeccion = function (sec) {
+    _oldMostrarSeccion?.(sec);
+    if (sec === 'inicio') {
+      PANELS.forEach(cfg => {
+        const el = document.querySelector(cfg.sel);
+        if (el && !el.dataset.scroller && el.querySelector('img')) setupInfiniteScroll(el, cfg);
+      });
+    }
+  };
+})();
+</script>
 
   <main>
     <!-- PARTICIPANTES -->
@@ -467,17 +569,17 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/fiestero.jpeg" alt="Fiestero del año">
       <h3> Fiestero del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Viajero del Año: esa persona que no para de viajar en todo el puto año, que viaja más que, viajero del año es el que mas viaja en genarl no porque haya ido a un destino super tocho ya es viajero, no tenemos registros de todos asi que se considera el que más viajes haya hecho.">
+    <div class="categoria" data-descripcion="Viajero del Año: esa persona que no para de viajar en todo el puto año, viajero del año es el que mas viaja en genaral, aun que sean destinos cortos o no muy conocidos,no porque haya ido a un destino super tocho ya es viajero, no tenemos registros de todos asi que se considera el que más viajes haya hecho.">
       <img src="fotos/viajero.jpeg" alt="Viejero del año">
-      <h3> Viejero del año</h3>
+      <h3> Viajero del año</h3>
     </div>
     <div class="categoria" data-descripcion="Palabra/Frase del Año: La palabra o frase que mas hemos dicho en este año, vale cualquier cosa, eso si la tenemos que haber dicho mucho o que haya destacado en un momentazo.">
       <img src="fotos/palabra.jpeg" alt="Palabra del año">
       <h3> Palabra/Frase del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Trío/Cuarteto del Año: Ese trio o cuarteto que mas tiempo ha estado juntos, que creas que no se separan ni para atras o que hacen muy buen trio o cuarteto(no en sentido sexual), si no que pegan mucho o tienen muy buena quimica, un ejemplo claro de trio o un cuarteto es el de la foto, uf que pechotes, solo para entendidios.">
-      <img src="fotos/trio.jpeg" alt="trio/Cuarteto del año">
-      <h3> /Cuarteto del año</h3>
+    <div class="categoria" data-descripcion="Trio/Cuarteto del año: Ese trio o cuarteto que mas tiempo ha estado juntos, que creas que no se separan ni para atras o que hacen muy buen trio o cuarteto(no en sentido sexual), si no que pegan mucho o tienen muy buena quimica, un ejemplo claro de trio o un cuarteto es el de la foto, uf que pechotes, solo para entendidos jjj.">
+      <img src="fotos/trio.jpeg" alt="Trio/Cuarteto del año">
+      <h3> Trio/Cuarteto del año</h3>
     </div>
     <div class="categoria" data-descripcion="Mejor Personaje fuera de JYP: La persona fuera del grupo que nos ha dado risas y buenos momentos y que creais que ha destacado potencialmente a lo largo del año.">
       <img src="fotos/mpersonaje.jpeg" alt="Mejor Personaje fuera de JyP">
@@ -519,11 +621,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/m_momento.jpeg" alt="Mejor momento del año">
       <h3> Mejor momento del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Meme del Año: Una de las nuevas categorias donde la gracia es ver quien ha hehco el mejor meme, ya puede ser el Make it memem o alguna glilipollez que consideremos como meme del año.">
+    <div class="categoria" data-descripcion="Meme del Año: Una de las nuevas categorias donde la gracia es ver quien ha hecho el mejor meme, ya puede ser el Make it meme o alguna gilipollez que consideremos como meme del año.">
       <img src="fotos/meme.jpeg" alt="Meme del año">
       <h3> Meme del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Braihot del Año: Esta categoria es una de esas de las cuales pues hay bastantes dudas, aqui hay que evaluar los 18 brainhot que hico la cuenta y tienes que evaluar su texto y su diseño.">
+    <div class="categoria" data-descripcion="Brainrot del Año: Esta categoria es una de esas de las cuales pues hay bastantes dudas, aqui hay que evaluar los 18 brainrot que hizo  la cuenta y tienes que evaluar su audio y su diseño.">
       <img src="fotos/brainhot.jpeg" alt="Braihot del año">
       <h3> Braihot del año</h3>
     </div>
@@ -551,21 +653,21 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/papi.jpg" alt="Papi/Mami del año">
       <h3> Papi/Mami del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Competitivo del Año: El tio que siempre busca ganar y siempre busca estar en el podio, tanto al furbol, como en fortnite, eso a critero de cada uno, tambien se puede llevar este premio el tio mas picao y el que mas se enciende en cuanto a estos temas.">
-      <img src="fotos/competititivo.png" alt="Competitivo del año">
-      <h3> Competitivo del año</h3>
+    <div class="categoria" data-descripcion="Picado/a del Año: El tio que siempre busca ganar y siempre busca estar en el podio, tanto al furbol, como en fortnite, eso a critero de cada uno, tambien se puede llevar este premio el tio mas picao y el que mas se enciende en cuanto a estos temas.">
+      <img src="fotos/competititivo.png" alt="Picado/a del año">
+      <h3> Picado/a del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Mensaje del Año: Los mensajes mas iconicos del grupo, ya sean gracisoso, que den verguenza o pena ">
+    <div class="categoria" data-descripcion="Mensaje del Año: Los mensajes mas iconicos del grupo, ya sean graciosos, que den verguenza o pena ">
       <img src="fotos/mensaje.jpeg" alt="Mensaje del año">
       <h3> Mensaje del año</h3>
     </div>
     <div class="categoria" data-descripcion="Soltero del año: La persona que más sola ha estado este año es decir la que no se ha comido ningún rosco, esta categoria es para los soldados caidos en combate">
       <img src="fotos/soltero.jpeg" alt="Solteros del año">
       <h3> Soltero del año</h3>
-    </div>    <div class="categoria" data-descripcion="Baile del año: la perosna mas bailonga del grupo el que haya hecho el mejor baile de este año es el merecedor del preio al Baile del año">
+    </div>    <div class="categoria" data-descripcion="Baile del año: la perosna mas bailonga del grupo el que haya hecho el mejor baile de este año es el merecedor del premio al Baile del año">
       <img src="fotos/Baile.jpeg" alt="Baile del año">
       <h3> Baile del año</h3>
-    </div>    <div class="categoria" data-descripcion="Decepción del Año: Persona que no ha estado mucho durante el año, ha fallado en más cosas o ha estado en su peor momento, esta categoria sirve para aumentar tu animo y que seas el prime el año que viene asi que si gans, animate y esfuezate más JOPUTA.">
+    </div>    <div class="categoria" data-descripcion="Decepción del Año: Persona que no ha estado mucho durante el año, ha fallado en más cosas o ha estado en su peor momento, esta categoria sirve para aumentar tu animo y que seas el prime el año que viene asi que si ganas, animate y esfuezate más JOPUTA.">
       <img src="fotos/decepcion.jpeg" alt="Decepción del año">
       <h3> Decepción del año</h3>
     </div>    <div class="categoria" data-descripcion="Revelación del Año: La persona que no se esperaba nada de ella este año pero ha dado el Boom y ha subido escalones en el Ranking y ahora es de las cabras">
@@ -633,62 +735,210 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 <script>
 (() => {
-  const media = document.querySelector('.login-media');
-  const stage = media?.querySelector('.scroll-stage');
-  if (!media || !stage) return;
+  // velocidad en px/seg para cada lateral (puedes cambiar)
+  const SPEED_LEFT  = 22;
+  const SPEED_RIGHT = 28;
 
-  const SPEED = 30; // px/seg
-  let lastT = 0;
-  let limit = 0;
+  document.querySelectorAll('.fotos-lateral.auto-scroll').forEach((lane, idx) => {
+    const stack = lane.querySelector('.stack');
+    if (!stack) return;
 
-  function computeLoopLimit() {
-    const cards = stage.querySelectorAll('.polaroid');
-    if (!cards.length) {
-      limit = Math.max(0, media.scrollHeight - media.clientHeight);
-      return;
+    // Clonamos para bucle continuo
+    const clone = stack.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    lane.appendChild(clone);
+
+    // Asignar velocidad por lateral
+    const SPEED = lane.classList.contains('izquierda') ? SPEED_LEFT : SPEED_RIGHT;
+
+    let last = 0;
+    let y = 0;
+    const total = stack.getBoundingClientRect().height + 14; // alto + gap
+
+    function raf(t){
+      if (!last) last = t;
+      const dt = (t - last) / 1000; // s
+      last = t;
+
+      y += SPEED * dt;
+      // mover ambos stacks en sentido ascendente
+      const ty = -(y % total);
+      stack.style.transform = `translateY(${ty}px)`;
+      clone.style.transform = `translateY(${ty + total}px)`;
+
+      requestAnimationFrame(raf);
     }
-    // bottom real más bajo entre todas las polaroids
-    let maxBottom = 0;
-    cards.forEach(card => {
-      const bottom = card.offsetTop + card.offsetHeight;
-      if (bottom > maxBottom) maxBottom = bottom;
+
+    // recalculo al cargar imágenes / resize
+    function recompute(){
+      const h = stack.getBoundingClientRect().height;
+      // (no necesitamos guardar, usamos getBoundingRect cada frame si quieres más precisión)
+    }
+    new ResizeObserver(recompute).observe(stack);
+    stack.querySelectorAll('img').forEach(img=>{
+      if (!img.complete) img.addEventListener('load', recompute, {once:true});
     });
 
-    // suma offset del stage por si tiene padding/borde y resta el viewport
-    const theoretical = media.scrollHeight - media.clientHeight;
-    limit = Math.max(0, Math.min(maxBottom + stage.offsetTop - media.clientHeight, theoretical));
-  }
-
-  // Recalcular en cambios de tamaño/imagenes
-  const ro = new ResizeObserver(computeLoopLimit);
-  ro.observe(media);
-  ro.observe(stage);
-
-  // cuando carguen las imágenes, recalcula
-  stage.querySelectorAll('img').forEach(img => {
-    if (img.complete) return;
-    img.addEventListener('load', computeLoopLimit, { once: true });
-    img.addEventListener('error', computeLoopLimit, { once: true });
+    requestAnimationFrame(raf);
   });
+})();
+</script>
+<script>
+(function(){
+  // Utilidades
+  const shuffle = arr => arr.slice().sort(() => Math.random() - 0.5);
+  const clamp   = (n,a,b) => Math.max(a, Math.min(b, n));
 
-  computeLoopLimit();
+  // Crea tarjetas “polaroid” con tamaño y rotación aleatoria y duplica para bucle
+  function poblarStage(stageEl, srcs, total = 26){
+    const pool = shuffle(srcs);
+    for (let i=0; i<total; i++){
+      const src = pool[i % pool.length];
+      const pol = document.createElement('div');
+      pol.className = 'hero-polaroid';
 
-  function tick(t) {
-    const dt = (t - (lastT || t)) / 1000;
-    lastT = t;
+    const colSpan = clamp(Math.round(Math.random()*3)+3, 3, 5); // 3..5 columnas (⬆)
+    const rowSpan = clamp(Math.round(Math.random()*3)+4, 4, 7); // 4..7 filas (⬆)
+    pol.style.gridColumn = `span ${colSpan}`;
+    pol.style.gridRow    = `span ${rowSpan}`;
 
-    media.scrollTop += SPEED * dt;
+    // Rotación más suave (menos huecos diagonales)
+    const rot = (Math.random()*6 - 3).toFixed(1); // -3º..+3º
+    pol.style.setProperty('--rot', rot+'deg');
 
-    // cuando llegue al final real, vuelve arriba
-    if (media.scrollTop >= limit - 1) {
-      media.scrollTop = 0;
-      lastT = t; // evita salto de velocidad tras el reset
+
+      const img = new Image();
+      img.loading = 'lazy';
+      img.src = src;
+      pol.appendChild(img);
+      stageEl.appendChild(pol);
     }
-    requestAnimationFrame(tick);
+
+    // Duplicado para bucle infinito
+    const clones = stageEl.cloneNode(true);
+    clones.childNodes.forEach(n => stageEl.appendChild(n.cloneNode(true)));
   }
 
-  requestAnimationFrame(tick);
+  // Scroll infinito con translateY (no usa scrollTop)
+  function autoScroll(stage, {pxPerSec = 30, direction = 1} = {}) {
+    let contentH = 0, y = 0, last = 0;
+
+    const compute = () => { contentH = stage.scrollHeight / 2; };
+    const ro = new ResizeObserver(compute);
+    ro.observe(stage);
+    stage.querySelectorAll('img').forEach(img => {
+      if (!img.complete) img.addEventListener('load', compute, { once:true });
+    });
+    compute();
+
+    function frame(t){
+      const dt = (t - (last || t)) / 1000; last = t;
+      if (contentH > 0){
+        y += pxPerSec * dt * direction;
+        if (y >=  contentH) y -= contentH;
+        if (y <= -contentH) y += contentH;
+        const ty = direction === 1 ? -y : y;     // +1 sube, -1 baja
+        stage.style.transform = `translateY(${ty}px)`;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Saca las rutas desde el collage del login (o usa fallback)
+  function recogerSrcsLogin(){
+    const imgs = Array.from(document.querySelectorAll('.login-media .scroll-stage img'));
+    if (imgs.length) return imgs.map(i => i.getAttribute('src')).filter(Boolean);
+    return [
+      "fotos/login/foto1.jpeg","fotos/login/foto2.jpeg","fotos/login/foto3.jpeg",
+      "fotos/login/foto4.jpeg","fotos/login/foto5.jpeg","fotos/login/foto6.jpeg",
+      "fotos/login/foto7.jpeg","fotos/login/foto8.jpeg","fotos/login/foto9.jpeg",
+      "fotos/login/foto10.jpeg","fotos/login/foto11.jpeg","fotos/login/foto12.jpeg",
+      "fotos/login/foto13.jpeg","fotos/login/foto14.jpeg","fotos/login/foto15.jpeg",
+      "fotos/login/foto16.jpeg","fotos/login/foto17.jpeg","fotos/login/foto18.jpeg",
+      "fotos/login/foto19.jpeg","fotos/login/foto20.jpeg"
+    ];
+  }
+
+  // Inicializa las dos columnas del hero
+  function initHeroLaterales(){
+    const leftStage  = document.querySelector('#inicio .hero-marquee.izquierda .hero-stage');
+    const rightStage = document.querySelector('#inicio .hero-marquee.derecha   .hero-stage');
+    if (!leftStage || !rightStage) return;
+
+    const srcs = recogerSrcsLogin();
+    poblarStage(leftStage,  srcs, 24);
+    poblarStage(rightStage, srcs, 24);
+
+    autoScroll(leftStage,  { pxPerSec: 26, direction: +1 }); // sube
+    autoScroll(rightStage, { pxPerSec: 32, direction: -1 }); // baja
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initHeroLaterales);
+  } else {
+    initHeroLaterales();
+  }
+
+  // Si cambias de pestaña, reasegura la animación al volver a INICIO
+  const oldMostrar = window.mostrarSeccion;
+  window.mostrarSeccion = function(sec){
+    oldMostrar?.(sec);
+    if (sec === 'inicio') initHeroLaterales();
+  };
 })();
+</script>
+
+<script>
+  // Rellena la columna hasta que sobrepase la altura visible (sin huecos)
+  function fillToBottom(stageEl){
+    const box = stageEl.parentElement; // .hero-marquee
+    if (!box) return;
+
+    // clona tandas de hijos hasta que haya "de sobra"
+    let guard = 12; // seguridad para no entrar en bucles infinitos
+    while (stageEl.scrollHeight < box.clientHeight * 2 && guard-- > 0) {
+      const frag = document.createDocumentFragment();
+      stageEl.childNodes.forEach(n => frag.appendChild(n.cloneNode(true)));
+      stageEl.appendChild(frag);
+    }
+  }
+
+  // Llama a fillToBottom después de poblar cada carril
+  function initHeroLaterales(){
+    const leftBox  = document.querySelector('#inicio .hero-marquee.izquierda .hero-stage');
+    const rightBox = document.querySelector('#inicio .hero-marquee.derecha .hero-stage');
+    if (!leftBox || !rightBox) return;
+
+    const srcs = recogerSrcsLogin();   // ya lo tienes en tu script
+    poblarStage(leftBox,  srcs, 24);   // ya lo tienes
+    poblarStage(rightBox, srcs, 24);   // ya lo tienes
+
+    // 👇 NUEVO: aseguramos longitud suficiente
+    fillToBottom(leftBox);
+    fillToBottom(rightBox);
+
+    // arranca el auto-scroll (lo que ya tenías)
+    autoScroll(leftBox.parentElement,  { pxPerSec: 26, direction: +1 });
+    autoScroll(rightBox.parentElement, { pxPerSec: 32, direction: -1 });
+
+    // Reajusta si cambia el tamaño de ventana
+    let rAF;
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(rAF);
+      rAF = requestAnimationFrame(() => {
+        fillToBottom(leftBox);
+        fillToBottom(rightBox);
+      });
+    });
+  }
+
+  // Si ya tienes esta llamada, deja solo una
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeroLaterales);
+  } else {
+    initHeroLaterales();
+  }
 </script>
 
 
@@ -973,7 +1223,7 @@ const DEFAULT_PLACA = "fotos/placa-default.png";
 const categoryImages = {
   // Lote 1
   "Viajero/a del año": "fotos/viajero.jpeg",
-  "Competitivo/a del año": "fotos/competititivo.png",
+  "Picado/a del año": "fotos/competititivo.png",
   "Guarrete del año":          "fotos/guarrete.jpeg",
   "Papi/Mami del año":     "fotos/papi.jpg",
     "Meme del año":             "fotos/meme.jpeg",
@@ -981,7 +1231,7 @@ const categoryImages = {
   // Lote 2
   "Brainhot del año":              "fotos/brainhot.jpeg",
   "Correon del año":     "fotos/correon.jpeg",
-  "Trio del año":              "fotos/trio.jpeg",
+  "Trio/Cuarteto del año":              "fotos/trio.jpeg",
   "Soltero del año":            "fotos/soltero.jpeg",
     "El que mejor viste del año":    "fotos/mejorviste.jpeg",
 
@@ -1352,7 +1602,6 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Dani,Iker,Asier y Gamepro(Los tomelloseros)", foto: "fotos/trio/tomelloseros.jpeg" },
     { nombre: "Fervico, Labrada y Ivanp(Los paninis)", foto: "fotos/trio/panini.jpeg" },
     { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/trio/procesioneros.jpeg" },
-     { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/trio/labrada.jpeg" },
 
   ],
 
@@ -1383,7 +1632,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Grabaciones cagada", foto: "fotos/broma/lab.jpeg" },
     { nombre: "Lanzamiento de Objetos a piscina", foto: "fotos/broma/lanzamiento.jpeg" },
     { nombre: "Cono a Javichu vol 2", foto: "fotos/broma/cono.jpeg" },
-    { nombre: "Rotura de camisetas", foto: "fotos/broma/camisetas.jpeg" },
+    { nombre: "Rotura de camisetas", foto: "fotos/broma/camisetas.jpeg" }
 
   ],
 
@@ -1738,7 +1987,7 @@ function closeImageLightbox(){
 // LOTE 1 (inicial)
 const LOTE_1 = [
   "Viajero/a del año",
-  "Competitivo/a del año",
+  "Picado/a del año",
   "Guarrete del año",
   "Papi/Mami del año",
     "Meme del año"
@@ -1796,7 +2045,7 @@ const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
 //    Cambia este número cuando “publiques” el siguiente lote.
 //    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
 
-const LOTE_ACTIVO = 5;
+const LOTE_ACTIVO = 3;
 // === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
 window.getLoteActual = function () {
   const n = Number(new URLSearchParams(location.search).get('lote'));
@@ -2320,15 +2569,15 @@ window.addEventListener("click", (e) => {
       "Almansa": "INES La de los caminos, se dedica a ir poniendo grano a grano e ir haciendo caminos en ciudad real, ahora mismo esta yendo a Lituania en uno de sus caminos magicos, siempre pone su casa para hacer las reuniones auque el pobre Martín la vaya a denunciar ella nunca nos denegaraá la entrada, no sabemos que vamos a hacer los sabados resacosos Almansunsin",
       "Robertuki": "ROBER el tio mas pesado que vas a ver en la historia, en vez de darte la mano al verte como haría una persona normal coje y te mete una hostia, pero y este tio?, aun no sabemos si viene del sur de España o de la profunda Antartida lo que si sabemos es que es el fundador de obesos sin fronteras, aunque sea Don Rosalio Parrales y trabaje mas que un negro en el Hospital de la estación de León, lo odiamos mucho.",
       "Toñaco": "MARCO el famoso jugador cedido del Caserio que al final se fue al Alarcos y un negro que acababa de salir de la selva tropical lo echo sin ningún tipo de remordimiento, por eso volvio a su equipo Caserio Colesterol, hizo la aparicion estelar en la famosa fiesta como DjPoyocu pero hizo bomba de humo, aun lo estan buscando en todo el norte de Ciudad Real, cuenta la leyenda que el tequifresi lo mató",
-      "Manolo": "MANU es conocido por no bajar nunca, prácticamente no queda con el grupo y casi nunca aparece, lo que ya se ha convertido en parte de su leyenda entre los amigos.",
-      "Kastor": "MARIO es un apasionado del fútbol y del Real Madrid, siempre al día con los partidos y noticias. Es muy estudioso y, entre amigos, se comenta que tiene un parecido curioso a un castor.",
-      "Maria": "MARÍA se fue de Erasmus a Francia, viviendo nuevas experiencias y culturas. Estudia Letras y es la orgullosa novia de la famosa Jugui Qui Jugui, lo que la hace aún más conocida y querida en el grupo.",
-      "Gamepro": "GAMEPRO tiene una debilidad por Albacete, su ciudad favorita, que visita siempre que puede. Trabaja en Popeyes y, además, es el orgulloso novio de Iceman, lo que lo hace todavía más querido en el grupo.",
-      "El Enano": "FERVICO es el enano del grupo, apodo que lleva con humor y que ya es parte de su identidad entre amigos. Todos recuerdan que solo ha tocado a una mujer en su vida (¡y vaya tetas!), detalle que se comenta con frecuencia. Aun así, sigue siendo virgen, lo que suma a las bromas y anécdotas que lo rodean.",
-      "Poru": "PORU es un chico al que le encantan las cafeteras, aunque siempre se nos olvida y por eso le decimos “Forgotten”. Es de los que tienen su propio apodo ya ganado en el grupo. Además, no hay duda de que su cantante favorito es Trueno, lo menciona cada vez que puede.",
-      "Ikardo": "IKER es apodado el chino del grupo, siempre con ganas de zorrear y pasar un buen rato. Su sello personal son los pantalones de Bob Esponja, que lleva puestos prácticamente siempre.",
-      "Fermoriv": "FERMORIV es un amante del lanzamiento de quesos, una de esas pasiones raras que ya todos en el grupo reconocen. Siempre aparece de fiesta en fiesta y, sin duda, se convierte en el alma del grupo con su energía y buen humor.",
-      "Lab el Viejo": "LABRADA es el viejo del grupo siempre buscando lo más económicamente rentable en cualquier tema de finanzas. Además, no tiene filtro y es más guarro que un cerdo, lo que lo hace memorable y único entre todos.."
+      "Manolo": "MANU animal mas feróz de la selva, Panterini estudia 300 horas al dia y casi no se le ve el pelo(aunque esta mas clavo que don limpio el cabron), hace viajes a madrid y a todos los lugares del planeta con su cuñado Emilio",
+      "Kastor": "MARIO, el pequeño casto importado desde Birmingham, este animal tan curioso relaiza derrapes por campos de futbol y cada vez que va a algun concierto se le antojan unos garbanzitos, es un gran aficionado al Real madrid y junto con su socio formo socios.pene ",
+      "Maria": "MARÍA la famosisima francesiña, reclama siempre el puesto de la fiestera del año del año pasado, estudia letras y su jugador favorito es Karim, tambien tiene un perrito llamado ivanpechotes que es un poco tonto pero le queremos igual :)",
+      "Gamepro": "GAMEPRO tiene muchos nombres, hubo un momento en la historia en el que las leyendas dicen que se llamaba Hugo, ahora es el mejor cocinero de pollo de toda la ciudad, tiene tecnicas infalibles que dejan aluciando a todo el mundo, segun las fuentes fiables dicen que va abrir un restaruante de pollo y patatillas en la ciudad de Albacete",
+      "El Enano": "FERVICO la persona más pequeña del planeta no podia faltar en estos premios,el pequeño ferguson es un gran amante de Spiderman lo malo es que su estatura no le permite ni llegar a una papelera, le gustan muchos las tetas sobre todo de las mujerzuelas de cabello pelirrojo, lo malo que ahora se ha pasado al oto bando y esta con un Tomellosero llamado Unai el gay",
+      "Poru": "PORU el gran amante de los porros pero ultimamente se ha aficionado mucho al café, tanto que ha sacado su propia marca llamada Pacofee y un youtuber se la ha plagiado,ahora esta de erasmus en polonia aunque no sabemos si nuestro querido Ropas volvera, sabemos que esta bien y que está haciendo muchas previas",
+      "Ikardo": "IKER el chinorris de este equipo,el asesion de Ana Rosa, aunq no esta en el grupo es muy querido por esta panda de monos, suele llevar los pantalones de Bob esponja desde el 2 de Junio de 2004, no se los ha quitado ni para comer, es un tio muy tranquilo y que para nada sale de fiesta, folla menos que una puerta y es un mestizo que viene del Suroeste Asiatico y del Noreste de Poblete",
+      "Fermoriv": "FERMORIV es un amante del lanzamiento de quesos, tambien es conocido por criar poshos en incubadoras que posteriormente son vendidos a la deep weep para hacer experimentos ilegales con ellos, también picha muchos culitos de bebes junto con otros enfermeros aqui presentes",
+      "Lab el Viejo": "LABRADA nacio en el año 409 a.c en la antigua Roma, es la persona más vieja del mundo mundial, le encanta coleccionar cromos de niños(mariconada historica) y hacer tradeos con Luisillo el pillo, es un abuelo senil y ludopata que le echa a  las apuestas, pero este tio se la juega mucho y le echa 1 euro para llevarse 2, es que si no no le sale ecnomicamente rentable, es un gran amante de los horses y se los folla de par en par"
     };
     
     const modal = document.getElementById("modalParticipante");

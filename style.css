@@ -442,39 +442,70 @@ footer {
     max-width: 250px;
   }
 }
+/* Laterales solo en INICIO */
+header.hero { position: relative; overflow: hidden; }
+
+/* Contenedores laterales */
 .fotos-lateral {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 1; /* delante del fondo pero detrás del texto */
+  width: 240px;                  /* ancho de la “columna” */
+  height: 78vh;                  /* alto visible */
+  padding: 8px;
+  overflow: hidden;              /* ocultamos el scroll */
+  z-index: 1;
+  pointer-events: none;          /* no bloquea clics del hero */
 }
 
-.fotos-lateral img {
-  width: 330px;              /* ancho fijo */
-  height: 300px;             /* alto fijo */
-  object-fit: cover;        /* recorta para que no se deforme */
-  border-radius: 8px;
-  border: 2px solid var(--gold);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+/* posiciones */
+.fotos-lateral.izquierda { left: 10px; }
+.fotos-lateral.derecha   { right: 10px; }
+
+/* Pila interior que se desplaza */
+.fotos-lateral .stack {
+  display: grid;
+  grid-auto-rows: 180px;         /* alto de cada “polaroid” */
+  gap: 14px;
+  padding-bottom: 180px;         /* margen para el bucle */
 }
 
-.fotos-lateral.izquierda {
-  left: 10px;
+/* Polaroid (mismo estilo dorado que el resto) */
+.polaroid{
+  background: #000;
+  border: 2px solid rgba(255,215,0,.85);
+  border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(0,0,0,.5);
+  overflow: hidden;
+  transform: rotate(var(--rot, 0deg));
+}
+.polaroid img{
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
 }
 
-.fotos-lateral.derecha {
-  right: 10px;
+/* rotaciones sutiles para “sueltas” */
+.fotos-lateral .polaroid:nth-child(odd)  { --rot: -1.4deg; }
+.fotos-lateral .polaroid:nth-child(even) { --rot:  1.2deg; }
+
+/* Filtro de desvanecido arriba/abajo (más bonito) */
+.fotos-lateral::after{
+  content:"";
+  position:absolute; inset:0;
+  pointer-events:none;
+  background: linear-gradient(#0000, rgba(0,0,0,.18) 92%, rgba(0,0,0,.45)),
+              linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.18) 8%, #0000);
+  border-radius: 12px;
 }
 
-/* Ocultar en móvil para no saturar */
-@media (max-width: 768px) {
-  .fotos-lateral {
-    display: none;
-  }
+/* Ocultar en móvil */
+@media (max-width: 768px){
+  .fotos-lateral{ display:none; }
 }
+
+/* Asegura que el contenido central quede por encima */
+.hero-inner{ position: relative; z-index: 2; }
+
 .categoria {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,215,0,0.6);
@@ -1267,3 +1298,98 @@ body.tab-votacion .video-modal video {
   max-width: 90vw;
   max-height: 85vh;
 }
+/* ===== Resultados: bloques diferenciados ===== */
+.results-block{
+  background: #180b0b;
+  border: 2px solid #333;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 18px 0;
+}
+
+.results-title{
+  display:flex; align-items:center; gap:10px; margin:0 0 6px 0;
+  font-size: 1.25rem; font-weight: 700;
+}
+
+.results-legend{
+  margin:0 0 12px 0; opacity:.85; font-size:.95rem;
+}
+
+.results-badge{
+  display:inline-block; font-size:.8rem; padding:2px 8px; border-radius:999px; margin-left:auto;
+  border:1px solid currentColor; opacity:.85;
+}
+
+/* Colores por tipo */
+.results--nom { border-color:#8a6cff; box-shadow:0 0 12px rgba(138,108,255,.15) inset; }
+.results--nom .results-title { color:#c7b7ff; }
+.results--nom .results-badge { color:#c7b7ff; }
+
+.results--vote{ border-color:#2ecc71; box-shadow:0 0 12px rgba(46,204,113,.12) inset; }
+.results--vote .results-title { color:#8be6aa; }
+.results--vote .results-badge { color:#8be6aa; }
+
+/* Listas dentro del bloque */
+.results-block h4{ margin:12px 0 6px; }
+.results-block ul{ margin:0 0 8px 20px; }
+.results-block li{ margin:2px 0; }
+
+/* ===== LATERALES DEL HERO – GRANDES Y CENTRADOS ===== */
+
+/* El hero ocupa el alto de la ventana */
+header.hero{ position:relative; min-height:100vh; padding-block:0; }
+
+/* Carriles laterales: más anchos y pegados arriba/abajo */
+.hero-marquee{
+  position:absolute; top:0; bottom:0; height:100%;
+  width: clamp(240px, 18vw, 320px);        /* ⬅ MÁS ANCHO */
+  overflow: hidden !important;
+  border: 0 !important; background: transparent !important; box-shadow:none !important;
+  pointer-events: none;                    /* no tapa clics del contenido central */
+  transform: translateX(0);                /* base (se ajusta en cada lado) */
+}
+
+/* Empuje hacia el centro (ajusta 6vw a 8–10vw si las quieres más adentro) */
+.hero-marquee.izquierda{ left:0;  transform: translateX( clamp(40px, 6vw, 140px) ); }
+.hero-marquee.derecha  { right:0; transform: translateX( clamp(-140px, -6vw, -40px) ); }
+
+/* Grid interna: celdas más altas = tarjetas más grandes */
+.hero-stage{
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 70px;                    /* ⬅ antes ~34–58px */
+  gap: 12px;
+  padding-bottom: 160px;
+}
+
+/* Tarjeta “polaroid” */
+.hero-polaroid{
+  background:#000;
+  border:2px solid rgba(255,215,0,.8);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 12px 26px rgba(0,0,0,.5);
+  transform: rotate(var(--rot,0deg));
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.hero-polaroid:hover{ transform: rotate(0deg) scale(1.03); box-shadow:0 16px 30px rgba(0,0,0,.6); }
+
+/* Imagen dentro de la tarjeta */
+.hero-polaroid img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  object-position: var(--focus, 50% 50%);
+}
+.hero-polaroid img.fit-contain{ object-fit:contain; background:#000; }
+
+/* Responsive: menos columnas = tarjetas aún mayores */
+@media (max-width: 1200px){ .hero-stage{ grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 1000px){ .hero-stage{ grid-template-columns: repeat(4, 1fr); } }
+
+/* Oculta los laterales en móviles si ya lo hacías así */
+@media (max-width:900px){ .hero-marquee{ display:none; } }
+
+/* Ocultar scrollbars si quedara alguno */
+.hero-marquee::-webkit-scrollbar{ width:0; height:0; }
+.hero-marquee{ scrollbar-width: none; }
+
