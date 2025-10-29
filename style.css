@@ -445,44 +445,95 @@ footer {
 /* Laterales solo en INICIO */
 header.hero { position: relative; overflow: hidden; }
 
-/* Contenedores laterales */
-.fotos-lateral {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 240px;                  /* ancho de la “columna” */
-  height: 78vh;                  /* alto visible */
-  padding: 8px;
-  overflow: hidden;              /* ocultamos el scroll */
-  z-index: 1;
-  pointer-events: none;          /* no bloquea clics del hero */
-}
 
 /* posiciones */
 .fotos-lateral.izquierda { left: 10px; }
 .fotos-lateral.derecha   { right: 10px; }
 
-/* Pila interior que se desplaza */
-.fotos-lateral .stack {
-  display: grid;
-  grid-auto-rows: 180px;         /* alto de cada “polaroid” */
-  gap: 14px;
-  padding-bottom: 180px;         /* margen para el bucle */
+/* ======== LATERALES DEL HERO — CUADRADAS Y AJUSTADAS A LOS BORDES ======== */
+
+header.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
-/* Polaroid (mismo estilo dorado que el resto) */
-.polaroid{
+/* Columnas laterales */
+.fotos-lateral {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 300px;                    /* más anchas */
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* distribuye todas las imágenes sin huecos */
+  z-index: 1;
+  pointer-events: none;            /* para que no bloqueen clics */
+}
+
+/* Izquierda y derecha pegadas a los bordes */
+.fotos-lateral.izquierda { left: 0; }
+.fotos-lateral.derecha   { right: 0; }
+
+/* Pila de imágenes */
+.fotos-lateral .stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: 14px;
+  padding: 0;
+}
+
+/* Polaroids cuadradas */
+.fotos-lateral .polaroid {
+  width: 100%;
+  aspect-ratio: 1 / 1;             /* 📸 cuadradas perfectas */
   background: #000;
-  border: 2px solid rgba(255,215,0,.85);
-  border-radius: 14px;
-  box-shadow: 0 12px 26px rgba(0,0,0,.5);
+  border: 2px solid rgba(255, 215, 0, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
   overflow: hidden;
   transform: rotate(var(--rot, 0deg));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.polaroid img{
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
+
+.fotos-lateral .polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 0 16px 36px rgba(255, 215, 0, 0.25);
 }
+
+/* Imagen dentro de la tarjeta */
+.fotos-lateral .polaroid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Rotaciones sutiles */
+.fotos-lateral .polaroid:nth-child(odd)  { --rot: -2.4deg; }
+.fotos-lateral .polaroid:nth-child(even) { --rot:  2deg; }
+
+/* Efecto de desvanecido arriba y abajo (más suave) */
+.fotos-lateral::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent 20%, transparent 80%, rgba(0,0,0,0.6));
+}
+
+/* Ocultar en móvil */
+@media (max-width: 768px) {
+  .fotos-lateral { display: none; }
+}
+
+
+
 
 /* rotaciones sutiles para “sueltas” */
 .fotos-lateral .polaroid:nth-child(odd)  { --rot: -1.4deg; }
@@ -1393,3 +1444,174 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
 .hero-marquee::-webkit-scrollbar{ width:0; height:0; }
 .hero-marquee{ scrollbar-width: none; }
 
+/* ===== LOGIN COMPLETO (COLLAGE + TARJETA) ===== */
+
+.login-wrap{
+  width:100%;
+  min-height:calc(100vh - 56px);
+  display:grid;
+  grid-template-columns: minmax(0,1.3fr) minmax(420px,0.85fr);
+  gap:clamp(20px,3vw,40px);
+  align-items:start;
+  padding:0 24px 24px;
+}
+
+/* Panel de collage */
+.login-media{
+  height:100%;
+  overflow:auto;
+  padding:clamp(8px,1.5vw,16px);
+  border-radius:20px;
+  border:1.5px solid rgba(228,178,0,.55);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+}
+
+/* Masonry por columnas */
+.login-media.masonry{
+  columns:3;
+  column-gap:clamp(8px,1.2vw,16px);
+}
+@media (min-width:1400px){
+  .login-media.masonry{ columns:4; }
+}
+
+/* Cada tarjeta de imagen */
+.masonry .tile{
+  break-inside: avoid;
+  margin:0 0 clamp(8px,1.2vw,16px);
+  border-radius:14px;
+  overflow:hidden;
+  background:#0e0a0a;
+  box-shadow:0 10px 24px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
+  transform:rotate(var(--r,0deg));
+  transition:transform .25s ease;
+}
+.masonry .tile:hover{ transform:rotate(var(--r,0deg)) scale(1.03); }
+
+/* Cuadro cuadrado que recorta la imagen */
+.tile .crop{
+  position:relative;
+  width:100%;
+  aspect-ratio:1/1;
+}
+.tile img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* --- LOGIN CARD MEJORADA --- */
+.login-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 24px;
+  padding: clamp(40px, 6vw, 70px);
+  border-radius: 28px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.15) 90%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  min-height: 80vh;                     /* más grande y centrada verticalmente */
+  max-width: 520px;
+  margin: auto;
+  transition: all 0.3s ease;
+}
+
+.login-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.2);
+}
+
+/* Encabezado (imagen + texto) */
+.login-badge {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid rgba(255, 215, 0, 0.35);
+}
+
+.login-badge img {
+  width: 65px;
+  height: 65px;
+  border-radius: 12px;
+  border: 2px solid gold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.login-badge .eyebrow {
+  display: block;
+  color: gold;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.login-badge strong {
+  display: block;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-top: 5px;
+}
+
+/* Inputs más grandes y con luz */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field span {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.field input {
+  height: 58px;
+  font-size: 1.1rem;
+  border-radius: 14px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 215, 0, 0.3);
+  color: #fff;
+  transition: 0.2s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: gold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Botón */
+.btn-login {
+  height: 58px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 14px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+  transition: all 0.25s ease;
+}
+
+.btn-login:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+}
+
+/* Pista inferior */
+.login-hint {
+  margin-top: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  letter-spacing: 0.4px;
+}

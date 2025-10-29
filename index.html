@@ -11,68 +11,83 @@
 <body>
 
 <!-- LOGIN -->
- <section id="login" class="seccion" style="display:block;">
-<h2>Iniciar sesión</h2>
+<!-- LOGIN -->
 
-<div class="login-wrap">
-  <!-- Panel de fotos (izquierda) -->
-<div class="login-media">
-    <div class="scroll-stage">
-  <div class="polaroid"><img src="fotos/login/foto2.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto1.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto3.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto4.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto5.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto6.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto7.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto8.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto9.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto10.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto11.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto12.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto13.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto14.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto15.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto16.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto17.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto18.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto19.jpeg" alt=""></div>
-  <div class="polaroid"><img src="fotos/login/foto20.jpeg" alt=""></div>
+<section id="login" class="seccion" style="display:block;">
+  <h2>Iniciar sesión</h2>
 
-</div>
-</div>
+  <div class="login-wrap">
+    <!-- COLLAGE IZQUIERDO -->
+    <div id="loginCollage" class="login-media masonry"></div>
 
-
-  <!-- Tarjeta de acceso (derecha) -->
-  <div class="login-card">
-    <div class="login-badge">
-      <img src="fotos/ImagenJosemari.png" alt="Josemari Awards">
-      <div>
-        <span class="eyebrow">JOSEMARI 2025</span>
-        <strong>Bienvenido de nuevo</strong>
+    <!-- TARJETA DE LOGIN -->
+    <div class="login-card">
+      <div class="login-badge">
+        <img src="fotos/ImagenJosemari.png" alt="Josemari Awards">
+        <div>
+          <span class="eyebrow">JOSEMARI 2025</span>
+          <strong>Bienvenido a Premios Josemari</strong>
+        </div>
       </div>
+
+      <label class="field">
+        <span>Usuario</span>
+        <input id="loginUser" type="text" placeholder="Usuario">
+      </label>
+
+      <label class="field">
+        <span>Contraseña</span>
+        <input id="loginPass" type="password" placeholder="Contraseña">
+      </label>
+
+      <button id="btnLogin" class="btn gold btn-login">Entrar</button>
+
+      <p class="login-hint">Solo participantes invitados ✨</p>
     </div>
-
-    <label class="field">
-      <span>Usuario</span>
-      <input id="loginUser" type="text" placeholder="Usuario">
-    </label>
-
-    <label class="field">
-      <span>Contraseña</span>
-      <input id="loginPass" type="password" placeholder="Contraseña">
-    </label>
-
-    <button id="btnLogin" class="btn gold btn-login">Entrar</button>
-
-    <p id="loginError" class="login-error" style="display:none;">
-      Usuario o contraseña incorrectos
-    </p>
-
-    <p class="login-hint">Solo participantes invitados ✨</p>
   </div>
-</div>
 </section>
+
+<script>
+(function () {
+  // lista de fotos que se usarán en el collage
+  const IMAGES = [
+    "fotos/login/fotoA.jpeg","fotos/login/fotoB.jpeg","fotos/login/fotoC.jpeg",
+    "fotos/login/fotoD.jpeg","fotos/login/fotoE.jpeg","fotos/login/fotoF.jpeg",
+    "fotos/login/fotoG.jpeg","fotos/login/fotoH.jpeg","fotos/login/fotoI.jpeg",
+    "fotos/login/fotoJ.jpeg","fotos/login/fotoK.jpeg","fotos/login/fotoL.jpeg"
+  ];
+
+  const cont = document.getElementById('loginCollage');
+  if (!cont) return;
+
+  // Baraja las fotos
+  for (let i = IMAGES.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [IMAGES[i], IMAGES[j]] = [IMAGES[j], IMAGES[i]];
+  }
+
+  // Crea las figuras con rotaciones aleatorias
+  IMAGES.forEach(src => {
+    const fig = document.createElement('figure');
+    fig.className = 'tile';
+    const rot = (Math.random() * 6 - 3).toFixed(1); // -3º..+3º
+    fig.style.setProperty('--r', rot + 'deg');
+
+    const crop = document.createElement('div');
+    crop.className = 'crop';
+
+    const img = new Image();
+    img.src = src;
+    img.alt = '';
+
+    crop.appendChild(img);
+    fig.appendChild(crop);
+    cont.appendChild(fig);
+  });
+})();
+</script>
+
+
 
 <!-- CONTENIDO DE LA APP (oculto hasta login) -->
 <div id="appContent" style="display:none;">
