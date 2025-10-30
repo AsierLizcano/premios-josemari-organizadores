@@ -659,24 +659,39 @@ window.addEventListener("DOMContentLoaded", async () => {
 (function(){
   // ======= CONFIGURACIÓN =======
   const DURACION_SCROLL = 120; // segundos → más alto = más lento
-  const FOTOS_POR_LADO = 22;   // cuántas fotos quieres que se repitan por columna
+  const FOTOS_POR_LADO = 23;   // cuántas imágenes se ven antes de repetir
 
   // ======= IMÁGENES (divididas por lado) =======
   const IMAGENES_IZQ = [
     "fotos/login/foto1.jpeg","fotos/login/foto3.jpeg","fotos/login/foto5.jpeg",
     "fotos/login/foto7.jpeg","fotos/login/foto9.jpeg","fotos/login/foto11.jpeg",
     "fotos/login/foto13.jpeg","fotos/login/foto15.jpeg","fotos/login/foto17.jpeg",
-    "fotos/login/foto19.jpeg","fotos/login/foto32.jpeg","fotos/login/foto33.jpeg","fotos/login/foto34.jpeg","fotos/login/foto35.jpeg",
-    ,"fotos/login/foto36.jpeg","fotos/login/foto37.jpeg","fotos/login/foto38.jpeg","fotos/login/foto39.jpeg","fotos/login/foto40.jpeg","fotos/login/foto41.jpeg","fotos/login/foto42.jpeg",
+    "fotos/login/foto19.jpeg","fotos/login/foto32.jpeg","fotos/login/foto33.jpeg",
+    "fotos/login/foto34.jpeg","fotos/login/foto35.jpeg","fotos/login/foto36.jpeg",
+    "fotos/login/foto37.jpeg","fotos/login/foto38.jpeg","fotos/login/foto39.jpeg",
+    "fotos/login/foto40.jpeg","fotos/login/foto41.jpeg","fotos/login/foto42.jpeg"
   ];
 
   const IMAGENES_DER = [
     "fotos/login/foto2.jpeg","fotos/login/foto4.jpeg","fotos/login/foto6.jpeg",
     "fotos/login/foto8.jpeg","fotos/login/foto10.jpeg","fotos/login/foto12.jpeg",
     "fotos/login/foto14.jpeg","fotos/login/foto16.jpeg","fotos/login/foto18.jpeg",
-    "fotos/login/foto20.jpeg","fotos/login/foto21.jpeg","fotos/login/foto22.jpeg","fotos/login/foto23.jpeg","fotos/login/foto24.jpeg","fotos/login25.jpeg",
-    ,"fotos/login/foto26.jpeg","fotos/login/foto27.jpeg","fotos/login/foto28.jpeg","fotos/login/foto29.jpeg","fotos/login/foto30.jpeg","fotos/login/foto31.jpeg","fotos/login/foto43.jpeg",
+    "fotos/login/foto20.jpeg","fotos/login/foto21.jpg","fotos/login/foto22.jpeg",
+    "fotos/login/foto23.jpeg","fotos/login/foto24.jpeg","fotos/login/foto25.jpeg",
+    "fotos/login/foto26.jpeg","fotos/login/foto27.jpeg","fotos/login/foto28.jpeg",
+    "fotos/login/foto29.jpeg","fotos/login/foto30.jpeg","fotos/login/foto31.jpeg",
+    "fotos/login/foto43.jpeg"
   ];
+
+  // ======= BARAJAR ALEATORIAMENTE =======
+  function barajar(arr) {
+    const copia = arr.slice();
+    for (let i = copia.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copia[i], copia[j]] = [copia[j], copia[i]];
+    }
+    return copia;
+  }
 
   // ======= FUNCIÓN PARA CREAR CADA COLUMNA =======
   function crearHeroMarquee(selector, imagenes, direccion = "up") {
@@ -685,9 +700,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     cont.innerHTML = "";
 
-    // Añade las imágenes de ese lado
-    for (let i = 0; i < FOTOS_POR_LADO; i++) {
-      const src = imagenes[i % imagenes.length];
+    // Barajamos y usamos TODAS las imágenes una vez antes de repetir
+    const orden = barajar(imagenes);
+    for (const src of orden) {
       const div = document.createElement("div");
       div.className = "hero-polaroid";
       const img = new Image();
@@ -696,18 +711,20 @@ window.addEventListener("DOMContentLoaded", async () => {
       cont.appendChild(div);
     }
 
-    // Duplica el contenido para bucle infinito
+    // Duplicar TODO el bloque (no individualmente) para el bucle sin cortes
     const clon = cont.cloneNode(true);
     cont.appendChild(clon);
 
     // Animación CSS: velocidad + dirección
-    cont.style.animation = `${direccion === "up" ? "scrollCascadaUp" : "scrollCascadaDown"} ${DURACION_SCROLL}s linear infinite`;
+    cont.style.animation = `${
+      direccion === "up" ? "scrollCascadaUp" : "scrollCascadaDown"
+    } ${DURACION_SCROLL}s linear infinite`;
   }
 
   // ======= INICIALIZAR =======
   function initLaterales() {
-    crearHeroMarquee(".hero-marquee.izquierda", IMAGENES_IZQ, "up");   // columna izquierda sube
-    crearHeroMarquee(".hero-marquee.derecha", IMAGENES_DER, "down");   // columna derecha baja
+    crearHeroMarquee(".hero-marquee.izquierda", IMAGENES_IZQ, "up");
+    crearHeroMarquee(".hero-marquee.derecha", IMAGENES_DER, "down");
   }
 
   if (document.readyState === "loading") {
@@ -716,7 +733,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     initLaterales();
   }
 })();
-
 </script>
 
 
