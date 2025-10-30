@@ -1718,3 +1718,66 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
   letter-spacing: 0.4px;
 }
 
+/* 🔒 Bloqueo temporal de votaciones */
+.bloqueo-aviso {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 1.4rem;
+  color: var(--gold);
+  background: rgba(0,0,0,0.5);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255,215,0,0.2);
+  margin: 40px auto;
+  max-width: 600px;
+}
+
+/* Ocultar contenido real mientras está bloqueado */
+.contenido-votacion,
+.contenido-votacion-nominados {
+  display: none !important;
+}
+/* ======== NAVBAR MÁS GRANDE EN ESCRITORIO ======== */
+@media (min-width: 1024px) {
+  /* Altura y separación general */
+  .nav-inner {
+    max-width: 1300px;
+    padding: 16px 24px;
+  }
+
+  /* Botones del menú */
+  .nav-actions .btn {
+    font-size: 1.05rem;     /* texto más grande */
+    padding: 14px 24px;     /* botones más altos y anchos */
+    border-radius: 12px;
+  }
+
+  /* Logo más notorio */
+  .logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+
+  /* Perfil usuario: texto e imagen más grandes */
+  .perfil-usuario {
+    gap: 10px;
+    font-size: 1.1rem;
+  }
+
+  .perfil-usuario img {
+    width: 52px;
+    height: 52px;
+    border: 2.5px solid var(--gold);
+  }
+
+  /* Menú más “espaciado” horizontalmente */
+  .nav-actions {
+    gap: 12px;
+  }
+}
+
+/* ===== EFECTO SUAVE AL HACER HOVER ===== */
+.nav-actions .btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}

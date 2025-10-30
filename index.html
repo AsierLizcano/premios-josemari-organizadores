@@ -41,6 +41,9 @@
       </label>
 
       <button id="btnLogin" class="btn gold btn-login">Entrar</button>
+      <p id="loginError" class="login-error" style="display:none;">
+  ❌ Usuario o contraseña incorrectos
+</p>
 
       <p class="login-hint">Solo participantes invitados ✨</p>
     </div>
@@ -739,19 +742,36 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 
 
-
 <section id="votacion" class="seccion">
-  <h2>Votación</h2>
-  <p>Selecciona un ganador por categoría (4 nominados por categoría).</p>
-  <div id="votacionWrapper"></div>
-  <button id="enviarVotacion" class="btn gold" style="margin-top:20px;">Enviar votación</button>
+  <!-- AVISO -->
+  <div class="bloqueo-aviso">
+    🕒 Las votaciones aún no están abiertas.  
+    <br>Vuelve pronto para participar.
+  </div>
+
+  <!-- CONTENIDO ORIGINAL (oculto temporalmente) -->
+  <div class="contenido-votacion">
+    <h2>Votación</h2>
+    <p>Selecciona un ganador por categoría (4 nominados por categoría).</p>
+    <div id="votacionWrapper"></div>
+    <button id="enviarVotacion" class="btn gold" style="margin-top:20px;">Enviar votación</button>
+  </div>
 </section>
 
 
 
 <section id="votacion-nominados" class="seccion" style="display:none;">
-  <div id="nominadosWrapper"></div>
-  <button id="enviarTodasNominaciones" class="btn gold">Enviar todas las nominaciones</button>
+  <!-- AVISO -->
+  <div class="bloqueo-aviso">
+    🕒 Las nominaciones aún no están abiertas.  
+    <br>Pronto podrás enviar tus candidatos.
+  </div>
+
+  <!-- CONTENIDO ORIGINAL -->
+  <div class="contenido-votacion-nominados">
+    <div id="nominadosWrapper"></div>
+    <button id="enviarTodasNominaciones" class="btn gold">Enviar todas las nominaciones</button>
+  </div>
 </section>
 
     
