@@ -89,6 +89,7 @@
 
 
 
+
 <!-- CONTENIDO DE LA APP (oculto hasta login) -->
 <div id="appContent" style="display:none;">
 
@@ -114,38 +115,36 @@
       </div>
     </div>
   </nav>
+<header class="hero seccion" id="inicio">
+  <div class="shine"></div>
 
-  <!-- INICIO -->
-  <header class="hero seccion" id="inicio">
-    <div class="shine"></div>
+  <!-- Columna izquierda -->
+  <div class="hero-marquee izquierda" aria-hidden="true">
+    <div class="hero-stage"></div>
+  </div>
 
-    <!-- Columna izquierda -->
-<div class="hero-marquee izquierda" aria-hidden="true">
-  <div class="hero-stage"></div>
-</div>
-
-    <div class="hero-inner">
-      <div class="hero-texto">
-        <span class="badge">JOSEMARI 2025</span>
-        <h1>Bienvenido a los Premios Josemari 2025</h1>
-        <p class="subtitle">Esta es la web oficial de los Premios de este año ¡Haz que tu voto cuente!</p>
-<div class="cta">
-  <button class="btn gold" onclick="mostrarSeccion('categorias')">Ver categorías</button>
-  <button class="btn" onclick="mostrarSeccion('participantes')">Ver participantes</button>
-</div>
-
-      </div>
-
-      <div class="hero-imagen">
-        <img src="fotos/ImagenJosemari.png" alt="Imagen de inicio">
+  <div class="hero-inner">
+    <div class="hero-texto">
+      <span class="badge">JOSEMARI 2025</span>
+      <h1>Bienvenido a los Premios Josemari 2025</h1>
+      <p class="subtitle">Esta es la web oficial de los Premios de este año ¡Haz que tu voto cuente!</p>
+      <div class="cta">
+        <button class="btn gold" onclick="mostrarSeccion('categorias')">Ver categorías</button>
+        <button class="btn" onclick="mostrarSeccion('participantes')">Ver participantes</button>
       </div>
     </div>
 
-    <!-- Columna derecha -->
-   <div class="hero-marquee derecha" aria-hidden="true">
-  <div class="hero-stage"></div>
-</div>
-  </header>
+    <div class="hero-imagen">
+      <img src="fotos/ImagenJosemari.png" alt="Imagen de inicio">
+    </div>
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="hero-marquee derecha" aria-hidden="true">
+    <div class="hero-stage"></div>
+  </div>
+</header>
+
 </div>
   <script>
   // Usuarios válidos
@@ -306,6 +305,18 @@ document.getElementById("perfilUsuario")?.addEventListener("click", () => {
     const necesitaLogin = !["login","inicio","participantes","categorias"].includes(seccion);
     const user = localStorage.getItem("usuarioLogueado");
     if (necesitaLogin && !user) seccion = "login";
+// Mostrar imágenes laterales solo en INICIO
+const leftHero  = document.querySelector('.hero-marquee.izquierda');
+const rightHero = document.querySelector('.hero-marquee.derecha');
+if (leftHero && rightHero) {
+  if (seccion === 'inicio') {
+    leftHero.style.display = 'block';
+    rightHero.style.display = 'block';
+  } else {
+    leftHero.style.display = 'none';
+    rightHero.style.display = 'none';
+  }
+}
 
     document.querySelectorAll(".seccion").forEach(s => s.style.display = "none");
     document.getElementById(seccion).style.display = "block";
@@ -366,111 +377,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 </script>
 
-<script>
-(() => {
-  // Configuración por panel
-  const PANELS = [
-    { sel: '.fotos-lateral.izquierda',  speed: 30, dir:  1 }, // px/seg arriba
-    { sel: '.fotos-lateral.derecha',    speed: 40, dir: -1 }  // px/seg abajo
-  ];
 
-  function setupInfiniteScroll(panelEl, {speed=30, dir=1} = {}) {
-    if (!panelEl || panelEl.dataset.scroller) return;
-    panelEl.dataset.scroller = '1';
-
-    // 1) Crear contenedor interno (track) y mover imágenes dentro
-    const track = document.createElement('div');
-    track.style.position = 'relative';
-    track.style.willChange = 'transform';
-    panelEl.appendChild(track);
-
-    // Mueve imágenes existentes al track
-    const originals = Array.from(panelEl.querySelectorAll(':scope > img'));
-    originals.forEach(img => track.appendChild(img));
-
-    // 2) Duplica para bucle
-    originals.forEach(img => {
-      const clone = img.cloneNode(true);
-      track.appendChild(clone);
-    });
-
-    let contentHeight = 0;
-    let y = 0;                  // desplazamiento acumulado
-    let lastT = 0;
-    let paused = false;
-
-    // Pausa con hover (mouse) y en táctil usando clase manual si quieres
-    panelEl.addEventListener('mouseenter', () => paused = true);
-    panelEl.addEventListener('mouseleave', () => paused = false);
-
-    // Recalcular altura una vez cargadas las imágenes
-    function computeHeight() {
-      contentHeight = Array.from(track.children)
-        .reduce((sum, el) => sum + el.offsetHeight + parseFloat(getComputedStyle(el).borderBottomWidth || 0), 0) / 2;
-      // contentHeight es la altura del bloque original (sin duplicado)
-    }
-
-    // Observa cambios de tamaño/carga
-    const ro = new ResizeObserver(computeHeight);
-    ro.observe(panelEl);
-    ro.observe(track);
-
-    Array.from(track.querySelectorAll('img')).forEach(img => {
-      if (!img.complete) {
-        img.addEventListener('load', computeHeight, {once:true});
-        img.addEventListener('error', computeHeight, {once:true});
-      }
-    });
-
-    computeHeight();
-
-    // 3) Animación
-    function tick(t) {
-      const dt = (t - (lastT || t)) / 1000;
-      lastT = t;
-
-      if (!paused && contentHeight > 0) {
-        // mover en la dirección: dir=1 (sube), dir=-1 (baja)
-        y += speed * dt * dir;
-
-        // normaliza dentro del rango [0, contentHeight)
-        // Usamos módulo para un bucle suave
-        if (dir === 1) {
-          if (y >= contentHeight) y -= contentHeight;
-        } else {
-          if (y <= -contentHeight) y += contentHeight;
-        }
-
-        // Aplicar transform (mover hacia arriba es negativo en translateY)
-        const ty = dir === 1 ? -y : y;
-        track.style.transform = `translateY(${ty}px)`;
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  // Inicializar ambos paneles si existen
-  PANELS.forEach(cfg => {
-    const el = document.querySelector(cfg.sel);
-    if (el && el.querySelector('img')) setupInfiniteScroll(el, cfg);
-  });
-
-  // Si cambias de pestañas con mostrarSeccion, puedes reiniciar cuando vuelvas a "inicio"
-  const _oldMostrarSeccion = window.mostrarSeccion;
-  window.mostrarSeccion = function (sec) {
-    _oldMostrarSeccion?.(sec);
-    if (sec === 'inicio') {
-      PANELS.forEach(cfg => {
-        const el = document.querySelector(cfg.sel);
-        if (el && !el.dataset.scroller && el.querySelector('img')) setupInfiniteScroll(el, cfg);
-      });
-    }
-  };
-})();
-</script>
 
   <main>
     <!-- PARTICIPANTES -->
@@ -749,212 +656,69 @@ window.addEventListener("DOMContentLoaded", async () => {
 </div>
 
 <script>
-(() => {
-  // velocidad en px/seg para cada lateral (puedes cambiar)
-  const SPEED_LEFT  = 22;
-  const SPEED_RIGHT = 28;
-
-  document.querySelectorAll('.fotos-lateral.auto-scroll').forEach((lane, idx) => {
-    const stack = lane.querySelector('.stack');
-    if (!stack) return;
-
-    // Clonamos para bucle continuo
-    const clone = stack.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-    lane.appendChild(clone);
-
-    // Asignar velocidad por lateral
-    const SPEED = lane.classList.contains('izquierda') ? SPEED_LEFT : SPEED_RIGHT;
-
-    let last = 0;
-    let y = 0;
-    const total = stack.getBoundingClientRect().height + 14; // alto + gap
-
-    function raf(t){
-      if (!last) last = t;
-      const dt = (t - last) / 1000; // s
-      last = t;
-
-      y += SPEED * dt;
-      // mover ambos stacks en sentido ascendente
-      const ty = -(y % total);
-      stack.style.transform = `translateY(${ty}px)`;
-      clone.style.transform = `translateY(${ty + total}px)`;
-
-      requestAnimationFrame(raf);
-    }
-
-    // recalculo al cargar imágenes / resize
-    function recompute(){
-      const h = stack.getBoundingClientRect().height;
-      // (no necesitamos guardar, usamos getBoundingRect cada frame si quieres más precisión)
-    }
-    new ResizeObserver(recompute).observe(stack);
-    stack.querySelectorAll('img').forEach(img=>{
-      if (!img.complete) img.addEventListener('load', recompute, {once:true});
-    });
-
-    requestAnimationFrame(raf);
-  });
-})();
-</script>
-<script>
 (function(){
-  // Utilidades
-  const shuffle = arr => arr.slice().sort(() => Math.random() - 0.5);
-  const clamp   = (n,a,b) => Math.max(a, Math.min(b, n));
+  // ======= CONFIGURACIÓN =======
+  const DURACION_SCROLL = 120; // segundos → más alto = más lento
+  const FOTOS_POR_LADO = 22;   // cuántas fotos quieres que se repitan por columna
 
-  // Crea tarjetas “polaroid” con tamaño y rotación aleatoria y duplica para bucle
-  function poblarStage(stageEl, srcs, total = 26){
-    const pool = shuffle(srcs);
-    for (let i=0; i<total; i++){
-      const src = pool[i % pool.length];
-      const pol = document.createElement('div');
-      pol.className = 'hero-polaroid';
+  // ======= IMÁGENES (divididas por lado) =======
+  const IMAGENES_IZQ = [
+    "fotos/login/foto1.jpeg","fotos/login/foto3.jpeg","fotos/login/foto5.jpeg",
+    "fotos/login/foto7.jpeg","fotos/login/foto9.jpeg","fotos/login/foto11.jpeg",
+    "fotos/login/foto13.jpeg","fotos/login/foto15.jpeg","fotos/login/foto17.jpeg",
+    "fotos/login/foto19.jpeg","fotos/login/foto32.jpeg","fotos/login/foto33.jpeg","fotos/login/foto34.jpeg","fotos/login/foto35.jpeg",
+    ,"fotos/login/foto36.jpeg","fotos/login/foto37.jpeg","fotos/login/foto38.jpeg","fotos/login/foto39.jpeg","fotos/login/foto40.jpeg","fotos/login/foto41.jpeg","fotos/login/foto42.jpeg",
+  ];
 
-    const colSpan = clamp(Math.round(Math.random()*3)+3, 3, 5); // 3..5 columnas (⬆)
-    const rowSpan = clamp(Math.round(Math.random()*3)+4, 4, 7); // 4..7 filas (⬆)
-    pol.style.gridColumn = `span ${colSpan}`;
-    pol.style.gridRow    = `span ${rowSpan}`;
+  const IMAGENES_DER = [
+    "fotos/login/foto2.jpeg","fotos/login/foto4.jpeg","fotos/login/foto6.jpeg",
+    "fotos/login/foto8.jpeg","fotos/login/foto10.jpeg","fotos/login/foto12.jpeg",
+    "fotos/login/foto14.jpeg","fotos/login/foto16.jpeg","fotos/login/foto18.jpeg",
+    "fotos/login/foto20.jpeg","fotos/login/foto21.jpeg","fotos/login/foto22.jpeg","fotos/login/foto23.jpeg","fotos/login/foto24.jpeg","fotos/login25.jpeg",
+    ,"fotos/login/foto26.jpeg","fotos/login/foto27.jpeg","fotos/login/foto28.jpeg","fotos/login/foto29.jpeg","fotos/login/foto30.jpeg","fotos/login/foto31.jpeg","fotos/login/foto43.jpeg",
+  ];
 
-    // Rotación más suave (menos huecos diagonales)
-    const rot = (Math.random()*6 - 3).toFixed(1); // -3º..+3º
-    pol.style.setProperty('--rot', rot+'deg');
+  // ======= FUNCIÓN PARA CREAR CADA COLUMNA =======
+  function crearHeroMarquee(selector, imagenes, direccion = "up") {
+    const cont = document.querySelector(selector + " .hero-stage");
+    if (!cont) return;
 
+    cont.innerHTML = "";
 
+    // Añade las imágenes de ese lado
+    for (let i = 0; i < FOTOS_POR_LADO; i++) {
+      const src = imagenes[i % imagenes.length];
+      const div = document.createElement("div");
+      div.className = "hero-polaroid";
       const img = new Image();
-      img.loading = 'lazy';
       img.src = src;
-      pol.appendChild(img);
-      stageEl.appendChild(pol);
+      div.appendChild(img);
+      cont.appendChild(div);
     }
 
-    // Duplicado para bucle infinito
-    const clones = stageEl.cloneNode(true);
-    clones.childNodes.forEach(n => stageEl.appendChild(n.cloneNode(true)));
+    // Duplica el contenido para bucle infinito
+    const clon = cont.cloneNode(true);
+    cont.appendChild(clon);
+
+    // Animación CSS: velocidad + dirección
+    cont.style.animation = `${direccion === "up" ? "scrollCascadaUp" : "scrollCascadaDown"} ${DURACION_SCROLL}s linear infinite`;
   }
 
-  // Scroll infinito con translateY (no usa scrollTop)
-  function autoScroll(stage, {pxPerSec = 30, direction = 1} = {}) {
-    let contentH = 0, y = 0, last = 0;
-
-    const compute = () => { contentH = stage.scrollHeight / 2; };
-    const ro = new ResizeObserver(compute);
-    ro.observe(stage);
-    stage.querySelectorAll('img').forEach(img => {
-      if (!img.complete) img.addEventListener('load', compute, { once:true });
-    });
-    compute();
-
-    function frame(t){
-      const dt = (t - (last || t)) / 1000; last = t;
-      if (contentH > 0){
-        y += pxPerSec * dt * direction;
-        if (y >=  contentH) y -= contentH;
-        if (y <= -contentH) y += contentH;
-        const ty = direction === 1 ? -y : y;     // +1 sube, -1 baja
-        stage.style.transform = `translateY(${ty}px)`;
-      }
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
+  // ======= INICIALIZAR =======
+  function initLaterales() {
+    crearHeroMarquee(".hero-marquee.izquierda", IMAGENES_IZQ, "up");   // columna izquierda sube
+    crearHeroMarquee(".hero-marquee.derecha", IMAGENES_DER, "down");   // columna derecha baja
   }
 
-  // Saca las rutas desde el collage del login (o usa fallback)
-  function recogerSrcsLogin(){
-    const imgs = Array.from(document.querySelectorAll('.login-media .scroll-stage img'));
-    if (imgs.length) return imgs.map(i => i.getAttribute('src')).filter(Boolean);
-    return [
-      "fotos/login/foto1.jpeg","fotos/login/foto2.jpeg","fotos/login/foto3.jpeg",
-      "fotos/login/foto4.jpeg","fotos/login/foto5.jpeg","fotos/login/foto6.jpeg",
-      "fotos/login/foto7.jpeg","fotos/login/foto8.jpeg","fotos/login/foto9.jpeg",
-      "fotos/login/foto10.jpeg","fotos/login/foto11.jpeg","fotos/login/foto12.jpeg",
-      "fotos/login/foto13.jpeg","fotos/login/foto14.jpeg","fotos/login/foto15.jpeg",
-      "fotos/login/foto16.jpeg","fotos/login/foto17.jpeg","fotos/login/foto18.jpeg",
-      "fotos/login/foto19.jpeg","fotos/login/foto20.jpeg"
-    ];
-  }
-
-  // Inicializa las dos columnas del hero
-  function initHeroLaterales(){
-    const leftStage  = document.querySelector('#inicio .hero-marquee.izquierda .hero-stage');
-    const rightStage = document.querySelector('#inicio .hero-marquee.derecha   .hero-stage');
-    if (!leftStage || !rightStage) return;
-
-    const srcs = recogerSrcsLogin();
-    poblarStage(leftStage,  srcs, 24);
-    poblarStage(rightStage, srcs, 24);
-
-    autoScroll(leftStage,  { pxPerSec: 26, direction: +1 }); // sube
-    autoScroll(rightStage, { pxPerSec: 32, direction: -1 }); // baja
-  }
-
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', initHeroLaterales);
-  } else {
-    initHeroLaterales();
-  }
-
-  // Si cambias de pestaña, reasegura la animación al volver a INICIO
-  const oldMostrar = window.mostrarSeccion;
-  window.mostrarSeccion = function(sec){
-    oldMostrar?.(sec);
-    if (sec === 'inicio') initHeroLaterales();
-  };
-})();
-</script>
-
-<script>
-  // Rellena la columna hasta que sobrepase la altura visible (sin huecos)
-  function fillToBottom(stageEl){
-    const box = stageEl.parentElement; // .hero-marquee
-    if (!box) return;
-
-    // clona tandas de hijos hasta que haya "de sobra"
-    let guard = 12; // seguridad para no entrar en bucles infinitos
-    while (stageEl.scrollHeight < box.clientHeight * 2 && guard-- > 0) {
-      const frag = document.createDocumentFragment();
-      stageEl.childNodes.forEach(n => frag.appendChild(n.cloneNode(true)));
-      stageEl.appendChild(frag);
-    }
-  }
-
-  // Llama a fillToBottom después de poblar cada carril
-  function initHeroLaterales(){
-    const leftBox  = document.querySelector('#inicio .hero-marquee.izquierda .hero-stage');
-    const rightBox = document.querySelector('#inicio .hero-marquee.derecha .hero-stage');
-    if (!leftBox || !rightBox) return;
-
-    const srcs = recogerSrcsLogin();   // ya lo tienes en tu script
-    poblarStage(leftBox,  srcs, 24);   // ya lo tienes
-    poblarStage(rightBox, srcs, 24);   // ya lo tienes
-
-    // 👇 NUEVO: aseguramos longitud suficiente
-    fillToBottom(leftBox);
-    fillToBottom(rightBox);
-
-    // arranca el auto-scroll (lo que ya tenías)
-    autoScroll(leftBox.parentElement,  { pxPerSec: 26, direction: +1 });
-    autoScroll(rightBox.parentElement, { pxPerSec: 32, direction: -1 });
-
-    // Reajusta si cambia el tamaño de ventana
-    let rAF;
-    window.addEventListener('resize', () => {
-      cancelAnimationFrame(rAF);
-      rAF = requestAnimationFrame(() => {
-        fillToBottom(leftBox);
-        fillToBottom(rightBox);
-      });
-    });
-  }
-
-  // Si ya tienes esta llamada, deja solo una
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initHeroLaterales);
+    document.addEventListener("DOMContentLoaded", initLaterales);
   } else {
-    initHeroLaterales();
+    initLaterales();
   }
+})();
+
 </script>
+
 
 
 
