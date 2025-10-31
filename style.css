@@ -1850,8 +1850,8 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
 /* 📱 Móvil: mucho más pequeño */
 @media (max-width: 768px) {
   .perfil-usuario img {
-    width: 55px;
-    height: 55px;
+    width: 30px;
+    height: 30px;
     border-width: 2px;
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
   }
