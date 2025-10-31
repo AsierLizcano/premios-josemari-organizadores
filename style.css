@@ -1795,13 +1795,6 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
   box-shadow: 0 0 35px rgba(255, 215, 0, 0.7);
 }
 
-/* En pantallas grandes, aún más impacto */
-@media (min-width: 1400px) {
-  .perfil-usuario img {
-    width: 150px;
-    height: 150px;
-  }
-}
 /* === FORZAR TAMAÑO REAL DEL ICONO DE PERFIL === */
 .perfil-usuario img {
   width: 100px !important;
@@ -1826,38 +1819,40 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; /* efecto degradado dorado */
 }
-/* === PERFIL USUARIO RESPONSIVE === */
+/* === PERFIL USUARIO — AJUSTE FINAL DE TAMAÑO === */
 
-/* Tamaño general por defecto (escritorio) */
+/* Tamaño general (escritorio) */
 .perfil-usuario img {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  border: 4px solid var(--gold);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
   object-fit: cover;
   transition: all 0.3s ease;
 }
 
-/* 💻 Tablet: un poco más pequeño */
+/* 💻 Tablet: más compacto */
 @media (max-width: 1024px) {
   .perfil-usuario img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
+    border-width: 2.5px;
   }
 }
 
-/* 📱 Móvil: mucho más pequeño */
+/* 📱 Móvil: avatar pequeño */
 @media (max-width: 768px) {
   .perfil-usuario img {
-    width: 30px;
-    height: 30px;
+    width: 40px !important;
+    height: 40px !important;
     border-width: 2px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
   }
 
   .perfil-usuario {
-    font-size: 1.2rem; /* también reduce el texto del nombre */
-    gap: 10px;         /* menos separación */
+    gap: 6px;
+    font-size: 1rem; /* texto más pequeño */
+    transform: none; /* elimina desplazamiento si lo hubiera */
   }
 }
