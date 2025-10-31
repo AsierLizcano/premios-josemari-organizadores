@@ -130,7 +130,7 @@
     <div class="hero-texto">
       <span class="badge">JOSEMARI 2025</span>
       <h1>Bienvenido a los Premios Josemari 2025</h1>
-      <p class="subtitle">Esta es la web oficial de los Premios de este año ¡Haz que tu voto cuente!</p>
+      <p class="subtitle">!Web oficial de los premios josemari 2025, aqui se podrá votar y elegir tus nominados, pero por el momento echale un ojo a las categorias y a los participantes de este año!</p>
       <div class="cta">
         <button class="btn gold" onclick="mostrarSeccion('categorias')">Ver categorías</button>
         <button class="btn" onclick="mostrarSeccion('participantes')">Ver participantes</button>
@@ -578,7 +578,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       <img src="fotos/papi.jpg" alt="Papi/Mami del año">
       <h3> Papi/Mami del año</h3>
     </div>
-    <div class="categoria" data-descripcion="Picado/a del Año: El tio que siempre busca ganar y siempre busca estar en el podio, tanto al furbol, como en fortnite, eso a critero de cada uno, tambien se puede llevar este premio el tio mas picao y el que mas se enciende en cuanto a estos temas.">
+    <div class="categoria" data-descripcion="Picado/a del Año: Poco que decir de esta categoria, el tio o la tia que mas se pica o mas se enfada en todos los sitios ya sea futbol, fortnite o el Hellow Kitty Online.">
       <img src="fotos/competititivo.png" alt="Picado/a del año">
       <h3> Picado/a del año</h3>
     </div>
@@ -973,7 +973,7 @@ async function cargarTuVotacion() {
     const snapN = await getDocs(qN);
 
     if (snapN.empty) {
-      boxNom.innerHTML = `<p>No has enviado nominaciones en el ciclo ${ciclo}.</p>`;
+      boxNom.innerHTML = `<p>No has enviado nominaciones aún.</p>`;
     } else {
       const frag = document.createDocumentFragment();
       const porCat = {};

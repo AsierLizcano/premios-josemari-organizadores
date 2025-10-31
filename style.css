@@ -424,7 +424,7 @@ footer {
 .hero-imagen img {
   width: 100%;
   height: auto;
-  max-width: 700px; /* ajusta este valor a tu gusto */
+  max-width: 1000px; /* ajusta este valor a tu gusto */
   display: block;
 }
 
@@ -1812,3 +1812,17 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
   object-fit: cover;
 }
 
+/* === TÍTULO PRINCIPAL DEL LOGIN (Iniciar sesión) === */
+#login h2 {
+  text-align: center;                 /* centrado */
+  font-size: clamp(2.5rem, 5vw, 4rem); /* tamaño adaptable (grande en escritorio) */
+  font-weight: 800;                   /* negrita */
+  color: var(--gold);                 /* dorado principal */
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6),
+               0 0 30px rgba(255, 215, 0, 0.4); /* brillo suave */
+  margin: 40px 0 30px;                /* espacio arriba y abajo */
+  letter-spacing: 1px;                /* más elegante */
+  background: linear-gradient(90deg, #ffd700, #ffae00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* efecto degradado dorado */
+}
