@@ -660,75 +660,62 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 <script>
 (function(){
-  // ======= CONFIGURACIÓN =======
-  const DURACION_SCROLL = 120; // segundos → más alto = más lento
-  const FOTOS_POR_LADO = 23;   // cuántas imágenes se ven antes de repetir
+  const DURACION_SCROLL = 90; // segundos → ajusta para la velocidad de movimiento
+  const FOTOS_POR_LADO = 20;  // cuántas fotos por columna
 
-  // ======= IMÁGENES (divididas por lado) =======
   const IMAGENES_IZQ = [
     "fotos/login/foto1.jpeg","fotos/login/foto3.jpeg","fotos/login/foto5.jpeg",
     "fotos/login/foto7.jpeg","fotos/login/foto9.jpeg","fotos/login/foto11.jpeg",
     "fotos/login/foto13.jpeg","fotos/login/foto15.jpeg","fotos/login/foto17.jpeg",
-    "fotos/login/foto19.jpeg","fotos/login/foto32.jpeg","fotos/login/foto33.jpeg",
-    "fotos/login/foto34.jpeg","fotos/login/foto35.jpeg","fotos/login/foto36.jpeg",
-    "fotos/login/foto37.jpeg","fotos/login/foto38.jpeg","fotos/login/foto39.jpeg",
-    "fotos/login/foto40.jpeg","fotos/login/foto41.jpeg","fotos/login/foto42.jpeg"
+    "fotos/login/foto19.jpeg","fotos/login/foto21.jpg","fotos/login/foto23.jpeg",
+    "fotos/login/foto25.jpeg","fotos/login/foto27.jpeg","fotos/login/foto29.jpeg",
+    "fotos/login/foto31.jpeg","fotos/login/foto33.jpeg","fotos/login/foto35.jpeg"
   ];
 
   const IMAGENES_DER = [
     "fotos/login/foto2.jpeg","fotos/login/foto4.jpeg","fotos/login/foto6.jpeg",
     "fotos/login/foto8.jpeg","fotos/login/foto10.jpeg","fotos/login/foto12.jpeg",
     "fotos/login/foto14.jpeg","fotos/login/foto16.jpeg","fotos/login/foto18.jpeg",
-    "fotos/login/foto20.jpeg","fotos/login/foto21.jpg","fotos/login/foto22.jpeg",
-    "fotos/login/foto23.jpeg","fotos/login/foto24.jpeg","fotos/login/foto25.jpeg",
-    "fotos/login/foto26.jpeg","fotos/login/foto27.jpeg","fotos/login/foto28.jpeg",
-    "fotos/login/foto29.jpeg","fotos/login/foto30.jpeg","fotos/login/foto31.jpeg",
-    "fotos/login/foto43.jpeg"
+    "fotos/login/foto20.jpeg","fotos/login/foto22.jpeg","fotos/login/foto24.jpeg",
+    "fotos/login/foto26.jpeg","fotos/login/foto28.jpeg","fotos/login/foto30.jpeg",
+    "fotos/login/foto32.jpeg","fotos/login/foto34.jpeg","fotos/login/foto36.jpeg"
   ];
 
-  // ======= BARAJAR ALEATORIAMENTE =======
-  function barajar(arr) {
-    const copia = arr.slice();
-    for (let i = copia.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copia[i], copia[j]] = [copia[j], copia[i]];
-    }
-    return copia;
+  function mezclar(array){
+    return array.slice().sort(() => Math.random() - 0.5);
   }
 
-  // ======= FUNCIÓN PARA CREAR CADA COLUMNA =======
   function crearHeroMarquee(selector, imagenes, direccion = "up") {
     const cont = document.querySelector(selector + " .hero-stage");
     if (!cont) return;
 
     cont.innerHTML = "";
+    const barajadas = mezclar(imagenes);
 
-    // Barajamos y usamos TODAS las imágenes una vez antes de repetir
-    const orden = barajar(imagenes);
-    for (const src of orden) {
+    // Añadimos imágenes + clon para efecto infinito
+    const totalImgs = barajadas.slice(0, FOTOS_POR_LADO);
+    [...totalImgs, ...totalImgs].forEach(src => {
       const div = document.createElement("div");
       div.className = "hero-polaroid";
       const img = new Image();
       img.src = src;
       div.appendChild(img);
       cont.appendChild(div);
-    }
+    });
 
-    // Duplicar TODO el bloque (no individualmente) para el bucle sin cortes
-    const clon = cont.cloneNode(true);
-    cont.appendChild(clon);
-
-    // Animación CSS: velocidad + dirección
-    cont.style.animation = `${
-      direccion === "up" ? "scrollCascadaUp" : "scrollCascadaDown"
-    } ${DURACION_SCROLL}s linear infinite`;
+    // Animación infinita
+    cont.style.animation = `${direccion === "up" ? "scrollCascadaUp" : "scrollCascadaDown"} ${DURACION_SCROLL}s linear infinite`;
   }
 
-  // ======= INICIALIZAR =======
   function initLaterales() {
     crearHeroMarquee(".hero-marquee.izquierda", IMAGENES_IZQ, "up");
     crearHeroMarquee(".hero-marquee.derecha", IMAGENES_DER, "down");
   }
+
+  // Regenerar aleatorio al cambiar pestaña
+  document.querySelectorAll("nav button, nav .btn").forEach(btn => {
+    btn.addEventListener("click", initLaterales);
+  });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initLaterales);
@@ -737,7 +724,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 })();
 </script>
-
 
 
 
@@ -2375,17 +2361,17 @@ window.addEventListener("click", (e) => {
 </script> 
 <script>
     const descripciones = {
-      "Asieras": "ASIER, más conocido como chichotas,Cedido de balnomano alarcos Ciudad Real e Hijo de Peter el batallas. es el dueño del famoso campo San Bartolomé, le gusta mucho drogarse y emborracharse, por lo menos no fuma porros ",
+      "Asieras": "ASIER, más conocido como chichotas,Cedido de balnomano alarcos Ciudad Real e Hijo de Peter el batallas, es el dueño del famoso campo San Bartolomé, le gusta mucho drogarse y emborracharse, por lo menos no fuma porros ",
       "Rulillas": "RULAS es el mayor amante de las tortillas y los nuggets, tiene a chicote a su servicio para hacerle cualquier tipo de macarron con tomatico, le gusta mucho que le vomiten en la silla, es un maltratador de tortugas profesional, una vez encerró a su tortuga en un cubo de basura durante 21 años, es un mitico personaje de este grupo de subnormales que tiene una de las frases mas miticas de Operacion Triunfo POSSSS AVEEERRRRR",
-      "Darawayas": "DARIO es el fan número uno de la pam veraniega, junto con el pequeño kastorcin tienen un negocio llamado socios.basura, el supuesto camara del grupo que el año pasado nos deleitó con miticas escenas pornograficas de la gala, es un amante del fortnite y un guarro que se tira a todas las peruanas que pilla ",
-      "Ivanpechotes": "IVANPE es conocido como el rehén de Jugui Qui Jugui, si juegas con el al futbol ten en cuenta que tienes que correr mas que un puto Velocirraptor en plena era del Jurasico porque la gacela Thomphson no va a dejar a nadie escapar, baila como un abuelo senil de 347 años y aun no sabemos quien es su amor verdadero si la francesa esa o Lamine Yamal ",
+      "Darawayas": "DARIO, alias la Torutuga Londinense, es el fan número uno de la pam veraniega, junto con el pequeño kastorcin tienen un negocio llamado socios.basura, el camara del grupo que el año pasado nos deleitó con miticas escenas pornograficas de la gala, es un amante del fortnite y un guarro que se tira a todas las peruanas que pilla ",
+      "Ivanpechotes": "IVANPE es conocido como el rehén de Jugui Qui Jugui, si juegas con el al futbol ten en cuenta que tienes que correr mas que un puto Velocirraptor en plena era del Jurasico, porque la gacela Thomphson no va a dejar a nadie escapar, baila como un abuelo senil de 347 años y aun no sabemos quien es su amor verdadero si la francesa esa o Lamine Yamal ",
       "DaniGG": " DANI es un militar casposo siempre en el calabozo, no sale nunca de madrid por ver a su querida esposa es mas guarro que un satisfyer de segunda mano, y hablando de manos a saber cuantas le habran metido por el culo... Creemos que seria capaz de vender a toda su familia y amigos por un saludo del Rey Felipe",
-      "Lusilu": "LUCÍA tambien apodada como Lusilu o como la famosa novia de Sergio Ramos, aunque Alvaro de Luna tampoco se queda atras, estudia ADE(Asociacion De Esquizofrenicos) no le pega nada, como diria su esposo con mas de 3000 años las mujeres a la cocina!",
+      "Lusilu": "LUCÍA tambien apodada como Lusilu o como la famosa novia de Sergio Ramos, aunque Alvaro de Luna tampoco se queda atras, su mayor enemiga es Siri y se odian a muerte, estudia ADE(Asociacion De Esquizofrenicos) no le pega nada, como diria su esposo con mas de 3000 años las mujeres a la cocina!",
       "Almansa": "INES La de los caminos, se dedica a ir poniendo grano a grano e ir haciendo caminos en ciudad real, ahora mismo esta yendo a Lituania en uno de sus caminos magicos, siempre pone su casa para hacer las reuniones auque el pobre Martín la vaya a denunciar ella nunca nos denegaraá la entrada, no sabemos que vamos a hacer los sabados resacosos Almansunsin",
       "Robertuki": "ROBER el tio mas pesado que vas a ver en la historia, en vez de darte la mano al verte como haría una persona normal coje y te mete una hostia, pero y este tio?, aun no sabemos si viene del sur de España o de la profunda Antartida lo que si sabemos es que es el fundador de obesos sin fronteras, aunque sea Don Rosalio Parrales y trabaje mas que un negro en el Hospital de la estación de León, lo odiamos mucho.",
       "Toñaco": "MARCO el famoso jugador cedido del Caserio que al final se fue al Alarcos y un negro que acababa de salir de la selva tropical lo echo sin ningún tipo de remordimiento, por eso volvio a su equipo Caserio Colesterol, hizo la aparicion estelar en la famosa fiesta como DjPoyocu pero hizo bomba de humo, aun lo estan buscando en todo el norte de Ciudad Real, cuenta la leyenda que el tequifresi lo mató",
       "Manolo": "MANU animal mas feróz de la selva, Panterini estudia 300 horas al dia y casi no se le ve el pelo(aunque esta mas clavo que don limpio el cabron), hace viajes a madrid y a todos los lugares del planeta con su cuñado Emilio",
-      "Kastor": "MARIO, el pequeño casto importado desde Birmingham, este animal tan curioso relaiza derrapes por campos de futbol y cada vez que va a algun concierto se le antojan unos garbanzitos, es un gran aficionado al Real madrid y junto con su socio formo socios.pene ",
+      "Kastor": "MARIO, el pequeño castor importado desde Birmingham, este animal tan curioso realiza derrapes por campos de futbol y cada vez que va a algun concierto se le antojan unos garbanzitos, es un gran aficionado al Real madrid y junto con su socia Pam de los veranos formo socios.pene ",
       "Maria": "MARÍA la famosisima francesiña, reclama siempre el puesto de la fiestera del año del año pasado, estudia letras y su jugador favorito es Karim, tambien tiene un perrito llamado ivanpechotes que es un poco tonto pero le queremos igual :)",
       "Gamepro": "GAMEPRO tiene muchos nombres, hubo un momento en la historia en el que las leyendas dicen que se llamaba Hugo, ahora es el mejor cocinero de pollo de toda la ciudad, tiene tecnicas infalibles que dejan aluciando a todo el mundo, segun las fuentes fiables dicen que va abrir un restaruante de pollo y patatillas en la ciudad de Albacete",
       "El Enano": "FERVICO la persona más pequeña del planeta no podia faltar en estos premios,el pequeño ferguson es un gran amante de Spiderman lo malo es que su estatura no le permite ni llegar a una papelera, le gustan muchos las tetas sobre todo de las mujerzuelas de cabello pelirrojo, lo malo que ahora se ha pasado al oto bando y esta con un Tomellosero llamado Unai el gay",
