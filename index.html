@@ -1,0 +1,2402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PREMIOS J&P 2025</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<!-- LOGIN -->
+
+<section id="login" class="seccion" style="display:block;">
+  <h2>Iniciar sesión</h2>
+
+  <div class="login-wrap">
+    <!-- COLLAGE IZQUIERDO -->
+    <div id="loginCollage" class="login-media masonry"></div>
+
+    <!-- TARJETA DE LOGIN -->
+    <div class="login-card">
+      <div class="login-badge">
+        <img src="fotos/ImagenJosemari.png" alt="Josemari Awards">
+        <div>
+          <span class="eyebrow">JOSEMARI 2025</span>
+          <strong>Bienvenido a Premios Josemari</strong>
+        </div>
+      </div>
+
+      <label class="field">
+        <span>Usuario</span>
+        <input id="loginUser" type="text" placeholder="Usuario">
+      </label>
+
+      <label class="field">
+        <span>Contraseña</span>
+        <input id="loginPass" type="password" placeholder="Contraseña">
+      </label>
+
+      <button id="btnLogin" class="btn gold btn-login">Entrar</button>
+      <p id="loginError" class="login-error" style="display:none;">
+  ❌ Usuario o contraseña incorrectos
+</p>
+
+      <p class="login-hint">Solo participantes invitados ✨</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  // lista de fotos que se usarán en el collage
+  const IMAGES = [
+    "fotos/login/fotoA.jpeg","fotos/login/fotoB.jpeg","fotos/login/fotoC.jpeg",
+    "fotos/login/fotoD.jpeg","fotos/login/fotoE.jpeg","fotos/login/fotoF.jpeg",
+    "fotos/login/fotoG.jpeg","fotos/login/fotoH.jpeg","fotos/login/fotoI.jpeg",
+    "fotos/login/fotoJ.jpeg","fotos/login/fotoK.jpeg","fotos/login/fotoL.jpeg"
+  ];
+
+  const cont = document.getElementById('loginCollage');
+  if (!cont) return;
+
+  // Baraja las fotos
+  for (let i = IMAGES.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [IMAGES[i], IMAGES[j]] = [IMAGES[j], IMAGES[i]];
+  }
+
+  // Crea las figuras con rotaciones aleatorias
+  IMAGES.forEach(src => {
+    const fig = document.createElement('figure');
+    fig.className = 'tile';
+    const rot = (Math.random() * 6 - 3).toFixed(1); // -3º..+3º
+    fig.style.setProperty('--r', rot + 'deg');
+
+    const crop = document.createElement('div');
+    crop.className = 'crop';
+
+    const img = new Image();
+    img.src = src;
+    img.alt = '';
+
+    crop.appendChild(img);
+    fig.appendChild(crop);
+    cont.appendChild(fig);
+  });
+})();
+</script>
+
+
+
+
+<!-- CONTENIDO DE LA APP (oculto hasta login) -->
+<div id="appContent" style="display:none;">
+
+  <!-- NAV -->
+  <nav class="top">
+    <div class="nav-inner">
+      <div class="logo">Josemari Awards 2025</div>
+      <div class="nav-actions">
+        <button class="btn" onclick="mostrarSeccion('inicio')">Inicio</button>
+        <button class="btn" onclick="mostrarSeccion('participantes')">Participantes</button>
+        <button class="btn" onclick="mostrarSeccion('categorias')">Categorías</button>
+        <button class="btn" onclick="mostrarSeccion('votacion')">Votar</button>
+        <button class="btn" onclick="mostrarSeccion('votacion-nominados')">Votación nominados</button>
+        <button id="btnResultados" class="btn" onclick="mostrarSeccion('resultados')">Resultados</button>
+        <button class="btn" onclick="mostrarSeccion('tu-votacion')">Tu votación</button>
+      </div>
+
+      <!-- PERFIL USUARIO -->
+      <div id="perfilUsuario" class="perfil-usuario" style="display:none;">
+        <span id="nombreUsuario"></span>
+        <img id="avatarUsuario" src="" alt="Avatar"
+             style="width:40px; height:40px; border-radius:50%; margin-left:8px; border:2px solid gold;">
+      </div>
+    </div>
+  </nav>
+<header class="hero seccion" id="inicio">
+  <div class="shine"></div>
+
+  <!-- Columna izquierda -->
+  <div class="hero-marquee izquierda" aria-hidden="true">
+    <div class="hero-stage"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-texto">
+      <span class="badge">JOSEMARI 2025</span>
+      <h1>Bienvenido a los Premios Josemari 2025</h1>
+      <p class="subtitle">!Web oficial de los premios josemari 2025, aqui se podrá votar y elegir tus nominados, pero por el momento echale un ojo a las categorias y a los participantes de este año!</p>
+      <div class="cta">
+        <button class="btn gold" onclick="mostrarSeccion('categorias')">Ver categorías</button>
+        <button class="btn" onclick="mostrarSeccion('participantes')">Ver participantes</button>
+      </div>
+    </div>
+
+    <div class="hero-imagen">
+      <img src="fotos/ImagenJosemari.png" alt="Imagen de inicio">
+    </div>
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="hero-marquee derecha" aria-hidden="true">
+    <div class="hero-stage"></div>
+  </div>
+</header>
+
+</div>
+  <script>
+  // Usuarios válidos
+const usuariosPermitidos = {
+  Asier: { pass: "Asiercas12", avatar: "fotos/asieras.jpeg" },
+  Rulas: { pass: "Rulas34", avatar: "fotos/rulillas.jpeg" },
+  Fervico:  { pass: "Enano729",  avatar: "fotos/fervico.jpeg" },
+  Rober: { pass: "Pinguino129", avatar: "fotos/rober.jpeg" },
+  Maria: { pass: "Francesa846", avatar: "fotos/maria.jpeg" },
+  Manu: { pass: "Pantera175", avatar: "fotos/manu.jpeg" },
+  Iker: { pass: "Chino283", avatar: "fotos/iker.jpeg" },
+  Dani: { pass: "Militar734", avatar: "fotos/dani.jpeg" },
+  Ivanp: { pass: "Gacela983", avatar: "fotos/ivanp.jpeg" },
+  Poru: { pass: "Ropu183", avatar: "fotos/poru.jpeg" },
+  Dario: { pass: "Pam983", avatar: "fotos/dario.jpeg" },
+  Ines: { pass: "Almansa201", avatar: "fotos/ines.jpeg" },
+  Labrada: { pass: "Viejo452", avatar: "fotos/labrada.jpeg" },
+  Fermoriv: { pass: "Cheese120", avatar: "fotos/Fermoriv.jpeg" },
+  Lucia: { pass: "Ramos276", avatar: "fotos/lucia.jpeg" },
+  Marco: { pass: "Pocoyo863", avatar: "fotos/marco.jpeg" },
+  Gamepro: { pass: "Popeye159", avatar: "fotos/gamepro.jpeg" },
+  Mario: { pass: "Garbanzo384", avatar: "fotos/mario.jpeg" },
+};
+function mostrarPerfil(nombre) {
+  document.getElementById("nombreUsuario").textContent = nombre;
+  document.getElementById("avatarUsuario").src = usuariosPermitidos[nombre].avatar;
+  document.getElementById("perfilUsuario").style.display = "flex";
+}
+
+// ===== LOGIN ÚNICO =====
+document.getElementById('btnLogin')?.addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const user = document.getElementById('loginUser')?.value.trim();
+  const pass = document.getElementById('loginPass')?.value.trim();
+  const error = document.getElementById('loginError');
+
+  if (usuariosPermitidos[user] && usuariosPermitidos[user].pass === pass) {
+    // guarda sesión
+    localStorage.setItem('usuarioLogueado', user);
+
+    // pinta perfil + muestra app
+    mostrarPerfil(user);
+    controlarAccesoResultados();
+
+    // oculta login y muestra la app
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+
+    // entra en Inicio y prepara botones/estados
+    mostrarSeccion('inicio');
+    if (window.actualizarEstadoBotonNominaciones) {
+      await window.actualizarEstadoBotonNominaciones();
+    }
+
+    if (error) error.style.display = 'none';
+  } else {
+    if (error) error.style.display = 'block';
+  }
+});
+
+function closeAllModalsAndMedia() {
+  // Modales
+  const modals = [
+    document.getElementById("modalParticipante"),
+    document.getElementById("modalCategoria"),
+    document.getElementById("videoLightbox")
+  ];
+  modals.forEach(m => { if (m) m.style.display = "none"; });
+  // Modal de vídeo: parar y limpiar src
+  const v = document.getElementById('lightboxVideo');
+  if (v) {
+    try { v.pause(); } catch {}
+    v.removeAttribute('src');
+    v.removeAttribute('poster');
+    v.load?.();
+  }
+  // Por si body quedó bloqueado por el lightbox
+  document.body.style.overflow = '';
+}
+
+function stopAllInlineVideos(scope = document) {
+  scope.querySelectorAll('video').forEach(vid => {
+    try { vid.pause(); } catch {}
+    // Descarga la fuente para que no siga “vivo” en background
+    const src = vid.getAttribute('src');
+    if (src) {
+      vid.removeAttribute('src');
+      vid.load?.();
+      // Si quieres, vuelve a poner el src tras logout cuando haga falta.
+    }
+  });
+}
+
+function hideAllSectionsExceptLogin() {
+  document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
+  const login = document.getElementById('login');
+  if (login) {
+    login.style.display = 'block';
+    // limpiar campos y errores
+    const userI = document.getElementById("loginUser");
+    const passI = document.getElementById("loginPass");
+    const err   = document.getElementById("loginError");
+    if (userI) userI.value = "";
+    if (passI) passI.value = "";
+    if (err)   err.style.display = "none";
+  }
+}
+
+function resetUrlAndScroll() {
+  // Quita hash y query (?lote=3, etc.)
+  if (history.pushState) {
+    const clean = location.pathname; // misma ruta sin query ni hash
+    history.pushState(null, "", clean);
+  }
+  // Scroll arriba y quita foco del botón/elemento que hizo logout
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  document.activeElement?.blur?.();
+}
+
+function logout() {
+  // 1) estado/app
+  localStorage.removeItem("usuarioLogueado");
+  const perfil = document.getElementById("perfilUsuario");
+  if (perfil) perfil.style.display = "none";
+
+  // 2) cerrar modales y parar media
+  closeAllModalsAndMedia();
+  stopAllInlineVideos(); // por si había vídeos en tarjetas
+
+  // 3) ocultar app y mostrar login limpio
+  const app = document.getElementById("appContent");
+  if (app) app.style.display = "none";
+  hideAllSectionsExceptLogin();
+
+  // 4) limpiar URL y scroll
+  resetUrlAndScroll();
+}
+
+// ——— Usa logout() en el perfil:
+document.getElementById("perfilUsuario")?.addEventListener("click", () => {
+  if (confirm("¿Cerrar sesión?")) {
+    logout();
+  }
+});
+
+
+
+  // Mostrar u ocultar botón Resultados según usuario
+  function controlarAccesoResultados() {
+    const user = localStorage.getItem("usuarioLogueado");
+    const btn = document.getElementById("btnResultados");
+    if (btn) btn.style.display = ["Asier","Rulas"].includes(user) ? "" : "none";
+  }
+
+  // Navegación entre secciones
+  function mostrarSeccion(seccion) {
+    const necesitaLogin = !["login","inicio","participantes","categorias"].includes(seccion);
+    const user = localStorage.getItem("usuarioLogueado");
+    if (necesitaLogin && !user) seccion = "login";
+// Mostrar imágenes laterales solo en INICIO
+const leftHero  = document.querySelector('.hero-marquee.izquierda');
+const rightHero = document.querySelector('.hero-marquee.derecha');
+if (leftHero && rightHero) {
+  if (seccion === 'inicio') {
+    leftHero.style.display = 'block';
+    rightHero.style.display = 'block';
+  } else {
+    leftHero.style.display = 'none';
+    rightHero.style.display = 'none';
+  }
+}
+
+    document.querySelectorAll(".seccion").forEach(s => s.style.display = "none");
+    document.getElementById(seccion).style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (seccion === "login") {
+      document.getElementById("loginError").style.display = "none";
+      document.getElementById("loginUser").value = "";
+      document.getElementById("loginPass").value = "";
+    }
+    if (seccion === "resultados") cargarResultados();
+  }
+
+  // Login
+  document.getElementById("btnLogin").addEventListener("click", () => {
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value.trim();
+if (usuariosPermitidos[user] && usuariosPermitidos[user].pass === pass) {
+  localStorage.setItem("usuarioLogueado", user);
+  mostrarPerfil(user);
+  controlarAccesoResultados();
+
+  // 👇 aquí ocultamos login y mostramos la app
+  document.getElementById("login").style.display = "none";
+  document.getElementById("appContent").style.display = "block";
+
+  mostrarSeccion("inicio");
+} else {
+  document.getElementById("loginError").style.display = "block";
+}
+
+
+
+  });
+
+// =========================
+// SESIÓN RECORDADA
+// =========================
+window.addEventListener("DOMContentLoaded", async () => {
+  const user = localStorage.getItem("usuarioLogueado");
+  if (user && usuariosPermitidos[user]) {
+    mostrarPerfil(user);
+    controlarAccesoResultados();
+    document.getElementById("login").style.display = "none";
+    document.getElementById("appContent").style.display = "block";
+    mostrarSeccion("inicio");
+
+    if (window.actualizarEstadoBotonNominaciones) {
+      await window.actualizarEstadoBotonNominaciones();
+    }
+  } else {
+    document.getElementById("login").style.display = "block";
+    document.getElementById("appContent").style.display = "none";
+  }
+});
+
+
+
+</script>
+
+
+
+  <main>
+    <!-- PARTICIPANTES -->
+    <section id="participantes" class="seccion">
+      <h2>Participantes</h2>
+      <div class="grid-participantes">
+        <div class="participante"><img src="fotos/asieras.jpeg" alt="Asieras"><h3>Asieras</h3></div>
+        <div class="participante"><img src="fotos/rulillas.jpeg" alt="Rulillas"><h3>Rulillas</h3></div>
+        <div class="participante"><img src="fotos/dario.jpeg" alt="Darawayas"><h3>Darawayas</h3></div>
+        <div class="participante"><img src="fotos/ivanp.jpeg" alt="Ivanpechotes"><h3>Ivanpechotes</h3></div>
+        <div class="participante"><img src="fotos/dani.jpeg" alt="Danigg"><h3>DaniGG</h3></div>
+        <div class="participante"><img src="fotos/Lucia.jpeg" alt="Lusilu"><h3>Lusilu</h3></div>
+        <div class="participante"><img src="fotos/ines.jpeg" alt="Almansa"><h3>Almansa</h3></div>
+        <div class="participante"><img src="fotos/rober.jpeg" alt="Robertuki"><h3>Robertuki</h3></div>
+        <div class="participante"><img src="fotos/marco.jpeg" alt="Toñaco"><h3>Toñaco</h3></div>
+        <div class="participante"><img src="fotos/manu.jpeg" alt="Manolo"><h3>Manolo</h3></div>
+        <div class="participante"><img src="fotos/mario.jpeg" alt="Kastor"><h3>Kastor</h3></div>
+        <div class="participante"><img src="fotos/maria.jpeg" alt="Maria"><h3>Maria</h3></div>
+        <div class="participante"><img src="fotos/gamepro.jpeg" alt="Gamepro"><h3>Gamepro</h3></div>
+        <div class="participante"><img src="fotos/fervico.jpeg" alt="El Enano"><h3>El Enano</h3></div>
+        <div class="participante"><img src="fotos/Poru.jpeg" alt="Poru"><h3>Poru</h3></div>
+        <div class="participante"><img src="fotos/iker.jpeg" alt="Ikardo"><h3>Ikardo</h3></div>
+        <div class="participante"><img src="fotos/Fermoriv.jpeg" alt="Fermoriv"><h3>Fermoriv</h3></div>
+        <div class="participante"><img src="fotos/labrada.jpeg" alt="Lab el Viejo"><h3>Lab el Viejo</h3></div>
+<!-- Modal para mostrar participante -->
+</div>
+</section>
+
+  <section id="tu-votacion" class="seccion" style="display:none;">
+  <h2>Tu votación</h2>
+  <p id="tuVotacion-subtitle" style="opacity:.8;"></p>
+
+  <div id="tuVotacion-contenido">
+    <h3>Votación simple</h3>
+    <div id="tuVotacion-simple"></div>
+
+    <h3 style="margin-top:24px;">Tus nominaciones por categoría</h3>
+    <div id="tuVotacion-nominaciones"></div>
+  </div>
+
+  <div id="tuVotacion-empty" style="display:none; padding:20px; background:#111; border:1px solid #333; border-radius:8px;">
+    Aún no has registrado votos ni nominaciones.
+  </div>
+
+  <div style="margin-top:20px;">
+    <button class="btn" onclick="mostrarSeccion('votacion')">Ir a votar</button>
+    <button class="btn" onclick="mostrarSeccion('votacion-nominados')">Ir a nominaciones</button>
+    <button class="btn" id="tuVotacion-refresh">Refrescar</button>
+  </div>
+</section>
+
+
+<!-- Modal fuera de la sección -->
+<div id="modalParticipante" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar">&times;</span>
+      <div class="modal-body">
+        <img id="modalImagen" src="" alt="">
+        <div class="modal-texto">
+          <p id="modalDescripcion"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Lightbox de vídeo -->
+<!-- Lightbox de vídeo (UNO solo) -->
+<div id="videoLightbox" class="video-modal" hidden
+     onclick="if (event.target === this) window.closeVideoLightboxHard()">
+  <div class="video-modal__inner" onclick="event.stopPropagation()">
+    <button class="video-modal__close" aria-label="Cerrar" type="button"
+            onclick="window.closeVideoLightboxHard()">×</button>
+    <video id="lightboxVideo" controls playsinline></video>
+  </div>
+</div>
+<script>
+  window.closeVideoLightboxHard = function () {
+    const modal = document.getElementById('videoLightbox');
+    const video = document.getElementById('lightboxVideo');
+    if (!modal || !video) return;
+
+    try { video.pause(); } catch {}
+    video.removeAttribute('src');
+    video.removeAttribute('poster');
+    video.load?.();
+
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+</script>
+
+
+<!-- Lightbox de imagen -->
+<div id="imageLightbox" class="image-modal" hidden>
+  <div class="image-modal__inner">
+    <button class="image-modal__close" aria-label="Cerrar">&times;</button>
+    <img id="lightboxImage" alt="">
+  </div>
+</div>
+
+
+
+<!-- CATEGORÍAS -->
+<section id="categorias" class="seccion">
+  <h2>Categorías</h2>
+  <div class="grid-participantes">
+    <div class="categoria" data-descripcion="Boracho del Año: La persona que mas se ha puesto hasta el culo en todo el año, nose si tanto como en la foto porque vaya cogorza lleva mi colegon el reparte melones, asi da gusto, esta categoria es para los valientes y para los que le echan cojones ostia.">
+      <img src="fotos/borracho.jpeg" alt="Borracho del año">
+      <h3> Borracho del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Fiestero del Año: el tio que mas ha salido de fiesta este año, y el que se haga de notar, no vale salir de fiesta y estar como un puto palo de madera, tienes que ir igual de encocao como el puto Jero Pajero.">
+      <img src="fotos/fiestero.jpeg" alt="Fiestero del año">
+      <h3> Fiestero del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Viajero del Año: esa persona que no para de viajar en todo el puto año, viajero del año es el que mas viaja en genaral, aun que sean destinos cortos o no muy conocidos,no porque haya ido a un destino super tocho ya es viajero, no tenemos registros de todos asi que se considera el que más viajes haya hecho.">
+      <img src="fotos/viajero.jpeg" alt="Viejero del año">
+      <h3> Viajero del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Palabra/Frase del Año: La palabra o frase que mas hemos dicho en este año, vale cualquier cosa, eso si la tenemos que haber dicho mucho o que haya destacado en un momentazo.">
+      <img src="fotos/palabra.jpeg" alt="Palabra del año">
+      <h3> Palabra/Frase del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Trio/Cuarteto del año: Ese trio o cuarteto que mas tiempo ha estado juntos, que creas que no se separan ni para atras o que hacen muy buen trio o cuarteto(no en sentido sexual), si no que pegan mucho o tienen muy buena quimica, un ejemplo claro de trio o un cuarteto es el de la foto, uf que pechotes, solo para entendidos jjj.">
+      <img src="fotos/trio.jpeg" alt="Trio/Cuarteto del año">
+      <h3> Trio/Cuarteto del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Mejor Personaje fuera de JYP: La persona fuera del grupo que nos ha dado risas y buenos momentos y que creais que ha destacado potencialmente a lo largo del año.">
+      <img src="fotos/mpersonaje.jpeg" alt="Mejor Personaje fuera de JyP">
+      <h3> Mejor Personaje fuera de JyP</h3>
+    </div>
+    <div class="categoria" data-descripcion="Fiesta del Año: poco que decir de esta categoria, la fiesta mas prime del año, que mas cosas recuerdes, que mejor te lo hayas pasado.">
+      <img src="fotos/fiesta.jpeg" alt="Fiesta del año">
+      <h3> Fiesta del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Autistada del Año: Esa persona que ha hecho una autistada historica en este año.">
+      <img src="fotos/autistada.jpg" alt="Autistada del año">
+      <h3> Autistada del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Broma del Año: esta categoria se refiere a la broma mas original o a la mas graciosa de este año, pobre Javichu como se las llevaba puesta.">
+      <img src="fotos/broma.jpeg" alt="Broma del año">
+      <h3> Broma del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Foto del Año: categoria muy parecida a video del año, es la foto mas historica de este año, que la veas y digas ostia puta que locura.">
+      <img src="fotos/foto.jpeg" alt="Foto del año">
+      <h3> Foto del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Video del Año: El video mas iconico de este año, gracioso, deprimente, espeluznante.... el ganador será el protagonista del video, no el que lo graba a no ser que sea un caso especial.">
+      <img src="fotos/video.jpeg" alt="Video del año">
+      <h3> Video del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Mote del Año: El mote mas carismatico de este año a una persona del grupo el año pasado nos deleitaron con multiples motes y esta categoria estuvo muy igualada, chichotas pocoyo, toputropu....">
+      <img src="fotos/mote.jpeg" alt="Mote del año">
+      <h3> Mote del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Más Guarro: La persona mas salida del grupo, el que cuenta mas barabridades de sexo o que se quiere tirar a todas o a todos.">
+      <img src="fotos/guarrete.jpeg" alt="Guarrete del año">
+      <h3> Guarrete del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Fail del Año: El momento en el que fue pinchada historica o la liaeste parda, pero que luego nos descojonamos todos.">
+      <img src="fotos/fail.jpeg" alt="Fail del año">
+      <h3> Fail del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Mejor momento del Año: El momento mas divertido o mas historico del año y que todos recordamos con felicidad y con epicidad.">
+      <img src="fotos/m_momento.jpeg" alt="Mejor momento del año">
+      <h3> Mejor momento del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Meme del Año: Una de las nuevas categorias donde la gracia es ver quien ha hecho el mejor meme, ya puede ser el Make it meme o alguna gilipollez que consideremos como meme del año.">
+      <img src="fotos/meme.jpeg" alt="Meme del año">
+      <h3> Meme del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Brainrot del Año: Esta categoria es una de esas de las cuales pues hay bastantes dudas, aqui hay que evaluar los 18 brainrot que hizo  la cuenta y tienes que evaluar su audio y su diseño.">
+      <img src="fotos/brainhot.jpeg" alt="Braihot del año">
+      <h3> Braihot del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Correa del Año: Poco que decir de esta categoria, la persona mas atada por la novia o el novio jjj.">
+      <img src="fotos/correon.jpeg" alt="Correon del año">
+      <h3> Correon del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Objeto del Año: Ese objeto que ha sido recordado como una leyenda, o ha sido historico en un momento dado.">
+      <img src="fotos/objeto.jpg" alt="Objeto del año">
+      <h3> Objeto del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Llorón del Año: La persona que hace más locuras, estando sobria o ebria, un ejemplo del año pasado pues cuando el año pasado mario se puso a congelar objetos, vaya tio mas crazyyy.">
+      <img src="fotos/lloron.jpeg" alt="Llorón del año">
+      <h3> Llorón del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="El que Mejor Viste del Año: El tio con el mejor oufit durante todo el año, es una categoria algo subjetiva, ya que cada uno tiene su estilo de vestir, aqui se premia al que siempre vaya guapete.">
+      <img src="fotos/mejorviste.jpeg" alt="El que mejor viste del año">
+      <h3> El que mejor viste del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Peor momento del año: El momento que peor lo hemos pasado, tipo que lo hemos sufrido hasta el final, pero luego lo recuerdes y de risa.">
+      <img src="fotos/p_momento.jpeg" alt="Peor momento del año">
+      <h3> Peor momento del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Papi/Mami del Año: La persona que se preocupa por todos, que organiza los viajes, la mas responsable, el mas moderado, ese es nuestro Papito">
+      <img src="fotos/papi.jpg" alt="Papi/Mami del año">
+      <h3> Papi/Mami del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Picado/a del Año: Poco que decir de esta categoria, el tio o la tia que mas se pica o mas se enfada en todos los sitios ya sea futbol, fortnite o el Hellow Kitty Online.">
+      <img src="fotos/competititivo.png" alt="Picado/a del año">
+      <h3> Picado/a del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Mensaje del Año: Los mensajes mas iconicos del grupo, ya sean graciosos, que den verguenza o pena ">
+      <img src="fotos/mensaje.jpeg" alt="Mensaje del año">
+      <h3> Mensaje del año</h3>
+    </div>
+    <div class="categoria" data-descripcion="Soltero del año: La persona que más sola ha estado este año es decir la que no se ha comido ningún rosco, esta categoria es para los soldados caidos en combate">
+      <img src="fotos/soltero.jpeg" alt="Solteros del año">
+      <h3> Soltero del año</h3>
+    </div>    <div class="categoria" data-descripcion="Baile del año: la perosna mas bailonga del grupo el que haya hecho el mejor baile de este año es el merecedor del premio al Baile del año">
+      <img src="fotos/Baile.jpeg" alt="Baile del año">
+      <h3> Baile del año</h3>
+    </div>    <div class="categoria" data-descripcion="Decepción del Año: Persona que no ha estado mucho durante el año, ha fallado en más cosas o ha estado en su peor momento, esta categoria sirve para aumentar tu animo y que seas el prime el año que viene asi que si ganas, animate y esfuezate más JOPUTA.">
+      <img src="fotos/decepcion.jpeg" alt="Decepción del año">
+      <h3> Decepción del año</h3>
+    </div>    <div class="categoria" data-descripcion="Revelación del Año: La persona que no se esperaba nada de ella este año pero ha dado el Boom y ha subido escalones en el Ranking y ahora es de las cabras">
+      <img src="fotos/revelacion.png" alt="Revelación del año">
+      <h3> Revelación del año</h3>
+    </div>    <div class="categoria" data-descripcion="MVP:Y como no la joya de la corona, la guinda del pastel, MVP DEL AÑO, la persona que ha estado en todo, ha hecho más cosas y ha estado con todo el mundo, esta es la categoria principal de estos premios y hay que estar muy prime para llevarsela.">
+      <img src="fotos/mvp.png" alt="MVP del año">
+      <h3> MVP del año</h3>
+    </div>
+  </div>
+</section>
+<script>
+(() => {
+  const modal = document.getElementById('videoLightbox');
+  if (!modal || modal.dataset.bound) return; // <- solo sal si YA estaba vinculado
+  modal.dataset.bound = '1';
+
+  const video = document.getElementById('lightboxVideo');
+
+  function closeVideoLightbox() {
+    try { video.pause(); } catch {}
+    video.removeAttribute('src');
+    video.removeAttribute('poster');
+    video.load?.();
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  // Cerrar clicando fuera (overlay)
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'videoLightbox') closeVideoLightbox();
+  });
+
+  // Evitar que clics dentro del contenido cierren el modal
+  modal.querySelector('.video-modal__inner')?.addEventListener('click', (e) => e.stopPropagation());
+
+  // Botón X
+  modal.querySelector('.video-modal__close')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeVideoLightbox();
+  });
+
+  // Tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeVideoLightbox();
+  });
+})();
+
+</script>
+
+
+<!-- Modal para mostrar categoría -->
+<div id="modalCategoria" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar">&times;</span>
+    <div class="modal-body">
+      <img id="modalImagenCategoria" src="" alt="">
+      <div class="modal-texto">
+        <p id="modalDescripcionCategoria"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DURACION_SCROLL = 90; // segundos → ajusta para la velocidad de movimiento
+  const FOTOS_POR_LADO = 20;  // cuántas fotos por columna
+
+  const IMAGENES_IZQ = [
+    "fotos/login/foto1.jpeg","fotos/login/foto3.jpeg","fotos/login/foto5.jpeg",
+    "fotos/login/foto7.jpeg","fotos/login/foto9.jpeg","fotos/login/foto11.jpeg",
+    "fotos/login/foto13.jpeg","fotos/login/foto15.jpeg","fotos/login/foto17.jpeg",
+    "fotos/login/foto19.jpeg","fotos/login/foto21.jpg","fotos/login/foto23.jpeg",
+    "fotos/login/foto25.jpeg","fotos/login/foto27.jpeg","fotos/login/foto29.jpeg",
+    "fotos/login/foto31.jpeg","fotos/login/foto33.jpeg","fotos/login/foto35.jpeg"
+  ];
+
+  const IMAGENES_DER = [
+    "fotos/login/foto2.jpeg","fotos/login/foto4.jpeg","fotos/login/foto6.jpeg",
+    "fotos/login/foto8.jpeg","fotos/login/foto10.jpeg","fotos/login/foto12.jpeg",
+    "fotos/login/foto14.jpeg","fotos/login/foto16.jpeg","fotos/login/foto18.jpeg",
+    "fotos/login/foto20.jpeg","fotos/login/foto22.jpeg","fotos/login/foto24.jpeg",
+    "fotos/login/foto26.jpeg","fotos/login/foto28.jpeg","fotos/login/foto30.jpeg",
+    "fotos/login/foto32.jpeg","fotos/login/foto34.jpeg","fotos/login/foto36.jpeg"
+  ];
+
+  function mezclar(array){
+    return array.slice().sort(() => Math.random() - 0.5);
+  }
+
+  function crearHeroMarquee(selector, imagenes, direccion = "up") {
+    const cont = document.querySelector(selector + " .hero-stage");
+    if (!cont) return;
+
+    cont.innerHTML = "";
+    const barajadas = mezclar(imagenes);
+
+    // Añadimos imágenes + clon para efecto infinito
+    const totalImgs = barajadas.slice(0, FOTOS_POR_LADO);
+    [...totalImgs, ...totalImgs].forEach(src => {
+      const div = document.createElement("div");
+      div.className = "hero-polaroid";
+      const img = new Image();
+      img.src = src;
+      div.appendChild(img);
+      cont.appendChild(div);
+    });
+
+    // Animación infinita
+    cont.style.animation = `${direccion === "up" ? "scrollCascadaUp" : "scrollCascadaDown"} ${DURACION_SCROLL}s linear infinite`;
+  }
+
+  function initLaterales() {
+    crearHeroMarquee(".hero-marquee.izquierda", IMAGENES_IZQ, "up");
+    crearHeroMarquee(".hero-marquee.derecha", IMAGENES_DER, "down");
+  }
+
+  // Regenerar aleatorio al cambiar pestaña
+  document.querySelectorAll("nav button, nav .btn").forEach(btn => {
+    btn.addEventListener("click", initLaterales);
+  });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLaterales);
+  } else {
+    initLaterales();
+  }
+})();
+</script>
+
+
+
+
+<section id="votacion" class="seccion">
+  <!-- AVISO -->
+  <div class="bloqueo-aviso">
+    🕒 Las votaciones aún no están abiertas.  
+    <br>Vuelve pronto para participar.
+  </div>
+
+  <!-- CONTENIDO ORIGINAL (oculto temporalmente) -->
+  <div class="contenido-votacion">
+    <h2>Votación</h2>
+    <p>Selecciona un ganador por categoría (4 nominados por categoría).</p>
+    <div id="votacionWrapper"></div>
+    <button id="enviarVotacion" class="btn gold" style="margin-top:20px;">Enviar votación</button>
+  </div>
+</section>
+
+
+
+<section id="votacion-nominados" class="seccion" style="display:none;">
+  <!-- AVISO -->
+  <div class="bloqueo-aviso">
+    🕒 Las nominaciones aún no están abiertas.  
+    <br>Pronto podrás enviar tus candidatos.
+  </div>
+
+  <!-- CONTENIDO ORIGINAL -->
+  <div class="contenido-votacion-nominados">
+    <div id="nominadosWrapper"></div>
+    <button id="enviarTodasNominaciones" class="btn gold">Enviar todas las nominaciones</button>
+  </div>
+</section>
+
+    
+<section id="resultados" class="seccion" style="display:none;">
+  <h2>Resultados de las votaciones</h2>
+
+  <!-- 👇 Sin login; mostramos directamente el contenido -->
+  <div id="resultados-contenido" style="display:block;">
+    <h3>Resultados por categoría</h3>
+    <div id="tabla-resultados"></div>
+
+    <!-- Botones de gestión -->
+    <button id="borrarVotos" class="btn red" style="margin-top:15px;">Borrar todos los votos</button>
+    <button id="borrarNominaciones" class="btn red" style="margin-top:15px;">Borrar todas las nominaciones</button>
+    <button id="restaurarVotaciones" class="btn gold" style="margin-top:15px;">Restaurar votaciones</button>
+  </div>
+</section>
+
+    
+
+    
+  </main>
+
+  
+  <footer>
+    © Premios Josemari 2025 — Hecho por Iceman.
+  </footer>
+
+  
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where,
+  getDoc, setDoc, updateDoc, doc, deleteDoc, writeBatch, limit
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+
+
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBNfmxGA8GNgWf-N1sstPhQlWitYMjnd6M",
+      authDomain: "premiosjosemari-bc894.firebaseapp.com",
+      projectId: "premiosjosemari-bc894",
+      storageBucket: "premiosjosemari-bc894.appspot.com",
+      messagingSenderId: "118315358578",
+      appId: "1:118315358578:web:4c6c2248fdbdd4f61e65eb"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    function safeIdPart(str) {
+  // Firestore no admite "/" en los IDs de documento; además dejamos robusto
+  return encodeURIComponent(String(str).replaceAll('/', '_'));
+}
+
+    
+// ===== Ciclo global de votaciones (no borra nada; abre nueva ronda) =====
+const CONFIG_DOC = doc(db, "config", "estado");
+
+async function getCicloActual() {
+  const snap = await getDoc(CONFIG_DOC);
+  if (!snap.exists()) {
+    await setDoc(CONFIG_DOC, { ciclo: 1 });
+    return 1;
+  }
+  const data = snap.data();
+  return typeof data.ciclo === "number" ? data.ciclo : 1;
+}
+
+async function aumentarCiclo() {
+  const ciclo = await getCicloActual();
+  try {
+    await updateDoc(CONFIG_DOC, { ciclo: ciclo + 1 });
+  } catch {
+    await setDoc(CONFIG_DOC, { ciclo: ciclo + 1 });
+  }
+  return ciclo + 1;
+}
+
+
+    
+
+// =========================
+// CAMBIO DE SECCIÓN (única)
+// =========================
+window.mostrarSeccion = async function (seccion) {
+  // Si la sección requiere login y no hay usuario, manda a login
+  const necesitaLogin = !["login","inicio","participantes","categorias"].includes(seccion);
+  const user = localStorage.getItem("usuarioLogueado");
+  if (necesitaLogin && !user) seccion = "login";
+
+  document.querySelectorAll('.seccion').forEach(sec => sec.style.display = 'none');
+  const destino = document.getElementById(seccion);
+  if (destino) destino.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (seccion === 'votacion-nominados') {
+    // Limpiar contenedores y volver a crear (evita duplicados)
+renderNominadosPorLotes();
+
+if (window.actualizarEstadoBotonNominaciones) {
+  await window.actualizarEstadoBotonNominaciones();
+}
+
+// Cabeceras con imagen (se re-aplican cada vez)
+if (typeof enhanceCategoryHeaders === 'function') {
+  enhanceCategoryHeaders();
+}
+
+
+  }
+
+  if (seccion === "resultados" && typeof cargarResultados === "function") {
+    cargarResultados();
+  }
+  if (seccion === "tu-votacion" && typeof cargarTuVotacion === "function") {
+  cargarTuVotacion();
+}
+  if (seccion === 'votacion') {
+    document.body.classList.add('tab-votacion');
+  } else {
+    document.body.classList.remove('tab-votacion');
+  }
+// Dentro de tu window.mostrarSeccion
+if (seccion === 'votacion') {
+  if (window.actualizarEstadoBotonVotacion) {
+    await window.actualizarEstadoBotonVotacion();
+  }
+}
+
+};
+
+// --- TU VOTACIÓN ---
+async function cargarTuVotacion() {
+  const user = localStorage.getItem("usuarioLogueado");
+  const sec  = document.getElementById("tu-votacion");
+  const boxSimple = document.getElementById("tuVotacion-simple");
+  const boxNom    = document.getElementById("tuVotacion-nominaciones");
+  const emptyBox  = document.getElementById("tuVotacion-empty");
+  const subtitle  = document.getElementById("tuVotacion-subtitle");
+
+  if (!sec || !boxSimple || !boxNom || !emptyBox) return;
+
+  // Requiere login
+  if (!user) {
+    subtitle.textContent = "";
+    boxSimple.innerHTML = "";
+    boxNom.innerHTML = "";
+    emptyBox.style.display = "block";
+    emptyBox.textContent = "Debes iniciar sesión para ver tu votación.";
+    mostrarSeccion("login");
+    return;
+  }
+
+  boxSimple.innerHTML = "<p>Cargando…</p>";
+  boxNom.innerHTML = "<p>Cargando…</p>";
+  emptyBox.style.display = "none";
+  subtitle.textContent = `Usuario: ${user}`;
+
+  try {
+    // ---- VOTACIÓN SIMPLE (último voto por categoría) ----
+    const qV = query(collection(db, "votaciones"), where("usuario", "==", user));
+    const snapV = await getDocs(qV);
+
+    // Mapa: categoria -> {voto, timestamp}
+    const ultimosPorCat = {};
+    snapV.forEach(d => {
+      const data = d.data() || {};
+      const cat  = data.categoria || "Sin categoría";
+      const ts   = data.timestamp?.seconds || 0;
+      if (!ultimosPorCat[cat] || ts > ultimosPorCat[cat].ts) {
+        ultimosPorCat[cat] = { voto: data.voto, ts };
+      }
+    });
+
+    if (Object.keys(ultimosPorCat).length === 0) {
+      boxSimple.innerHTML = "<p>No hay votos registrados aún.</p>";
+    } else {
+      const ul = document.createElement("ul");
+      Object.entries(ultimosPorCat)
+        .sort(([a],[b]) => a.localeCompare(b))
+        .forEach(([categoria, {voto}]) => {
+          const li = document.createElement("li");
+          li.textContent = `${categoria}: ${voto}`;
+          ul.appendChild(li);
+        });
+      boxSimple.innerHTML = "";
+      boxSimple.appendChild(ul);
+    }
+
+    // ---- NOMINACIONES (ciclo actual) ----
+    let ciclo = await getCicloActual();
+    const qN = query(
+      collection(db, "nominaciones"),
+      where("usuario", "==", user),
+      where("ciclo", "==", ciclo)
+    );
+    const snapN = await getDocs(qN);
+
+    if (snapN.empty) {
+      boxNom.innerHTML = `<p>No has enviado nominaciones aún.</p>`;
+    } else {
+      const frag = document.createDocumentFragment();
+      const porCat = {};
+      snapN.forEach(d => {
+        const data = d.data() || {};
+        const cat  = data.categoria || "Sin categoría";
+        porCat[cat] = Array.isArray(data.nominados) ? data.nominados : [];
+      });
+
+      Object.entries(porCat)
+        .sort(([a],[b]) => a.localeCompare(b))
+        .forEach(([categoria, nominados]) => {
+          const wrap = document.createElement("div");
+          const h4 = document.createElement("h4");
+          h4.textContent = categoria;
+          const ul = document.createElement("ul");
+          (nominados.length ? nominados : ["(sin nombres)"]).forEach(n => {
+            const li = document.createElement("li");
+            li.textContent = n;
+            ul.appendChild(li);
+          });
+          wrap.appendChild(h4);
+          wrap.appendChild(ul);
+          frag.appendChild(wrap);
+        });
+
+      boxNom.innerHTML = "";
+      boxNom.appendChild(frag);
+    }
+
+    // Si no hay nada en ambas
+    const vacioSimple = boxSimple.textContent.includes("No hay votos");
+    const vacioNom    = boxNom.textContent.includes("No has enviado nominaciones");
+    if (vacioSimple && vacioNom) {
+      emptyBox.style.display = "block";
+    } else {
+      emptyBox.style.display = "none";
+    }
+
+  } catch (e) {
+    console.error("Error cargando 'Tu votación':", e);
+    boxSimple.innerHTML = "<p>Error cargando tus votos.</p>";
+    boxNom.innerHTML = "<p>Error cargando tus nominaciones.</p>";
+  }
+}
+
+// Refrescar
+const btnRefresh = document.getElementById("tuVotacion-refresh");
+if (btnRefresh && !btnRefresh.dataset.bound) {
+  btnRefresh.dataset.bound = "1";
+  btnRefresh.addEventListener("click", cargarTuVotacion);
+}
+
+// Llamada al entrar en la sección
+window.cargarTuVotacion = cargarTuVotacion;
+
+// ===== Cabeceras con imagen =====
+// fallback si no pones imagen para una categoría
+const DEFAULT_PLACA = "fotos/placa-default.png";
+
+// Añade aquí las rutas que quieras; si falta alguna usará DEFAULT_PLACA
+const categoryImages = {
+  // Lote 1
+  "Viajero/a del año": "fotos/viajero.jpeg",
+  "Picado/a del año": "fotos/competititivo.png",
+  "Guarrete del año":          "fotos/guarrete.jpeg",
+  "Papi/Mami del año":     "fotos/papi.jpg",
+    "Meme del año":             "fotos/meme.jpeg",
+
+  // Lote 2
+  "Brainhot del año":              "fotos/brainhot.jpeg",
+  "Correon del año":     "fotos/correon.jpeg",
+  "Trio/Cuarteto del año":              "fotos/trio.jpeg",
+  "Soltero del año":            "fotos/soltero.jpeg",
+    "El que mejor viste del año":    "fotos/mejorviste.jpeg",
+
+  // Lote 3
+    "Llorón del año":    "fotos/lloron.jpeg",
+  "Fiestero/a del año":                    "fotos/fiestero.jpeg",
+  "Borracho/a del año":                  "fotos/borracho.jpeg",
+  "Mejor Personaje fuera de JyP del año":               "fotos/mpersonaje.jpeg",
+  "Peor momento del año":                    "fotos/p_momento.jpeg",
+
+  // Lote 4
+  "Mensaje del año":             "fotos/mensaje.jpeg",
+  "Mote del año":         "fotos/mote.jpeg",
+  "Palabra/Frase del año":        "fotos/palabra.jpeg",
+  "Objeto del año":           "fotos/objeto.jpg",
+  "Baile del año":  "fotos/baile.jpeg",
+
+  // Lote 5
+  "Autistada del año":          "fotos/autistada.jpg",
+  "Fail del año":          "fotos/fail.jpeg",
+  "Broma del año":    "fotos/broma.jpeg",
+  "Foto del año":     "fotos/foto.jpeg",
+  "Video del año":           "fotos/video.jpeg",
+
+  // Lote 6
+  "Fiesta del año":                "fotos/fiesta.jpeg",
+  "Mejor momento del año":       "fotos/m_momento.jpeg",
+  "Decepción del año":              "fotos/decepcion.jpeg",
+  "Revelación del año":             "fotos/revelacion.png",
+  "MVP del año": "fotos/mvp.png"
+};
+
+function enhanceCategoryHeaders() {
+  const wrap = document.getElementById('nominadosWrapper');
+  if (!wrap) return;
+
+  // para poder re-ejecutar cada vez
+  delete wrap.dataset.headersEnhanced;
+  if (wrap.dataset.headersEnhanced === "1") return;
+
+  wrap.querySelectorAll(':scope > h2').forEach(h2 => {
+    const titulo = h2.textContent.trim();
+    if (h2.closest('.cat-header')) return;
+
+    const imgSrc = categoryImages[titulo] || DEFAULT_PLACA;
+    const p = h2.nextElementSibling && h2.nextElementSibling.tagName === "P"
+      ? h2.nextElementSibling : null;
+
+    const header = document.createElement('div');
+    header.className = 'cat-header';
+
+    const img = document.createElement('img');
+    img.className = 'cat-badge';
+    img.src = imgSrc;
+    img.alt = titulo;
+
+    const wrapTitle = document.createElement('div');
+    wrapTitle.className = 'title-group';
+    wrapTitle.appendChild(h2.cloneNode(true));
+    if (p) wrapTitle.appendChild(p.cloneNode(true));
+
+    header.appendChild(img);
+    header.appendChild(wrapTitle);
+
+    h2.parentNode.insertBefore(header, h2);
+    if (p) p.remove();
+    h2.remove();
+  });
+
+  wrap.dataset.headersEnhanced = "1";
+}
+
+
+// ======================================
+// NUEVA CONFIGURACIÓN: 5 CATEGORÍAS DE VOTACIÓN
+// ======================================
+const CATEGORIAS_VOTACION = {
+  "Mejor amigo": [
+    { nombre: "Asieras", foto: "fotos/asieras.jpeg" },
+    { nombre: "Rulillas", foto: "fotos/rulillas.jpeg" },
+    { nombre: "Darawayas", foto: "fotos/dario.jpeg" },
+    { nombre: "Ivanpechotes", foto: "fotos/ivanp.jpeg" },
+  ],
+  "Más divertido": [
+    { nombre: "Rober", foto: "fotos/rober.jpeg" },
+    { nombre: "Gamepro", foto: "fotos/gamepro.jpeg" },
+    { nombre: "Fervico", foto: "fotos/fervico.jpeg" },
+    { nombre: "Rulas", foto: "fotos/rulillas.jpeg" },
+  ],
+  "Más creativo": [
+    { nombre: "Lucía", foto: "fotos/lucia.jpeg" },
+    { nombre: "DaniGG", foto: "fotos/dani.jpeg" },
+    { nombre: "Mario", foto: "fotos/mario.jpeg" },
+    { nombre: "Poru", foto: "fotos/poru.jpeg" },
+  ],
+  "Fiestero/a del año": [
+    { nombre: "Rulas", foto: "fotos/rulillas.jpeg" },
+    { nombre: "Ikardo", foto: "fotos/iker.jpeg" },
+    { nombre: "Fermoriv", foto: "fotos/Fermoriv.jpeg" },
+    { nombre: "Lusilu", foto: "fotos/lucia.jpeg" },
+  ],
+  "MVP del año": [
+    { nombre: "Asieras", foto: "fotos/asieras.jpeg" },
+    { nombre: "Rober", foto: "fotos/rober.jpeg" },
+    { nombre: "Mario", foto: "fotos/mario.jpeg" },
+    { nombre: "DaniGG", foto: "fotos/dani.jpeg" },
+  ],
+};
+
+
+// ======================================
+// GENERADOR DE TARJETAS DE VOTACIÓN
+// ======================================
+// --- VOTAR: render dinámico (5 categorías, 4 nominados c/u) ---
+const votacionWrapper = document.getElementById('votacionWrapper');
+const votosSeleccionados = {}; // { categoria: nombre }
+
+function pintarVotacion() {
+  votacionWrapper.innerHTML = '';
+  Object.entries(CATEGORIAS_VOTACION).forEach(([categoria, nominados]) => {
+    const h3 = document.createElement('h3');
+    h3.textContent = categoria;
+    const grid = document.createElement('div');
+    grid.className = 'grid-nominados';
+
+    nominados.forEach(nom => {
+      const card = document.createElement('div');
+      card.className = 'nominado';
+      card.dataset.nombre = nom.nombre;
+      card.dataset.categoria = categoria;
+      card.innerHTML = `
+        <img src="${nom.foto}" alt="${nom.nombre}">
+        <span>${nom.nombre}</span>
+      `;
+
+      // Selección con toggle (si está seleccionada y la pulsas de nuevo, se quita)
+      card.addEventListener('click', () => {
+        const ya = card.classList.contains('selected');
+        // deselecciona todo en esa categoría
+        grid.querySelectorAll('.nominado').forEach(c => c.classList.remove('selected'));
+        if (ya) {
+          // quitar el voto de esa categoría
+          delete votosSeleccionados[categoria];
+        } else {
+          card.classList.add('selected');
+          votosSeleccionados[categoria] = nom.nombre;
+        }
+      });
+
+      grid.appendChild(card);
+    });
+
+    votacionWrapper.appendChild(h3);
+    votacionWrapper.appendChild(grid);
+  });
+}
+pintarVotacion();
+
+document.getElementById('enviarVotacion').addEventListener('click', async () => {
+  const usuario = localStorage.getItem('usuarioLogueado');
+  if (!usuario) { alert("Debes iniciar sesión para votar."); mostrarSeccion('login'); return; }
+
+  const pendientes = Object.keys(CATEGORIAS_VOTACION).filter(cat => !votosSeleccionados[cat]);
+  if (pendientes.length) { alert(`Te falta votar en: ${pendientes.join(', ')}`); return; }
+
+  try {
+    const ciclo = await getCicloActual();   // 👈 ciclo actual
+    for (const [cat, nom] of Object.entries(votosSeleccionados)) {
+      await addDoc(collection(db, "votaciones"), {
+        usuario,
+        categoria: cat,
+        voto: nom,
+        ciclo,                     // 👈 guarda a qué ciclo pertenece este envío
+        timestamp: serverTimestamp()
+      });
+    }
+
+    alert("✅ Tus votos se han registrado correctamente.");
+    document.querySelectorAll('.nominado').forEach(c => c.classList.remove('selected'));
+
+    // 👇 desactiva el botón tras votar
+    await actualizarEstadoBotonVotacion();
+
+  } catch (e) {
+    console.error(e);
+    alert("❌ Error al guardar los votos.");
+  }
+});
+
+
+
+    // === NOMINADOS ESPECIALES POR CATEGORÍA ===
+// Si una categoría aparece aquí, usará ESTOS nominados en vez de los del grid #participantes
+const NOMINADOS_ESPECIALES = {
+  "Brainhot del año": [
+
+    { nombre: "Fermorini quesini", video: "fotos/brainhot/fermo.mp4", poster: "fotos/brainhot/fermo.jpeg" },
+    { nombre: "Fervico il inano", video: "fotos/brainhot/fer.mp4", poster: "fotos/brainhot/fer.jpeg" },
+    { nombre: "Geimpro e geimpra", video: "fotos/brainhot/gamepro.mp4", poster: "fotos/brainhot/gamepro.jpeg" },
+    { nombre: "Ivanpi qui ivanpi", video: "fotos/brainhot/ivanp.mp4", poster: "fotos/brainhot/ivanp.jpeg" },
+    { nombre: "Rulas e rulossino", video: "fotos/brainhot/rulas.mp4", poster: "fotos/brainhot/rulas.jpeg" },
+    { nombre: "Poru ropu tropu sopu popu", video: "fotos/brainhot/poru.mp4", poster: "fotos/brainhot/poru.jpeg" },
+    { nombre: "Pam Darió", video: "fotos/brainhot/dario.mp4", poster: "fotos/brainhot/dario.jpeg" },
+    { nombre: "Pocoyo yopoco marcotu", video: "fotos/brainhot/marco.mp4", poster: "fotos/brainhot/marco.jpeg" },
+    { nombre: "Manuelerini Panterini", video: "fotos/brainhot/manu.mp4", poster: "fotos/brainhot/manu.jpeg" },
+    { nombre: "Danielo el bombardero", video: "fotos/brainhot/dani.mp4", poster: "fotos/brainhot/dani.jpeg" },
+    { nombre: "Quinito quinatu", video: "fotos/brainhot/iker.mp4", poster: "fotos/brainhot/iker.jpeg" },
+    { nombre: "Parralero Roberta", video: "fotos/brainhot/rober.mp4", poster: "fotos/brainhot/rober.jpeg" },
+    { nombre: "Abuelero abueloso", video: "fotos/brainhot/labrada.mp4", poster: "fotos/brainhot/labrada.jpeg" },
+    { nombre: "Lúcia lusosos con Sergio Ramosos", video: "fotos/brainhot/lucia.mp4", poster: "fotos/brainhot/lucia.jpeg" },
+    { nombre: "Castora castori", video: "fotos/brainhot/asier.mp4", poster: "fotos/brainhot/asier.jpeg" },
+    { nombre: "Baggete Mariete letrete", video: "fotos/brainhot/maria.mp4", poster: "fotos/brainhot/maria.jpeg" },
+    { nombre: "Caminote Inesote", video: "fotos/brainhot/ines.mp4", poster: "fotos/brainhot/ines.jpeg" },
+    { nombre: "Garbanzino chiquitino", video: "fotos/brainhot/mario.mp4", poster: "fotos/brainhot/mario.jpeg" },
+
+  ],
+
+  "Mejor Personaje fuera de JyP del año": [
+    { nombre: "Diegote", foto: "fotos/perosnajes/diego.jpeg" },
+    { nombre: "Iceman", foto: "fotos/perosnajes/iceman.jpeg" },
+    { nombre: "Bólido", foto: "fotos/perosnajes/bolido.jpeg" },
+    { nombre: "Cangurín", foto: "fotos/perosnajes/cangurin.jpeg" },
+    { nombre: "Unai el guay", foto: "fotos/perosnajes/unai.jpeg" },
+    { nombre: "Javichu", foto: "fotos/perosnajes/javichu.jpeg" },
+    { nombre: "Mariodi", foto: "fotos/perosnajes/mariodi.jpeg" },
+    { nombre: "Juan Noblejas", foto: "fotos/perosnajes/juan.jpeg" },
+    { nombre: "Pepito", foto: "fotos/perosnajes/pepito.jpeg" },
+    { nombre: "Nuria", foto: "fotos/perosnajes/nuria.jpeg" }
+  ],
+
+  "Fiesta del año": [
+    { nombre: "Factory de Enero", foto: "fotos/fiesta/factory.jpeg" },
+    { nombre: "Carnavales", foto: "fotos/fiesta/carnaval.jpeg" },
+    { nombre: "Feria de Abril", foto: "fotos/fiesta/abril.jpeg" },
+    { nombre: "Magma", foto: "fotos/fiesta/magma.jpeg" },
+    { nombre: "Proyecto x", foto: "fotos/fiesta/proyecto x.jpeg" },
+    { nombre: "Zurra", foto: "fotos/fiesta/zurra.jpeg" },
+    { nombre: "Pandorga", foto: "fotos/fiesta/pandorga.jpeg" },
+    { nombre: "Ferias Peruanas", foto: "fotos/fiesta/peruana.jpeg" },
+    { nombre: "Ferias de Ciu", foto: "fotos/fiesta/ciu.jpeg" },
+    { nombre: "Hallowen?¿?¿", foto: "fotos/fiesta/.jpeg" }
+  ],
+
+  "Objeto del año": [
+    { nombre: "Tequifresi", foto: "fotos/objeto/tequifresi.jpeg" },
+    { nombre: "Cia", foto: "fotos/objeto/cia.jpeg" },
+    { nombre: "Shisha X", foto: "fotos/objeto/sisa.jpeg" },
+    { nombre: "Pelusa", foto: "fotos/objeto/pelusa.jpeg" },
+    { nombre: "Bandera Peruana ", foto: "fotos/objeto/peruana.jpeg" },
+    { nombre: "Ana Rosa", foto: "fotos/objeto/anarosa.jpeg" },
+    { nombre: "Ositopro", foto: "fotos/objeto/ositopro.jpeg" },
+    { nombre: "Pantalones Bob esponja", foto: "fotos/objeto/pantalonesb.jpeg" },
+    { nombre: "Salami", foto: "fotos/objeto/salami.png" },
+    { nombre: "Nunca Follo", foto: "fotos/objeto/follo.jpeg" }
+  ],
+
+  "Palabra/Frase del año": [
+    { nombre: "Sirulo", foto: "fotos/palabra/sirulo.jpeg" },
+    { nombre: "Esa peñaaaa", foto: "fotos/palabra/peña.jpeg" },
+    { nombre: "Vamos no me jodas", foto: "fotos/palabra/vamos.jpeg" },
+    { nombre: "Subnormal!", foto: "fotos/palabra/subnormal.jpeg" },
+    { nombre: "Tengo miedo a que se me caigan las patatas", foto: "fotos/palabra/patatas.jpeg" },
+    { nombre: "Bomba", foto: "fotos/palabra/bomba.jpeg" },
+    { nombre: "Virgen", foto: "fotos/palabra/virgen.jpeg" },
+    { nombre: "Prohibido divieto ", foto: "fotos/palabra/prohibido.jpeg" },
+    { nombre: "Que si que vamos a por ti ", foto: "fotos/palabra/vamosti.jpeg" },
+    { nombre: "Yets", foto: "fotos/palabra/yets.jpeg" }
+  ],
+
+  "Video del año": [
+    { nombre: "La correa de mi primo", video: "videos/correa.mp4", poster: "videos/posters/correa.jpeg" },
+    { nombre: "El desfase de Noblejas", video: "videos/juan.mp4", poster: "videos/posters/juan.jpeg" },
+    { nombre: "Castor alimentando a Castor", video: "videos/castor.mp4", poster: "videos/posters/castor.jpeg" },
+    { nombre: "La muerte de Ana Rosa", video: "videos/iker.mp4", poster: "videos/posters/iker.jpeg" },
+    { nombre: "lluvia de conos", video: "videos/conos.mp4", poster: "videos/posters/lluvia.jpeg" },
+    { nombre: "El Vampiricantropo", video: "videos/ines.mp4", poster: "videos/posters/ines.jpeg" },
+    { nombre: "Osito gominola", video: "videos/ivanp.mp4", poster: "videos/posters/ivanp.jpeg" },
+  ],
+
+  "Foto del año": [
+    { nombre: "Porno X", foto: "fotos/fotos/marconuria.jpeg" },
+    { nombre: "Dario tortuga", foto: "fotos/fotos/darioo.jpeg" },
+    { nombre: "Cafeteros", foto: "fotos/fotos/peruanos.jpeg" },
+    { nombre: "Hey Jude", foto: "fotos/fotos/londresb.jpeg" },
+    { nombre: "Jugui x Segarra", foto: "fotos/fotos/jugui.jpeg" },
+    { nombre: "El beso de judas", foto: "fotos/fotos/ferlab.jpeg" },
+    { nombre: "Orgía", foto: "fotos/fotos/carnaval.jpeg" },
+    { nombre: "Culos", foto: "fotos/fotos/marconuria.jpeg" },
+    { nombre: "Paleto Bob esponja", foto: "fotos/fotos/bob.jpeg" },
+    { nombre: "Parrales salvando a Ana Rosa", foto: "fotos/fotos/parrales.jpeg" }
+  ],
+
+  "Mote del año": [
+    { nombre: "Gamepollo", foto: "fotos/mote/gamepollo.jpeg" },
+    { nombre: "Cafetera", foto: "fotos/mote/cafetera.jpeg" },
+    { nombre: "Pereira", foto: "fotos/mote/pereira.jpeg" },
+    { nombre: "Dj ventosa ", foto: "fotos/mote/djventosa.jpeg" },
+    { nombre: "Fish and Chips", foto: "fotos/mote/fish.jpeg" },
+    { nombre: "Pajaroto", foto: "fotos/mote/pajaroto.jpeg" },
+    { nombre: "Fermoro", foto: "fotos/mote/fermoro.jpeg" },
+    { nombre: "Gamepollo", foto: "fotos/mote/marconuria.jpeg" },
+    { nombre: "Gamepollo", foto: "fotos/mote/marconuria.jpeg" },
+    { nombre: "Gamepollo", foto: "fotos/mote/marconuria.jpeg" }
+  ],
+
+    "Fail del año": [
+    { nombre: "Matalascañas", foto: "fotos/fail/matalascañas.jpeg" },
+    { nombre: "Altavoces Proyecto X ", foto: "fotos/fail/Altavoces.jpeg" },
+    { nombre: "Pisos en Alicante", foto: "fotos/fail/alicante.jpeg" },
+    { nombre: "Tele por la ventana ", foto: "fotos/fail/tele.jpeg" },
+    { nombre: "Mesa de Fervico", foto: "fotos/fail/mesa.jpeg" },
+    { nombre: "Caca a Asier", foto: "fotos/fail/caca.jpeg" },
+    { nombre: "muerte de la Chifurgo", foto: "fotos/fail/chifurgo.jpeg" },
+    { nombre: "Sxgarra vacila a Mario", foto: "fotos/fail/jugui.jpeg" },
+    { nombre: "Gamepollo", foto: "fotos/fail/gamepollo.jpeg" },
+    { nombre: "Gamepollo", foto: "fotos/fail/gamepollo.jpeg" },
+  ],
+
+      "Meme del año": [
+    { nombre: "Dario Vascas", foto: "fotos/meme/dario.jpeg" },
+    { nombre: "Palomo", foto: "fotos/meme/palomo.jpeg" },
+    { nombre: "Fer en las tetorras", video: "fotos/meme/fer.mp4", poster: "fotos/meme/fervico.jpeg" },
+    { nombre: "Patata en la alcazaba", foto: "fotos/meme/patata.jpeg" },
+    { nombre: "Ivanp Gustabo", video: "fotos/meme/ivanp.mp4", poster: "fotos/meme/ivanpe.jpeg" },
+    { nombre: "Artupa en cas", foto: "fotos/meme/artupa.jpeg" },
+    { nombre: "Pelusa", foto: "fotos/meme/pelusa.jpeg" },
+    { nombre: "8", foto: "fotos/meme/8.jpeg" },
+    { nombre: "Diamantes", foto: "fotos/meme/diamantes.jpeg" },
+    { nombre: "Gusano saca lenguas", video: "fotos/meme/lengua.mp4", poster: "fotos/meme/lengua.jpg" }
+  ],
+
+        "Baile del año": [
+    { nombre: "Gamepro por la banda", video: "fotos/bailes/gamepro.mp4", poster: "fotos/bailes/gamepro.jpeg" },
+    { nombre: "Ivanp x Mozos", video: "fotos/bailes/ivanp.mp4", poster: "fotos/bailes/ivanp.jpeg" },
+    { nombre: "Asier Bailando con un negro", video: "fotos/bailes/asier.mp4", poster: "fotos/bailes/asier.jpeg" },
+    { nombre: "Rulas bailongo", video: "fotos/bailes/rulas.mp4", poster: "fotos/bailes/rulas.jpeg" },
+    { nombre: "Dani perchero", video: "fotos/bailes/dani.mp4", poster: "fotos/bailes/dani.jpeg" },
+    { nombre: "Shiny", video: "fotos/bailes/lucia.mp4", poster: "fotos/bailes/lucia.jpeg" },
+    { nombre: "Los encocaos", video: "fotos/bailes/iker.mp4", poster: "fotos/bailes/iker.jpeg" },
+    { nombre: "El mambo de Labrada", video: "fotos/bailes/labrada.mp4", poster: "fotos/bailes/labrada.jpeg" },
+    { nombre: "Señorita Surferita", video: "fotos/bailes/Surferita.mp4", poster: "fotos/bailes/Surferita.jpeg" },
+    { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
+
+],
+
+"Mensaje del año": [
+    { nombre: "El encuestas", foto: "fotos/mensaje/labrada.jpeg" },
+    { nombre: "Dani Dictador", foto: "fotos/mensaje/dani.jpeg" },
+    { nombre: "Erasmus", foto: "fotos/mensaje/maria.jpeg" },
+    { nombre: "Haberlo preguntado mañana", foto: "fotos/mensaje/labmanu.jpeg" },
+    { nombre: "Santiago destruido", foto: "fotos/mensaje/marco.jpeg" },
+    { nombre: "Hotel hayaway apartemt five", foto: "fotos/mensaje/rober.jpeg" },
+    { nombre: "Fermoriv solitario", foto: "fotos/mensaje/fermo.jpeg" },
+    { nombre: "El celoso", foto: "fotos/mensaje/gamepro.jpeg" },
+    { nombre: "Subjetividad ", foto: "fotos/mensaje/poru.jpeg" },
+    { nombre: "Kastor picada ", foto: "fotos/mensaje/mario.jpeg" },
+    
+
+  ],
+
+  "Trio/Cuarteto del año": [
+    { nombre: "Pibas", foto: "fotos/trio/pibas.jpeg" },
+    { nombre: "Fervico, Dario, Mario y Poru(EL escuadron salchichon)", foto: "fotos/trio/salchichon.jpeg" },
+    { nombre: "Labrada, Lucia y Gamepro(Los gofreros)", foto: "fotos/trio/gofres.jpeg" },
+    { nombre: "Rulas, Asier y Marco(Los veterinarios)", foto: "fotos/trio/primes.jpeg" },
+    { nombre: "Fervico, Ivanp y Maria(Jueguen quien Jueguen)", foto: "fotos/trio/jueguen.jpeg" },
+    { nombre: "Rober,Fermo y Marco(Los enfermeros)", foto: "fotos/trio/enfermeros.jpeg" },
+    { nombre: "Dani,Iker,Asier y Gamepro(Los tomelloseros)", foto: "fotos/trio/tomelloseros.jpeg" },
+    { nombre: "Fervico, Labrada y Ivanp(Los paninis)", foto: "fotos/trio/panini.jpeg" },
+    { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/trio/procesioneros.jpeg" },
+
+  ],
+
+    "Soltero del año": [
+    { nombre: "Fermoriv", foto: "fotos/soltero/fermo.jpeg" },
+    { nombre: "Rulas", foto: "fotos/soltero/rulas.jpeg" },    
+    { nombre: "Darío", foto: "fotos/soltero/dario.jpeg" },
+    { nombre: "Fervico", foto: "fotos/soltero/fer.jpeg" },
+    { nombre: "Marco", foto: "fotos/soltero/marco.jpeg" },
+    { nombre: "Iker", foto: "fotos/soltero/iker.jpeg" },
+    { nombre: "Poru", foto: "fotos/soltero/poru.jpeg" },
+  ],
+
+      "Correon del año": [
+    { nombre: "La correa de Rober", foto: "fotos/correon/rober.jpeg" },
+    { nombre: "La correa de Asier", foto: "fotos/correon/asier.jpeg" },
+    { nombre: "La correa de Gamepro", foto: "fotos/correon/gamepro.jpeg" },
+    { nombre: "La correa de Manu", foto: "fotos/correon/manu.jpeg" },
+    { nombre: "La correa de Dani", foto: "fotos/correon/dani.jpeg" },
+    { nombre: "La correa de Mario", foto: "fotos/correon/mario.jpeg" },
+    { nombre: "La correa de Labrada", foto: "fotos/correon/Labrada.jpeg" },
+    { nombre: "La correa de Ivanp", foto: "fotos/correon/ivanp.jpeg" },
+
+  ],
+        "Broma del año": [
+    { nombre: "Oye Siri", foto: "fotos/broma/lucia.jpeg" },
+    { nombre: "Patatas contra la cama de labrada", foto: "fotos/broma/patata.jpeg" },
+    { nombre: "Grabaciones cagada", foto: "fotos/broma/lab.jpeg" },
+    { nombre: "Lanzamiento de Objetos a piscina", foto: "fotos/broma/lanzamiento.jpeg" },
+    { nombre: "Cono a Javichu vol 2", foto: "fotos/broma/cono.jpeg" },
+    { nombre: "Rotura de camisetas", foto: "fotos/broma/camisetas.jpeg" }
+
+  ],
+
+          "Mejor momento del año": [
+    { nombre: "Marco Pagando", foto: "fotos/m_momento/marco.jpeg" },
+    { nombre: "Sala vip chino Juan", foto: "fotos/m_momento/chino.jpeg" },
+    { nombre: "Dj Rulas sesión", foto: "fotos/m_momento/djrulas.jpeg" },
+    { nombre: "Carrera con tio borracho", foto: "fotos/m_momento/carrera.jpeg" },
+    { nombre: "Rulas vs Ivanp", foto: "fotos/m_momento/ivanp.jpeg" },
+    { nombre: "Previa Alicante", foto: "fotos/m_momento/rulas.jpeg" },
+    { nombre: "Mandanga style carnaval", foto: "fotos/m_momento/mandanga.jpeg" },
+
+  ],
+          "Autistada del año": [
+    { nombre: "Foto de Perfil fervico", foto: "fotos/autistada/foto.jpeg" },
+    { nombre: "Robo de botellas X", foto: "fotos/autistada/yoryo.jpeg" },
+    { nombre: "Ludopatia capibara", foto: "fotos/autistada/ludopatia.jpeg" },
+    { nombre: "Reformas Poru y Enano", foto: "fotos/autistada/reformas.jpeg" },
+    { nombre: "Rulas en aviones", foto: "fotos/autistada/rulas.jpeg" },
+  ],
+            "Peor momento del año": [
+    { nombre: "La muerte de Dani en la tortuga", foto: "fotos/p_momento/dani.jpeg" },
+    { nombre: "La caseta de la esperanza(Feria de Abril)", foto: "fotos/p_momento/esperanza.jpeg" },
+    { nombre: "Vecina casi nos denuncia", foto: "fotos/p_momento/londres.jpeg" },
+     { nombre: "La cola de magma", foto: "fotos/p_momento/magma.jpeg" },
+     { nombre: "Fermoriv en Carnavales", foto: "fotos/p_momento/fermo.jpeg" },
+    { nombre: "El desastre de la yedra", foto: "fotos/p_momento/ivanp.jpeg" },
+  ],
+
+
+};
+
+// (Opcional) Máximo por categoría (si alguna NO es 3)
+const MAX_SELECCION_POR_CATEGORIA = {
+  // "Personaje del año": 1,
+  // "Trío del año": 3,
+};
+
+// =========================
+// NOMINACIONES POR USUARIO
+// =========================
+const nominacionesPorCategoria = {};
+
+function crearApartadoNominaciones(idLista, categoriaNombre) {
+  const contenedor = document.getElementById(idLista);
+  nominacionesPorCategoria[categoriaNombre] = [];
+
+  // 1) ¿Tiene nominados especiales?
+  const override = NOMINADOS_ESPECIALES[categoriaNombre];
+  let lista = [];
+
+if (Array.isArray(override) && override.length) {
+  // Usar especiales (conservar video y poster)
+  lista = override.map(o => ({
+    nombre: o.nombre,
+    foto:   o.foto ?? null,
+    video:  o.video ?? null,
+    poster: o.poster ?? null
+  }));
+  } else {
+    // Usar participantes del grid como hasta ahora
+    document.querySelectorAll('#participantes .participante').forEach(part => {
+      const nombre = part.querySelector('h3').innerText.trim();
+      const foto = part.querySelector('img').src;
+      lista.push({ nombre, foto });
+    });
+  }
+
+// 2) Pintar tarjetas (con soporte de vídeo)
+lista.forEach(item => {
+  const { nombre, foto, video, poster } = item;
+
+  const div = document.createElement('div');
+  div.classList.add('nominado');
+  div.dataset.nombre = nombre;
+
+  const media = video
+    ? `<video ${poster ? `poster="${poster}"` : ""} src="${video}" muted playsinline></video>`
+    : `<img src="${foto || 'fotos/default-user.png'}" alt="${nombre}">`;
+
+  div.innerHTML = `${media}<span>${nombre}</span>`;
+  contenedor.appendChild(div);
+  // Si es la categoría "Mensaje del año" y el item tiene imagen -> botón lupa
+if (categoriaNombre === "Mensaje del año" && foto) {
+  const btn = document.createElement('div');
+  btn.className = 'btn-zoom';
+  btn.setAttribute('role', 'button');
+  btn.setAttribute('aria-label', 'Ver imagen en grande');
+
+  // icono lupa SVG
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", "18");
+  svg.setAttribute("height", "18");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  const path = document.createElementNS(svgNS, "path");
+  path.setAttribute("d","M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z");
+  svg.appendChild(path);
+  btn.appendChild(svg);
+
+  // abrir lightbox y NO seleccionar la tarjeta
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openImageLightbox(foto, nombre);
+  });
+
+  div.appendChild(btn);
+}
+
+});
+
+// engancha los vídeos de este contenedor al lightbox
+wireLightboxForVideos(contenedor);
+
+
+
+
+// --- Lightbox de VÍDEO: compatible con ambas firmas y con botón X funcionando ---
+function openVideoLightbox(arg1, title = '') {
+  const modal = document.getElementById('videoLightbox');
+  const video = document.getElementById('lightboxVideo');
+  if (!modal || !video) return;
+
+  // Soportar ambas firmas: string o objeto
+  let src, poster, startAt = 0, autoPlay = false;
+  if (typeof arg1 === 'object' && arg1) {
+    src = arg1.src;
+    poster = arg1.poster || null;
+    startAt = Number(arg1.startAt || 0);
+    autoPlay = !!arg1.autoPlay;
+    title = arg1.title || title || '';
+  } else {
+    src = arg1; // firma clásica: (src, title)
+  }
+  if (!src) return;
+
+  // Preparar el vídeo
+  try { video.pause(); } catch {}
+  video.removeAttribute('src');
+  if (poster) video.setAttribute('poster', poster); else video.removeAttribute('poster');
+  video.src = src;
+  video.load();
+
+  // Mostrar modal
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  if (title) video.setAttribute('aria-label', title);
+
+  // Posicionar/auto reproducir
+  if (startAt > 0) {
+    // Esperar a que tenga metadata para poder hacer seek sin error
+    const onMeta = () => {
+      video.currentTime = Math.min(startAt, (video.duration || startAt));
+      if (autoPlay) video.play().catch(()=>{});
+      video.removeEventListener('loadedmetadata', onMeta);
+    };
+    video.addEventListener('loadedmetadata', onMeta);
+  } else if (autoPlay) {
+    video.play().catch(()=>{});
+  }
+}
+
+function closeVideoLightbox() {
+  const modal = document.getElementById('videoLightbox');
+  const video = document.getElementById('lightboxVideo');
+  if (!modal || !video) return;
+
+  try { video.pause(); } catch {}
+  video.removeAttribute('src');
+  video.removeAttribute('poster');
+  video.load();
+
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+
+// Listeners: clic fuera, ❌ y ESC (solo una vez)
+(() => {
+  const modal = document.getElementById('videoLightbox');
+  if (!modal || modal.dataset.bound) return;
+  modal.dataset.bound = '1';
+
+  // Cerrar clicando fuera (overlay)
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'videoLightbox') closeVideoLightbox();
+  });
+
+  // Evitar que clics dentro del contenido cierren el modal
+  modal.querySelector('.video-modal__inner')?.addEventListener('click', (e) => e.stopPropagation());
+
+  // Botón X
+  modal.querySelector('.video-modal__close')?.addEventListener('click', closeVideoLightbox);
+
+  // Tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeVideoLightbox();
+  });
+})();
+
+
+
+
+// (Opcional) Delegación: abrir lightbox cuando se pulse sobre cualquier
+// elemento que tenga data-video-src="ruta/al/video.mp4"
+document.addEventListener('click', (e) => {
+  const trigger = e.target.closest('[data-video-src]');
+  if (!trigger) return;
+  e.preventDefault();
+  const src = trigger.getAttribute('data-video-src');
+  const title = trigger.getAttribute('aria-label') || trigger.getAttribute('title') || '';
+  if (src) openVideoLightbox(src, title);
+});
+
+
+
+function wireLightboxForVideos(scope = document) {
+  // Configuración de los vídeos pequeños
+  scope.querySelectorAll('.grid-nominados .nominado video').forEach(v => {
+    v.controls = true;
+    v.muted = true; // empieza silenciado
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    v.setAttribute('preload', 'metadata');
+
+    // Cuando el usuario le da al play, activamos el sonido
+    v.addEventListener('play', () => {
+      v.muted = false;
+    });
+  });
+
+  // Añadir botón de "ver en grande" a cada tarjeta con vídeo
+  scope.querySelectorAll('.grid-nominados .nominado').forEach(card => {
+    const v = card.querySelector('video');
+    if (!v) return; // solo si hay vídeo
+    if (card.querySelector('.btn-expand')) return; // evitar duplicados
+
+    const btn = document.createElement('div');
+btn.className = 'btn-expand';
+btn.setAttribute('role', 'button');   // accesible como botón
+btn.setAttribute('tabindex', '0');    // se puede enfocar con teclado
+btn.title = 'Ver en grande';
+btn.setAttribute('aria-label', 'Ver en grande');
+
+    btn.className = 'btn-expand';
+    btn.title = 'Ver en grande';
+    btn.setAttribute('aria-label', 'Ver en grande');
+
+    // Crear el SVG de lupa
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", "18");
+    svg.setAttribute("height", "18");
+    svg.setAttribute("fill", "currentColor");
+    svg.setAttribute("viewBox", "0 0 16 16");
+
+    const path = document.createElementNS(svgNS, "path");
+    path.setAttribute("d", "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z");
+
+    svg.appendChild(path);
+    btn.appendChild(svg);
+
+    // Evento para abrir el lightbox
+btn.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  const wasPlaying = !v.paused && !v.ended;
+  const t = v.currentTime || 0;
+  const src = v.currentSrc || v.src;
+  const poster = v.getAttribute('poster');
+
+  // 1) Pausa el pequeño
+  try { v.pause(); } catch {}
+
+  // 2) Abre el grande en el mismo punto
+  openVideoLightbox({
+    src,
+    poster,
+    startAt: t,
+    autoPlay: true,
+    sourceEl: v,         // referencia al pequeño
+    wasPlaying           // para saber si debemos reanudar al cerrar
+  });
+});
+
+
+    card.appendChild(btn);
+  });
+}
+
+
+  // 3) Selección (con máximo por categoría si lo definiste)
+  const maxSeleccion = MAX_SELECCION_POR_CATEGORIA[categoriaNombre] ?? 3;
+
+  contenedor.querySelectorAll('.nominado').forEach(item => {
+    item.addEventListener('click', () => {
+      const nombre = item.dataset.nombre;
+      if (item.classList.contains('selected')) {
+        item.classList.remove('selected');
+        nominacionesPorCategoria[categoriaNombre] =
+          nominacionesPorCategoria[categoriaNombre].filter(n => n !== nombre);
+      } else {
+        if (nominacionesPorCategoria[categoriaNombre].length >= maxSeleccion) {
+          alert(`Solo puedes seleccionar ${maxSeleccion} nominados en esta categoría.`);
+          return;
+        }
+        item.classList.add('selected');
+        nominacionesPorCategoria[categoriaNombre].push(nombre);
+      }
+    });
+  });
+}
+
+// --- Lightbox de imagen ---
+function openImageLightbox(src, alt = ''){
+  const modal = document.getElementById('imageLightbox');
+  const img   = document.getElementById('lightboxImage');
+  if (!modal || !img) return;
+  img.src = src; img.alt = alt || '';
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeImageLightbox(){
+  const modal = document.getElementById('imageLightbox');
+  const img   = document.getElementById('lightboxImage');
+  if (!modal || !img) return;
+  img.removeAttribute('src');
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+
+// cerrar por botón / fondo / ESC
+(() => {
+  const modal = document.getElementById('imageLightbox');
+  if (!modal) return;
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'imageLightbox') closeImageLightbox();
+  });
+  const btn = modal.querySelector('.image-modal__close');
+  if (btn) btn.addEventListener('click', closeImageLightbox);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeImageLightbox();
+  });
+})();
+
+
+
+// ===== LOTES DE CATEGORÍAS (6 lotes x 5 categorías) =====
+
+// LOTE 1 (inicial)
+const LOTE_1 = [
+  "Viajero/a del año",
+  "Picado/a del año",
+  "Guarrete del año",
+  "Papi/Mami del año",
+    "Meme del año"
+];
+
+// LOTE 2
+const LOTE_2 = [
+  "Brainhot del año",
+  "Correon del año",
+  "Trio/Cuarteto del año",
+  "Soltero del año",
+  "El que mejor viste del año",
+];
+
+// LOTE 3
+const LOTE_3 = [
+  "Llorón del año",
+  "Fiestero/a del año",
+  "Borracho/a del año",
+  "Mejor Personaje fuera de JyP del año",
+  "Peor momento del año"
+];
+
+// LOTE 4
+const LOTE_4 = [
+  "Mensaje del año",
+  "Mote del año",
+  "Palabra/Frase del año",
+  "Objeto del año",
+  "Baile del año"
+];
+
+// LOTE 5
+const LOTE_5 = [
+  "Autistada del año",
+  "Fail del año",
+  "Broma del año",
+  "Foto del año",
+  "Video del año"
+];
+
+// LOTE 6
+const LOTE_6 = [
+  "Fiesta del año",
+  "Mejor momento del año",
+  "Revelación del año",
+  "Decepción del año",
+  "MVP del año" 
+];
+
+// Junta todos los lotes
+const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
+
+// 👇 control del lote activo (1..6).
+//    Cambia este número cuando “publiques” el siguiente lote.
+//    ESTA ES LA LINEA QUE HAY QUE CAMBIAR 
+
+const LOTE_ACTIVO = 3;
+// === LOTE ACTUAL (respeta ?lote=3 en la URL) ===
+window.getLoteActual = function () {
+  const n = Number(new URLSearchParams(location.search).get('lote'));
+  if (Number.isInteger(n) && n >= 1 && n <= LOTES.length) return n;
+  return LOTE_ACTIVO; // tu valor por defecto
+};
+
+// (Opcional) permite probar por URL: ?lote=3
+function getLoteFromQuery() {
+  const n = Number(new URLSearchParams(location.search).get('lote'));
+  return Number.isInteger(n) && n >= 1 && n <= LOTES.length ? n : null;
+}
+
+// Crea un bloque H2 + P + grid para una categoría y lo inserta antes del botón
+function addCategoriaBlock(titulo, indice) {
+  const wrap = document.getElementById('nominadosWrapper'); // <- USAR WRAPPER
+  if (!wrap) return;
+
+  const h2 = document.createElement('h2');
+  h2.textContent = titulo;
+
+  const max = MAX_SELECCION_POR_CATEGORIA[titulo] ?? 3;
+  const p = document.createElement('p');
+  p.innerHTML = `Selecciona hasta <strong>${max}</strong> candidatos.`;
+
+  const grid = document.createElement('div');
+  grid.id = `lista-nominados-dyn-${indice}`;
+  grid.className = 'grid-nominados';
+
+  wrap.appendChild(h2);
+  wrap.appendChild(p);
+  wrap.appendChild(grid);
+
+  crearApartadoNominaciones(grid.id, titulo);
+}
+
+function limpiarNominadosDinamicos() {
+  const wrap = document.getElementById('nominadosWrapper');
+  if (!wrap) return;
+  wrap.innerHTML = '';  // <- limpia TODO el wrapper de una
+}
+
+function insertarSeparador(texto) {
+  const wrap = document.getElementById('nominadosWrapper');
+  if (!wrap) return;
+  const sep = document.createElement('div');
+  sep.className = 'lote-separador';
+  sep.textContent = texto;
+  wrap.appendChild(sep);
+}
+
+function renderNominadosPorLotes() {
+  const cont = document.getElementById('votacion-nominados');
+
+  let activo = getLoteFromQuery() ?? LOTE_ACTIVO;
+
+  limpiarNominadosDinamicos();
+  const lote = LOTES[activo - 1] || [];
+  lote.forEach((titulo, i) => addCategoriaBlock(titulo, i));
+
+  if (activo < LOTES.length) {
+    insertarSeparador(`🔒 Próximamente: Lote ${activo + 1}`);
+  }
+
+  // re-aplica cabeceras si procede
+  if (typeof enhanceCategoryHeaders === 'function') {
+    enhanceCategoryHeaders();
+  }
+
+  // << NUEVO: refrescar estado del botón según el lote que se acaba de pintar
+  if (window.actualizarEstadoBotonNominaciones) {
+    window.actualizarEstadoBotonNominaciones();
+  }
+}
+
+
+
+// ¿ya envió en este ciclo y LOTE?
+async function yaHaEnviadoNominaciones(usuario, lote = window.getLoteActual()) {
+  if (!usuario) return false;
+  const ciclo = await getCicloActual();
+
+  const q = query(
+    collection(db, "nominaciones"),
+    where("usuario", "==", usuario),
+    where("ciclo", "==", ciclo),
+    where("lote", "==", lote) // << clave: por lote
+  );
+  const snap = await getDocs(q);
+  if (!snap.empty) return true;
+
+  // cache local por usuario+ciclo+lote
+  return localStorage.getItem(`nominacionesEnviadas_${usuario}_${ciclo}_L${lote}`) === "true";
+}
+
+async function marcarEnviadoLocal(usuario, lote = window.getLoteActual()) {
+  if (!usuario) return;
+  const ciclo = await getCicloActual();
+  localStorage.setItem(`nominacionesEnviadas_${usuario}_${ciclo}_L${lote}`, "true");
+}
+
+
+// ---------- Botón Enviar todas ----------
+const btnEnviarTodas = document.getElementById('enviarTodasNominaciones');
+
+// por si el botón ya existe ahora
+if (btnEnviarTodas && !btnEnviarTodas.dataset.bound) {
+  btnEnviarTodas.dataset.bound = "1";
+  btnEnviarTodas.addEventListener('click', onEnviarTodasNominaciones);
+}
+
+
+
+let enviandoNominaciones = false;
+
+async function onEnviarTodasNominaciones(e) {
+  e.preventDefault();
+  if (enviandoNominaciones) return;
+  enviandoNominaciones = true;
+
+  const btn = document.getElementById('enviarTodasNominaciones');
+  if (btn) { btn.disabled = true; btn.innerText = "Enviando…"; }
+
+  try {
+    const usuario = localStorage.getItem('usuarioLogueado');
+    if (!usuario) { 
+      alert("Debes iniciar sesión para enviar nominaciones."); 
+      mostrarSeccion('login'); 
+      return;
+    }
+
+    // validación de que hay algo seleccionado en cada categoría del lote
+    for (const categoria in nominacionesPorCategoria) {
+      if (nominacionesPorCategoria[categoria].length === 0) {
+        alert(`Debes seleccionar al menos un nominado en la categoría: ${categoria}`);
+        return;
+      }
+    }
+
+    const ciclo = await getCicloActual();
+    const lote  = window.getLoteActual();   // << nuevo
+
+    // Guardar nominaciones: ID incluye lote y campo "lote" en el doc
+    for (const categoria in nominacionesPorCategoria) {
+      const id = `${safeIdPart(usuario)}__${safeIdPart(categoria)}__${ciclo}__L${lote}`;
+      await setDoc(doc(db, "nominaciones", id), {
+        usuario,
+        categoria,
+        nominados: nominacionesPorCategoria[categoria],
+        ciclo,
+        lote,                               // << nuevo
+        fecha: serverTimestamp()
+      });
+    }
+
+    await marcarEnviadoLocal(usuario, lote); // << ahora con lote
+    if (window.actualizarEstadoBotonNominaciones) {
+      await window.actualizarEstadoBotonNominaciones();
+    }
+
+    alert(`¡Tus nominaciones del Lote ${lote} han sido registradas!`);
+    document.querySelectorAll('.nominado').forEach(n => n.classList.remove('selected'));
+    for (const c in nominacionesPorCategoria) nominacionesPorCategoria[c] = [];
+
+  } catch (e) {
+    console.error("Error guardando nominaciones:", e);
+    alert("Hubo un error al guardar tus nominaciones.");
+} finally {
+  enviandoNominaciones = false;
+
+  // Ajustar SIEMPRE el estado real del botón según si ya se envió
+  const btn = document.getElementById('enviarTodasNominaciones');
+  if (btn) {
+    const usuario = localStorage.getItem('usuarioLogueado');
+    const lote = window.getLoteActual();
+    try {
+      const enviado = await yaHaEnviadoNominaciones(usuario, lote);
+      btn.disabled = enviado;
+      btn.innerText = enviado
+        ? `Ya has enviado tus nominaciones del Lote ${lote}`
+        : `Enviar todas las nominaciones (Lote ${lote})`;
+    } catch {
+      // Si algo falla al comprobar, al menos no dejamos el botón “enviando…”
+      btn.disabled = false;
+      btn.innerText = "Enviar todas las nominaciones";
+    }
+  }
+}
+
+}
+
+
+
+async function actualizarEstadoBotonNominaciones() {
+  const usuario = localStorage.getItem('usuarioLogueado');
+  const btn = document.getElementById('enviarTodasNominaciones');
+  if (!btn) return;
+
+  const lote = window.getLoteActual();
+
+  if (!usuario) {
+    btn.disabled = true;
+    btn.innerText = "Inicia sesión para nominar";
+    return;
+  }
+
+  const enviado = await yaHaEnviadoNominaciones(usuario, lote);
+  btn.disabled = enviado;
+  btn.innerText = enviado
+    ? `Ya has enviado tus nominaciones del Lote ${lote}`
+    : `Enviar todas las nominaciones (Lote ${lote})`;
+}
+window.actualizarEstadoBotonNominaciones = actualizarEstadoBotonNominaciones;
+
+// ¿ya ha enviado su votación en este ciclo?
+async function yaHaVotadoEnCiclo(usuario) {
+  if (!usuario) return false;
+  const ciclo = await getCicloActual();
+  const q = query(
+    collection(db, "votaciones"),
+    where("usuario", "==", usuario),
+    where("ciclo", "==", ciclo)       // 👈 buscamos votos del ciclo actual
+  );
+  const snap = await getDocs(q);
+  return !snap.empty;                 // si hay al menos un voto, consideramos "enviada"
+}
+
+// Activa/Desactiva el botón "Enviar votación"
+async function actualizarEstadoBotonVotacion() {
+  const btn = document.getElementById('enviarVotacion');
+  if (!btn) return;
+
+  const usuario = localStorage.getItem('usuarioLogueado');
+  if (!usuario) {
+    btn.disabled = true;
+    btn.textContent = "Inicia sesión para votar";
+    return;
+  }
+
+  const enviado = await yaHaVotadoEnCiclo(usuario);
+  btn.disabled = enviado;
+  btn.textContent = enviado ? "Ya has enviado tu votación" : "Enviar votación";
+}
+window.actualizarEstadoBotonVotacion = actualizarEstadoBotonVotacion;
+
+    // =========================
+    // RESULTADOS CON LOGIN ADMIN
+    // =========================
+
+
+// =========================
+// RESULTADOS (nominaciones + votaciones)
+// =========================
+// 🔒 candado para evitar ejecuciones simultáneas/duplicadas
+// 🔒 evita dobles cargas
+let _cargandoResultados = false;
+
+async function cargarResultados() {
+  const contenedor = document.getElementById('tabla-resultados');
+  if (_cargandoResultados) return;
+  _cargandoResultados = true;
+
+  try {
+    contenedor.innerHTML = "<p>Cargando resultados...</p>";
+
+    // 1) SIEMPRE el ciclo actual. Si está vacío, se muestra vacío (no miramos el anterior).
+    const ciclo = await getCicloActual();
+
+    // NOMINACIONES (solo ciclo actual)
+    const snapNom = await getDocs(
+      query(collection(db, "nominaciones"), where("ciclo", "==", ciclo))
+    );
+
+    // VOTACIONES (si guardas ciclo en votaciones —lo hacemos en tu envío—, filtramos también por ciclo)
+    const snapVotos = await getDocs(
+      query(collection(db, "votaciones"), where("ciclo", "==", ciclo))
+    );
+
+    // Render
+    contenedor.innerHTML = "";
+    const frag = document.createDocumentFragment();
+
+    // ===== NOMINACIONES =====
+    const bloqueNom = document.createElement('section');
+    bloqueNom.innerHTML = `
+      <h3>🏅 Nominaciones Ciclo ${ciclo}</h3>
+      <p style="opacity:.8">Cuenta cuántas veces ha sido nominado cada candidato en cada categoría (quién propuso a quién).</p>
+    `;
+
+    if (snapNom.empty) {
+      bloqueNom.insertAdjacentHTML('beforeend', `<p>No hay nominaciones aún.</p>`);
+    } else {
+      const conteo = {};
+      const nominadores = {};
+      snapNom.forEach(d => {
+        const data = d.data() || {};
+        const cat   = data.categoria || "Sin categoría";
+        const lista = Array.isArray(data.nominados) ? data.nominados : [];
+        if (!conteo[cat]) conteo[cat] = {};
+        if (!nominadores[cat]) nominadores[cat] = {};
+        lista.forEach(n => {
+          conteo[cat][n] = (conteo[cat][n] || 0) + 1;
+          (nominadores[cat][n] ||= new Set()).add(data.usuario);
+        });
+      });
+
+      Object.entries(conteo).sort(([a],[b]) => a.localeCompare(b)).forEach(([cat, mapa]) => {
+        const div = document.createElement('div');
+        div.innerHTML = `<h4>${cat}</h4>`;
+        const ul = document.createElement('ul');
+        Object.entries(mapa).sort((a,b)=>b[1]-a[1]).forEach(([nom, n]) => {
+          const li = document.createElement('li');
+          const quienes = Array.from(nominadores[cat][nom] || []).join(', ');
+          li.textContent = `${nom}: ${n} nominación(es)${quienes ? ` — Nominado por: ${quienes}` : ""}`;
+          ul.appendChild(li);
+        });
+        div.appendChild(ul);
+        bloqueNom.appendChild(div);
+      });
+    }
+    frag.appendChild(bloqueNom);
+
+    // ===== VOTACIÓN FINAL =====
+    const bloqueVot = document.createElement('section');
+    bloqueVot.innerHTML = `
+      <h3>🗳️ Votación final Ciclo ${ciclo}</h3>
+      <p style="opacity:.8">Ganador por categoría según los votos emitidos (incluye el detalle de quién votó a quién).</p>
+    `;
+
+    if (snapVotos.empty) {
+      bloqueVot.insertAdjacentHTML('beforeend', `<p>No hay votos aún.</p>`);
+    } else {
+      const votosPorCat = {};
+      const votantesSet = new Set();
+      snapVotos.forEach(d => {
+        const data = d.data() || {};
+        const cat  = data.categoria || "Sin categoría";
+        const voto = data.voto || "(sin voto)";
+        const user = data.usuario || "(desconocido)";
+        votantesSet.add(user);
+        (votosPorCat[cat] ||= []).push({ voto, user });
+      });
+
+      const p = document.createElement('p');
+      p.style.marginTop = "8px";
+      p.innerHTML = `Han votado: ${Array.from(votantesSet).join(', ') || '—'}`;
+      bloqueVot.appendChild(p);
+
+      Object.entries(votosPorCat)
+        .sort(([a],[b]) => a.localeCompare(b))
+        .forEach(([cat, arr]) => {
+          const div = document.createElement('div');
+          div.innerHTML = `<h4>${cat}</h4>`;
+          const count = {};
+          const quienes = {};
+          arr.forEach(({voto, user}) => {
+            count[voto] = (count[voto] || 0) + 1;
+            (quienes[voto] ||= new Set()).add(user);
+          });
+
+          const ul = document.createElement('ul');
+          Object.entries(count).sort((a,b)=>b[1]-a[1]).forEach(([opcion, n]) => {
+            const li = document.createElement('li');
+            li.textContent = `${opcion}: ${n} voto(s)`;
+            const detalle = document.createElement('div');
+            detalle.style.opacity = ".8";
+            detalle.style.marginLeft = "8px";
+            detalle.textContent = `Votaron: ${Array.from(quienes[opcion]).join(', ')}`;
+            li.appendChild(detalle);
+            ul.appendChild(li);
+          });
+          div.appendChild(ul);
+          bloqueVot.appendChild(div);
+        });
+    }
+    frag.appendChild(bloqueVot);
+
+    contenedor.replaceChildren(frag);
+
+  } catch (e) {
+    console.error("Error cargando resultados:", e);
+    contenedor.innerHTML = "<p>Error al cargar resultados.</p>";
+  } finally {
+    _cargandoResultados = false;
+  }
+}
+
+
+// expón para tu navegación
+window.cargarResultados = cargarResultados;
+// =========================
+  // BORRADO MASIVO + BOTONES
+  // =========================
+ // Borrado masivo seguro con batches de hasta 400 docs
+async function borrarColeccion(nombreColeccion) {
+  try {
+    let borrados = 0;
+    // Repite en lotes hasta que no queden documentos
+    // (Firestore recomienda batches pequeños; 400 es seguro)
+    while (true) {
+      const q = query(collection(db, nombreColeccion), limit(400));
+      const snapshot = await getDocs(q);
+      if (snapshot.empty) break;
+
+      const batch = writeBatch(db);
+      snapshot.docs.forEach((d) => batch.delete(d.ref));
+      await batch.commit();
+
+      borrados += snapshot.size;
+      // Pequeña pausa opcional para evitar throttling
+      await new Promise(r => setTimeout(r, 50));
+    }
+
+    alert(`Se han borrado ${borrados} documentos de "${nombreColeccion}".`);
+    if (typeof cargarResultados === 'function') cargarResultados();
+  } catch (e) {
+    console.error(`Error borrando ${nombreColeccion}:`, e);
+    alert(`Error al borrar documentos de "${nombreColeccion}".`);
+  }
+}
+
+
+  // Helpers de estado del botón
+  function setBtnLoading(btn, txt) {
+    if (!btn) return;
+    btn.dataset.prev = btn.innerText;
+    btn.disabled = true;
+    btn.innerText = txt;
+  }
+  function unsetBtnLoading(btn) {
+    if (!btn) return;
+    btn.disabled = false;
+    btn.innerText = btn.dataset.prev || btn.innerText;
+    delete btn.dataset.prev;
+  }
+
+// Listeners de los 3 botones del panel de resultados
+const btnBorrarVotos = document.getElementById('borrarVotos');
+const btnBorrarNomin = document.getElementById('borrarNominaciones');
+const btnReset       = document.getElementById('restaurarVotaciones');
+
+if (btnBorrarVotos && !btnBorrarVotos.dataset.bound) {
+  btnBorrarVotos.dataset.bound = "1";
+  btnBorrarVotos.addEventListener('click', async () => {
+    if (!confirm("Vas a BORRAR definitivamente TODOS los votos de la votación final. ¿Continuar?")) return;
+    setBtnLoading(btnBorrarVotos, 'Borrando…');
+    await borrarColeccion('votaciones');     // ← borra en Firestore (batch)
+    unsetBtnLoading(btnBorrarVotos);
+    if (typeof cargarResultados === 'function') cargarResultados();
+  });
+}
+
+if (btnBorrarNomin && !btnBorrarNomin.dataset.bound) {
+  btnBorrarNomin.dataset.bound = "1";
+  btnBorrarNomin.addEventListener('click', async () => {
+    if (!confirm("Vas a BORRAR definitivamente TODAS las nominaciones. ¿Continuar?")) return;
+    setBtnLoading(btnBorrarNomin, 'Borrando…');
+    await borrarColeccion('nominaciones');   // ← borra en Firestore (batch)
+    unsetBtnLoading(btnBorrarNomin);
+    if (typeof cargarResultados === 'function') cargarResultados();
+  });
+}
+
+if (btnReset && !btnReset.dataset.bound) {
+  btnReset.dataset.bound = "1";
+  btnReset.addEventListener('click', async () => {
+    if (!confirm("Iniciar una NUEVA ronda de votaciones. Los registros anteriores se conservarán. ¿Continuar?")) return;
+    try {
+      const nuevoCiclo = await aumentarCiclo();
+      alert(`¡Listo! Se ha iniciado el ciclo ${nuevoCiclo}. Todos pueden volver a votar.`);
+      if (typeof cargarResultados === 'function') cargarResultados();
+      if (window.actualizarEstadoBotonNominaciones) await window.actualizarEstadoBotonNominaciones();
+      if (window.actualizarEstadoBotonVotacion) await window.actualizarEstadoBotonVotacion();
+    } catch (e) {
+      console.error(e);
+      alert("No se pudo iniciar la nueva ronda.");
+    }
+  });
+}
+
+
+
+
+// Modal de categorías
+const modalCategoria = document.getElementById("modalCategoria");
+const modalImgCat = document.getElementById("modalImagenCategoria");
+const modalDescCat = document.getElementById("modalDescripcionCategoria");
+const cerrarCat = modalCategoria.querySelector(".cerrar");
+
+// Abrir modal al hacer clic en una categoría
+document.querySelectorAll(".categoria").forEach(cat => {
+  cat.addEventListener("click", () => {
+    modalImgCat.src = cat.querySelector("img").src;
+    modalDescCat.textContent = cat.dataset.descripcion;
+    modalCategoria.style.display = "block";
+  });
+});
+
+// Cerrar modal
+cerrarCat.addEventListener("click", () => {
+  modalCategoria.style.display = "none";
+});
+window.addEventListener("click", (e) => {
+  if (e.target === modalCategoria) {
+    modalCategoria.style.display = "none";
+  }
+});
+
+
+  </script>
+
+</script> 
+<script>
+    const descripciones = {
+      "Asieras": "ASIER, más conocido como chichotas,Cedido de balnomano alarcos Ciudad Real e Hijo de Peter el batallas, es el dueño del famoso campo San Bartolomé, le gusta mucho drogarse y emborracharse, por lo menos no fuma porros ",
+      "Rulillas": "RULAS es el mayor amante de las tortillas y los nuggets, tiene a chicote a su servicio para hacerle cualquier tipo de macarron con tomatico, le gusta mucho que le vomiten en la silla, es un maltratador de tortugas profesional, una vez encerró a su tortuga en un cubo de basura durante 21 años, es un mitico personaje de este grupo de subnormales que tiene una de las frases mas miticas de Operacion Triunfo POSSSS AVEEERRRRR",
+      "Darawayas": "DARIO, alias la Torutuga Londinense, es el fan número uno de la pam veraniega, junto con el pequeño kastorcin tienen un negocio llamado socios.basura, el camara del grupo que el año pasado nos deleitó con miticas escenas pornograficas de la gala, es un amante del fortnite y un guarro que se tira a todas las peruanas que pilla ",
+      "Ivanpechotes": "IVANPE es conocido como el rehén de Jugui Qui Jugui, si juegas con el al futbol ten en cuenta que tienes que correr mas que un puto Velocirraptor en plena era del Jurasico, porque la gacela Thomphson no va a dejar a nadie escapar, baila como un abuelo senil de 347 años y aun no sabemos quien es su amor verdadero si la francesa esa o Lamine Yamal ",
+      "DaniGG": " DANI es un militar casposo siempre en el calabozo, no sale nunca de madrid por ver a su querida esposa es mas guarro que un satisfyer de segunda mano, y hablando de manos a saber cuantas le habran metido por el culo... Creemos que seria capaz de vender a toda su familia y amigos por un saludo del Rey Felipe",
+      "Lusilu": "LUCÍA tambien apodada como Lusilu o como la famosa novia de Sergio Ramos, aunque Alvaro de Luna tampoco se queda atras, su mayor enemiga es Siri y se odian a muerte, estudia ADE(Asociacion De Esquizofrenicos) no le pega nada, como diria su esposo con mas de 3000 años las mujeres a la cocina!",
+      "Almansa": "INES La de los caminos, se dedica a ir poniendo grano a grano e ir haciendo caminos en ciudad real, ahora mismo esta yendo a Lituania en uno de sus caminos magicos, siempre pone su casa para hacer las reuniones auque el pobre Martín la vaya a denunciar ella nunca nos denegaraá la entrada, no sabemos que vamos a hacer los sabados resacosos Almansunsin",
+      "Robertuki": "ROBER el tio mas pesado que vas a ver en la historia, en vez de darte la mano al verte como haría una persona normal coje y te mete una hostia, pero y este tio?, aun no sabemos si viene del sur de España o de la profunda Antartida lo que si sabemos es que es el fundador de obesos sin fronteras, aunque sea Don Rosalio Parrales y trabaje mas que un negro en el Hospital de la estación de León, lo odiamos mucho.",
+      "Toñaco": "MARCO el famoso jugador cedido del Caserio que al final se fue al Alarcos y un negro que acababa de salir de la selva tropical lo echo sin ningún tipo de remordimiento, por eso volvio a su equipo Caserio Colesterol, hizo la aparicion estelar en la famosa fiesta como DjPoyocu pero hizo bomba de humo, aun lo estan buscando en todo el norte de Ciudad Real, cuenta la leyenda que el tequifresi lo mató",
+      "Manolo": "MANU animal mas feróz de la selva, Panterini estudia 300 horas al dia y casi no se le ve el pelo(aunque esta mas clavo que don limpio el cabron), hace viajes a madrid y a todos los lugares del planeta con su cuñado Emilio",
+      "Kastor": "MARIO, el pequeño castor importado desde Birmingham, este animal tan curioso realiza derrapes por campos de futbol y cada vez que va a algun concierto se le antojan unos garbanzitos, es un gran aficionado al Real madrid y junto con su socia Pam de los veranos formo socios.pene ",
+      "Maria": "MARÍA la famosisima francesiña, reclama siempre el puesto de la fiestera del año del año pasado, estudia letras y su jugador favorito es Karim, tambien tiene un perrito llamado ivanpechotes que es un poco tonto pero le queremos igual :)",
+      "Gamepro": "GAMEPRO tiene muchos nombres, hubo un momento en la historia en el que las leyendas dicen que se llamaba Hugo, ahora es el mejor cocinero de pollo de toda la ciudad, tiene tecnicas infalibles que dejan aluciando a todo el mundo, segun las fuentes fiables dicen que va abrir un restaruante de pollo y patatillas en la ciudad de Albacete",
+      "El Enano": "FERVICO la persona más pequeña del planeta no podia faltar en estos premios,el pequeño ferguson es un gran amante de Spiderman lo malo es que su estatura no le permite ni llegar a una papelera, le gustan muchos las tetas sobre todo de las mujerzuelas de cabello pelirrojo, lo malo que ahora se ha pasado al oto bando y esta con un Tomellosero llamado Unai el gay",
+      "Poru": "PORU el gran amante de los porros pero ultimamente se ha aficionado mucho al café, tanto que ha sacado su propia marca llamada Pacofee y un youtuber se la ha plagiado,ahora esta de erasmus en polonia aunque no sabemos si nuestro querido Ropas volvera, sabemos que esta bien y que está haciendo muchas previas",
+      "Ikardo": "IKER el chinorris de este equipo,el asesion de Ana Rosa, aunq no esta en el grupo es muy querido por esta panda de monos, suele llevar los pantalones de Bob esponja desde el 2 de Junio de 2004, no se los ha quitado ni para comer, es un tio muy tranquilo y que para nada sale de fiesta, folla menos que una puerta y es un mestizo que viene del Suroeste Asiatico y del Noreste de Poblete",
+      "Fermoriv": "FERMORIV es un amante del lanzamiento de quesos, tambien es conocido por criar poshos en incubadoras que posteriormente son vendidos a la deep weep para hacer experimentos ilegales con ellos, también picha muchos culitos de bebes junto con otros enfermeros aqui presentes",
+      "Lab el Viejo": "LABRADA nacio en el año 409 a.c en la antigua Roma, es la persona más vieja del mundo mundial, le encanta coleccionar cromos de niños(mariconada historica) y hacer tradeos con Luisillo el pillo, es un abuelo senil y ludopata que le echa a  las apuestas, pero este tio se la juega mucho y le echa 1 euro para llevarse 2, es que si no no le sale ecnomicamente rentable, es un gran amante de los horses y se los folla de par en par"
+    };
+    
+    const modal = document.getElementById("modalParticipante");
+const modalImg = document.getElementById("modalImagen");
+const modalDescripcion = document.getElementById("modalDescripcion");
+const spanCerrar = document.querySelector(".cerrar");
+
+document.querySelectorAll(".participante").forEach(part => {
+  part.addEventListener("click", () => {
+    const img = part.querySelector("img");
+    const nombre = part.querySelector("h3").innerText.trim();
+    modalImg.src = img.src;
+    modalDescripcion.innerText = descripciones[nombre] || "Sin descripción disponible.";
+    modal.style.display = "block";
+  });
+});
+
+spanCerrar.onclick = () => modal.style.display = "none";
+window.onclick = e => { if (e.target == modal) modal.style.display = "none"; }
+</script>
+    
