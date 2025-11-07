@@ -149,39 +149,39 @@
 </header>
 
 </div>
-  <script>
-  // Usuarios válidos
-import { getAuth, signInWithEmailAndPassword } 
-  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  <script type="module">
+  import { getAuth, signInWithEmailAndPassword } 
+    from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-const auth = getAuth(app);
+  const auth = getAuth(app);
 
-document.getElementById('btnLogin').addEventListener('click', async (e) => {
-  e.preventDefault();
+  document.getElementById('btnLogin').addEventListener('click', async (e) => {
+    e.preventDefault();
 
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value.trim();
-  const error = document.getElementById('loginError');
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    const error = document.getElementById('loginError');
 
-  try {
-    // 🔒 convierte el nombre en email ocultamente
-    const email = `${user}@josemari.local`;
-    await signInWithEmailAndPassword(auth, email, pass);
+    try {
+      const email = `${user}@josemari.local`;
+      await signInWithEmailAndPassword(auth, email, pass);
 
-    localStorage.setItem("usuarioLogueado", user);
-    mostrarPerfil(user);
-    controlarAccesoResultados();
+      localStorage.setItem("usuarioLogueado", user);
+      mostrarPerfil(user);
+      controlarAccesoResultados();
 
-    document.getElementById("login").style.display = "none";
-    document.getElementById("appContent").style.display = "block";
-    mostrarSeccion("inicio");
+      document.getElementById("login").style.display = "none";
+      document.getElementById("appContent").style.display = "block";
+      mostrarSeccion("inicio");
 
-    if (error) error.style.display = "none";
-  } catch (err) {
-    console.error(err);
-    if (error) error.style.display = "block";
-  }
-});
+      if (error) error.style.display = "none";
+    } catch (err) {
+      console.error(err);
+      if (error) error.style.display = "block";
+    }
+  });
+</script>
+
 
 function mostrarPerfil(nombre) {
   document.getElementById("nombreUsuario").textContent = nombre;
