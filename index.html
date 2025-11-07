@@ -151,26 +151,38 @@
 </div>
   <script>
   // Usuarios válidos
-const usuariosPermitidos = {
-  Asier: { pass: "Asiercas12", avatar: "fotos/asieras.jpeg" },
-  Rulas: { pass: "Rulas34", avatar: "fotos/rulillas.jpeg" },
-  Fervico:  { pass: "Enano729",  avatar: "fotos/fervico.jpeg" },
-  Rober: { pass: "Pinguino129", avatar: "fotos/rober.jpeg" },
-  Maria: { pass: "Francesa846", avatar: "fotos/maria.jpeg" },
-  Manu: { pass: "Pantera175", avatar: "fotos/manu.jpeg" },
-  Iker: { pass: "Chino283", avatar: "fotos/iker.jpeg" },
-  Dani: { pass: "Militar734", avatar: "fotos/dani.jpeg" },
-  Ivanp: { pass: "Gacela983", avatar: "fotos/ivanp.jpeg" },
-  Poru: { pass: "Ropu183", avatar: "fotos/poru.jpeg" },
-  Dario: { pass: "Pam983", avatar: "fotos/dario.jpeg" },
-  Ines: { pass: "Almansa201", avatar: "fotos/ines.jpeg" },
-  Labrada: { pass: "Viejo452", avatar: "fotos/labrada.jpeg" },
-  Fermoriv: { pass: "Cheese120", avatar: "fotos/Fermoriv.jpeg" },
-  Lucia: { pass: "Ramos276", avatar: "fotos/lucia.jpeg" },
-  Marco: { pass: "Pocoyo863", avatar: "fotos/marco.jpeg" },
-  Gamepro: { pass: "Popeye159", avatar: "fotos/gamepro.jpeg" },
-  Mario: { pass: "Garbanzo384", avatar: "fotos/mario.jpeg" },
-};
+import { getAuth, signInWithEmailAndPassword } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+const auth = getAuth(app);
+
+document.getElementById('btnLogin').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  const error = document.getElementById('loginError');
+
+  try {
+    // 🔒 convierte el nombre en email ocultamente
+    const email = `${user}@josemari.local`;
+    await signInWithEmailAndPassword(auth, email, pass);
+
+    localStorage.setItem("usuarioLogueado", user);
+    mostrarPerfil(user);
+    controlarAccesoResultados();
+
+    document.getElementById("login").style.display = "none";
+    document.getElementById("appContent").style.display = "block";
+    mostrarSeccion("inicio");
+
+    if (error) error.style.display = "none";
+  } catch (err) {
+    console.error(err);
+    if (error) error.style.display = "block";
+  }
+});
+
 function mostrarPerfil(nombre) {
   document.getElementById("nombreUsuario").textContent = nombre;
   document.getElementById("avatarUsuario").src = usuariosPermitidos[nombre].avatar;
