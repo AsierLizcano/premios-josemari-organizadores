@@ -1855,4 +1855,27 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
     font-size: 1rem; /* texto más pequeño */
     transform: none; /* elimina desplazamiento si lo hubiera */
   }
+
+
+}
+
+.contenido-votacion-nominados {
+  display: block !important;
+}
+.contenido-votacion{
+  display: none !important;
+}
+/* 🔒 MÓVIL: ocultar laterales y collage de login sí o sí */
+@media (max-width: 900px) {
+  .hero-marquee,
+  .fotos-lateral,
+  .login-media {
+    display: none !important;
+  }
+
+  /* Que el hero no deje huecos laterales en móvil */
+  header.hero {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
