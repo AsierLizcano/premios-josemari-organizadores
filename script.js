@@ -1062,7 +1062,7 @@ const NOMINADOS_ESPECIALES = {
   ],
 
   "Trio/Cuarteto del año": [
-    { nombre: "Pibas", foto: "fotos/trio/pibas.jpeg" },
+    { nombre: "Pibas", foto: "fotos/Trio/pibas.jpeg" },
     { nombre: "Fervico, Dario, Poru(EL trio salchichon)", foto: "fotos/Trio/salchichon.jpeg" },
     { nombre: "Labrada, Lucia y Gamepro(Los gofreros)", foto: "fotos/Trio/gofres.jpeg" },
     { nombre: "Rulas, Asier y Marco(Los veterinarios)", foto: "fotos/Trio/primes.jpeg" },
