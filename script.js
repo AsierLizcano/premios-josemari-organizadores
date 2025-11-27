@@ -980,6 +980,8 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Osito gominola", video: "videos/ivanp.mp4", poster: "videos/posters/ivanp.jpeg" },
     { nombre: "Sexo,Vagina", video: "videos/iker2.mp4", poster: "videos/posters/iker2.jpeg" },
     { nombre: "DJVentosa en accion", video: "videos/marcoNuria.mp4", poster: "videos/posters/marcoNuria.jpeg" },
+    { nombre: "Musica Random", video: "videos/random.mp4", poster: "videos/posters/random.jpg" },
+
   ],
 
   "Foto del año": [
@@ -1537,7 +1539,7 @@ const LOTE_3 = [
 const LOTES = [LOTE_1, LOTE_2, LOTE_3];
 
 // 👇 control del lote activo (1..3)
-const LOTE_ACTIVO = 3; // o 2 / 3 según el que quieras mostrar por defecto
+const LOTE_ACTIVO = 1; // o 2 / 3 según el que quieras mostrar por defecto
 
 
 /* ============================================================
