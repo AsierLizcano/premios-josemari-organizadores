@@ -916,7 +916,9 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Baggete Mariete letrete", video: "fotos/brainhot/maria.mp4", poster: "fotos/brainhot/maria.jpeg" },
     { nombre: "Caminote Inesote", video: "fotos/brainhot/ines.mp4", poster: "fotos/brainhot/ines.jpeg" },
     { nombre: "Garbanzino chiquitino", video: "fotos/brainhot/mario.mp4", poster: "fotos/brainhot/mario.jpeg" }
-  ],  "Mejor Personaje fuera de JyP del año": [
+  ], 
+  
+  "Mejor Personaje fuera de JyP del año": [
     { nombre: "Diegote", foto: "fotos/perosnajes/diego.jpeg" },
     { nombre: "Iceman", foto: "fotos/perosnajes/iceman.jpeg" },
     { nombre: "Bólido", foto: "fotos/perosnajes/bolido.jpeg" },
@@ -939,7 +941,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Pandorga", foto: "fotos/fiesta/pandorga.jpeg" },
     { nombre: "Ferias Peruanas", foto: "fotos/fiesta/peruana.jpeg" },
     { nombre: "Ferias de Ciu", foto: "fotos/fiesta/ciu.jpeg" },
-    { nombre: "Hallowen?¿?¿", foto: "fotos/fiesta/.jpeg" }
+    { nombre: "Hallowen", foto: "fotos/fiesta/Hallowen.jpeg" }
   ],
 
   "Objeto del año": [
@@ -976,6 +978,8 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "lluvia de conos", video: "videos/conos.mp4", poster: "videos/posters/lluvia.jpeg" },
     { nombre: "El Vampiricantropo", video: "videos/ines.mp4", poster: "videos/posters/ines.jpeg" },
     { nombre: "Osito gominola", video: "videos/ivanp.mp4", poster: "videos/posters/ivanp.jpeg" },
+    { nombre: "Sexo,Vagina", video: "videos/iker2.mp4", poster: "videos/posters/iker2.jpeg" },
+    { nombre: "DJVentosa en accion", video: "videos/marcoNuria.mp4", poster: "videos/posters/marcoNuria.jpeg" },
   ],
 
   "Foto del año": [
@@ -983,12 +987,12 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Dario tortuga", foto: "fotos/fotos/darioo.jpeg" },
     { nombre: "Cafeteros", foto: "fotos/fotos/peruanos.jpeg" },
     { nombre: "Hey Jude", foto: "fotos/fotos/londresb.jpeg" },
-    { nombre: "Jugui x Segarra", foto: "fotos/fotos/jugui.jpeg" },
     { nombre: "El beso de judas", foto: "fotos/fotos/ferlab.jpeg" },
     { nombre: "Orgía", foto: "fotos/fotos/carnaval.jpeg" },
-    { nombre: "Culos", foto: "fotos/fotos/marconuria.jpeg" },
     { nombre: "Paleto Bob esponja", foto: "fotos/fotos/bob.jpeg" },
-    { nombre: "Parrales salvando a Ana Rosa", foto: "fotos/fotos/parrales.jpeg" }
+    { nombre: "Parrales salvando a Ana Rosa", foto: "fotos/fotos/parrales.jpeg" },
+    { nombre: "Ana Rosa 2.0", foto: "fotos/fotos/ivanpetetas.jpeg" },
+    { nombre: "Desvirgando a Rulas", foto: "fotos/fotos/rulasprimer.jpeg" },
   ],
 
   "Mote del año": [
@@ -999,9 +1003,6 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Fish and Chips", foto: "fotos/mote/fish.jpeg" },
     { nombre: "Pajaroto", foto: "fotos/mote/pajaroto.jpeg" },
     { nombre: "Fermoro", foto: "fotos/mote/fermoro.jpeg" },
-    { nombre: "Gamepollo", foto: "fotos/mote/marconuria.jpeg" },
-    { nombre: "Gamepollo", foto: "fotos/mote/marconuria.jpeg" },
-    { nombre: "Gamepollo", foto: "fotos/mote/marconuria.jpeg" }
   ],
 
     "Fail del año": [
@@ -1013,8 +1014,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Caca a Asier", foto: "fotos/fail/caca.jpeg" },
     { nombre: "muerte de la Chifurgo", foto: "fotos/fail/chifurgo.jpeg" },
     { nombre: "Sxgarra vacila a Mario", foto: "fotos/fail/jugui.jpeg" },
-    { nombre: "Gamepollo", foto: "fotos/fail/gamepollo.jpeg" },
-    { nombre: "Gamepollo", foto: "fotos/fail/gamepollo.jpeg" },
+    { nombre: "Ivanpe vs Tomate", foto: "fotos/fail/tomate.jpeg" },
   ],
 
       "Meme del año": [
@@ -1040,7 +1040,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Los encocaos", video: "fotos/bailes/iker.mp4", poster: "fotos/bailes/iker.jpeg" },
     { nombre: "El mambo de Labrada", video: "fotos/bailes/labrada.mp4", poster: "fotos/bailes/labrada.jpeg" },
     { nombre: "Señorita Surferita", video: "fotos/bailes/Surferita.mp4", poster: "fotos/bailes/Surferita.jpeg" },
-    { nombre: "Gamepro por la banda", video: "fotos/bailes/correa.mp4", poster: "fotos/bailes/correa.jpeg" },
+    { nombre: "Baile en el camino", video: "fotos/bailes/mariobaile.mp4", poster: "fotos/bailes/mariobaile.jpeg" },
 
 ],
 
@@ -1061,7 +1061,7 @@ const NOMINADOS_ESPECIALES = {
 
   "Trio/Cuarteto del año": [
     { nombre: "Pibas", foto: "fotos/trio/pibas.jpeg" },
-    { nombre: "Fervico, Dario, Mario y Poru(EL escuadron salchichon)", foto: "fotos/trio/salchichon.jpeg" },
+    { nombre: "Fervico, Dario, Poru(EL trio salchichon)", foto: "fotos/trio/salchichon.jpeg" },
     { nombre: "Labrada, Lucia y Gamepro(Los gofreros)", foto: "fotos/trio/gofres.jpeg" },
     { nombre: "Rulas, Asier y Marco(Los veterinarios)", foto: "fotos/trio/primes.jpeg" },
     { nombre: "Fervico, Ivanp y Maria(Jueguen quien Jueguen)", foto: "fotos/trio/jueguen.jpeg" },
@@ -1120,6 +1120,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "Reformas Poru y Enano", foto: "fotos/autistada/reformas.jpeg" },
     { nombre: "Rulas en aviones", foto: "fotos/autistada/rulas.jpeg" },
   ],
+
             "Peor momento del año": [
     { nombre: "La muerte de Dani en la tortuga", foto: "fotos/p_momento/dani.jpeg" },
     { nombre: "La caseta de la esperanza(Feria de Abril)", foto: "fotos/p_momento/esperanza.jpeg" },
@@ -1127,6 +1128,7 @@ const NOMINADOS_ESPECIALES = {
      { nombre: "La cola de magma", foto: "fotos/p_momento/magma.jpeg" },
      { nombre: "Fermoriv en Carnavales", foto: "fotos/p_momento/fermo.jpeg" },
     { nombre: "El desastre de la yedra", foto: "fotos/p_momento/ivanp.jpeg" },
+    { nombre: "Navidades en Muletas", foto: "fotos/p_momento/rulasmuletas.jpeg" },
   ],
 
 
@@ -1487,19 +1489,15 @@ function closeImageLightbox() {
     if (e.key === "Escape" && !modal.hidden) closeImageLightbox();
   });
 })();
-/* ============================================================
-   LOTES DE CATEGORÍAS (6 lotes × 5 categorías)
-============================================================ */
+// ===== LOTES DE CATEGORÍAS (3 lotes x 10 categorías) =====
 
+// LOTE 1 = antiguo LOTE_1 + LOTE_2
 const LOTE_1 = [
   "Viajero/a del año",
   "Picado/a del año",
   "Guarrete del año",
   "Papi/Mami del año",
-  "Meme del año"
-];
-
-const LOTE_2 = [
+  "Meme del año",
   "Brainhot del año",
   "Correon del año",
   "Trio/Cuarteto del año",
@@ -1507,15 +1505,13 @@ const LOTE_2 = [
   "El que mejor viste del año"
 ];
 
-const LOTE_3 = [
+// LOTE 2 = antiguo LOTE_3 + LOTE_4
+const LOTE_2 = [
   "Llorón del año",
   "Fiestero/a del año",
   "Borracho/a del año",
   "Mejor Personaje fuera de JyP del año",
-  "Peor momento del año"
-];
-
-const LOTE_4 = [
+  "Peor momento del año",
   "Mensaje del año",
   "Mote del año",
   "Palabra/Frase del año",
@@ -1523,15 +1519,13 @@ const LOTE_4 = [
   "Baile del año"
 ];
 
-const LOTE_5 = [
+// LOTE 3 = antiguo LOTE_5 + LOTE_6
+const LOTE_3 = [
   "Autistada del año",
   "Fail del año",
   "Broma del año",
   "Foto del año",
-  "Video del año"
-];
-
-const LOTE_6 = [
+  "Video del año",
   "Fiesta del año",
   "Mejor momento del año",
   "Revelación del año",
@@ -1539,12 +1533,12 @@ const LOTE_6 = [
   "MVP del año"
 ];
 
-const LOTES = [LOTE_1, LOTE_2, LOTE_3, LOTE_4, LOTE_5, LOTE_6];
+// Junta todos los lotes (ahora solo 3)
+const LOTES = [LOTE_1, LOTE_2, LOTE_3];
 
-/* ============================================================
-   LOTE ACTIVO — CAMBIA ESTE NÚMERO AL PUBLICAR NUEVO LOTE
-============================================================ */
-const LOTE_ACTIVO = 3;
+// 👇 control del lote activo (1..3)
+const LOTE_ACTIVO = 2; // o 2 / 3 según el que quieras mostrar por defecto
+
 
 /* ============================================================
    Obtener lote actual (respeta ?lote=3)

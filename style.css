@@ -1855,4 +1855,6 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
     font-size: 1rem; /* texto más pequeño */
     transform: none; /* elimina desplazamiento si lo hubiera */
   }
+
+
 }
