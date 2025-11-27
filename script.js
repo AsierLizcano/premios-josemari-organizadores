@@ -1063,14 +1063,14 @@ const NOMINADOS_ESPECIALES = {
 
   "Trio/Cuarteto del año": [
     { nombre: "Pibas", foto: "fotos/trio/pibas.jpeg" },
-    { nombre: "Fervico, Dario, Poru(EL trio salchichon)", foto: "fotos/trio/salchichon.jpeg" },
-    { nombre: "Labrada, Lucia y Gamepro(Los gofreros)", foto: "fotos/trio/gofres.jpeg" },
-    { nombre: "Rulas, Asier y Marco(Los veterinarios)", foto: "fotos/trio/primes.jpeg" },
-    { nombre: "Fervico, Ivanp y Maria(Jueguen quien Jueguen)", foto: "fotos/trio/jueguen.jpeg" },
-    { nombre: "Rober,Fermo y Marco(Los enfermeros)", foto: "fotos/trio/enfermeros.jpeg" },
-    { nombre: "Dani,Iker,Asier y Gamepro(Los tomelloseros)", foto: "fotos/trio/tomelloseros.jpeg" },
-    { nombre: "Fervico, Labrada y Ivanp(Los paninis)", foto: "fotos/trio/panini.jpeg" },
-    { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/trio/procesioneros.jpeg" },
+    { nombre: "Fervico, Dario, Poru(EL trio salchichon)", foto: "fotos/Trio/salchichon.jpeg" },
+    { nombre: "Labrada, Lucia y Gamepro(Los gofreros)", foto: "fotos/Trio/gofres.jpeg" },
+    { nombre: "Rulas, Asier y Marco(Los veterinarios)", foto: "fotos/Trio/primes.jpeg" },
+    { nombre: "Fervico, Ivanp y Maria(Jueguen quien Jueguen)", foto: "fotos/Trio/jueguen.jpeg" },
+    { nombre: "Rober,Fermo y Marco(Los enfermeros)", foto: "fotos/Trio/enfermeros.jpeg" },
+    { nombre: "Dani,Iker,Asier y Gamepro(Los tomelloseros)", foto: "fotos/Trio/tomelloseros.jpeg" },
+    { nombre: "Fervico, Labrada y Ivanp(Los paninis)", foto: "fotos/Trio/panini.jpeg" },
+    { nombre: "Labrada, Lucia, Rober y Rulas(Procesioneros)", foto: "fotos/Trio/procesioneros.jpeg" },
 
   ],
 
@@ -1091,7 +1091,7 @@ const NOMINADOS_ESPECIALES = {
     { nombre: "La correa de Manu", foto: "fotos/correon/manu.jpeg" },
     { nombre: "La correa de Dani", foto: "fotos/correon/dani.jpeg" },
     { nombre: "La correa de Mario", foto: "fotos/correon/mario.jpeg" },
-    { nombre: "La correa de Labrada", foto: "fotos/correon/Labrada.jpeg" },
+    { nombre: "La correa de Labrada", foto: "fotos/correon/labrada.jpeg" },
     { nombre: "La correa de Ivanp", foto: "fotos/correon/ivanp.jpeg" },
 
   ],
