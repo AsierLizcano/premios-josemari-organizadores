@@ -1539,21 +1539,19 @@ const LOTE_3 = [
 const LOTES = [LOTE_1, LOTE_2, LOTE_3];
 
 // 👇 control del lote activo (1..3)
-const LOTE_ACTIVO = 3; // o 2 / 3 según el que quieras mostrar por defecto
+const LOTE_ACTIVO = 2; // o 2 / 3 según el que quieras mostrar por defecto
 
 
 /* ============================================================
    Obtener lote actual (respeta ?lote=3)
 ============================================================ */
+
 window.getLoteActual = function () {
-  const n = Number(new URLSearchParams(location.search).get("lote"));
-  if (Number.isInteger(n) && n >= 1 && n <= LOTES.length) return n;
   return LOTE_ACTIVO;
 };
 
 function getLoteFromQuery() {
-  const n = Number(new URLSearchParams(location.search).get("lote"));
-  return Number.isInteger(n) && n >= 1 && n <= LOTES.length ? n : null;
+  return null; // 👈 SIEMPRE devuelve null, da igual ?lote=1, 2, 27…
 }
 
 /* ============================================================
