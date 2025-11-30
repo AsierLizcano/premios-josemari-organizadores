@@ -1126,7 +1126,7 @@ const NOMINADOS_ESPECIALES = {
             "Peor momento del año": [
     { nombre: "La muerte de Dani en la tortuga", foto: "fotos/p_momento/dani.jpeg" },
     { nombre: "La caseta de la esperanza(Feria de Abril)", foto: "fotos/p_momento/esperanza.jpeg" },
-    { nombre: "Vecina casi nos denuncia", foto: "fotos/p_momento/londres.jpeg" },
+    { nombre: "Vecina casi nos denuncia(Londres)", foto: "fotos/p_momento/londres.jpeg" },
      { nombre: "La cola de magma", foto: "fotos/p_momento/magma.jpeg" },
      { nombre: "Fermoriv en Carnavales", foto: "fotos/p_momento/fermo.jpeg" },
     { nombre: "El desastre de la yedra", foto: "fotos/p_momento/ivanp.jpeg" },
