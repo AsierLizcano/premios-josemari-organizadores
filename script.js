@@ -687,7 +687,7 @@ const categoryImages = {
   "Mote del año": "fotos/mote.jpeg",
   "Palabra/Frase del año": "fotos/palabra.jpeg",
   "Objeto del año": "fotos/objeto.jpg",
-  "Baile del año": "fotos/baile.jpeg",
+  "Baile del año": "fotos/Baile.jpeg",
 
   // Lote 5
   "Autistada del año": "fotos/autistada.jpg",
