@@ -1545,16 +1545,16 @@ const LOTE_ACTIVO = 3; // o 2 / 3 según el que quieras mostrar por defecto
 /* ============================================================
    Obtener lote actual (respeta ?lote=3)
 ============================================================ */
-// 👇 EL LOTE SIEMPRE ES EL DEFINIDO EN EL CÓDIGO
 window.getLoteActual = function () {
+  const n = Number(new URLSearchParams(location.search).get("lote"));
+  if (Number.isInteger(n) && n >= 1 && n <= LOTES.length) return n;
   return LOTE_ACTIVO;
 };
 
-// Ya no usamos el query param para nada
 function getLoteFromQuery() {
-  return null;
+  const n = Number(new URLSearchParams(location.search).get("lote"));
+  return Number.isInteger(n) && n >= 1 && n <= LOTES.length ? n : null;
 }
-
 
 /* ============================================================
    Crear bloque de categoría dinámico
