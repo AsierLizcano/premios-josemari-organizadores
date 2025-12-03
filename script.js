@@ -1539,7 +1539,7 @@ const LOTE_3 = [
 const LOTES = [LOTE_1, LOTE_2, LOTE_3];
 
 // 👇 control del lote activo (1..3)
-const LOTE_ACTIVO = 2; // o 2 / 3 según el que quieras mostrar por defecto
+const LOTE_ACTIVO = 3; // o 2 / 3 según el que quieras mostrar por defecto
 
 
 /* ============================================================
