@@ -1860,10 +1860,10 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
 }
 
 .contenido-votacion-nominados {
-  display: block !important;
+  display: none !important;
 }
 .contenido-votacion{
-  display: none !important;
+  display: block !important;
 }
 /* 🔒 MÓVIL: ocultar laterales y collage de login sí o sí */
 @media (max-width: 900px) {
@@ -1878,4 +1878,56 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
     padding-left: 0;
     padding-right: 0;
   }
+}
+/* --- TARJETAS UNIFORMES Y BIEN ENCUADRADAS --- */
+
+/* Contenedor de grid */
+.grid-nominados {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+/* TARJETA */
+.grid-nominados .nominado {
+  width: 180px;
+  background: #121212;
+  border-radius: 16px;
+  overflow: hidden;
+  padding-bottom: 10px;
+  border: 2px solid rgba(255,255,255,0.15);
+  transition: 0.25s ease;
+}
+
+/* --- ALTURA FIJA DE LAS IMÁGENES (SOLUCIÓN) --- */
+.grid-nominados .nominado img,
+.grid-nominados .nominado video {
+  width: 100%;
+  height: 220px;          /* 👈 TODAS MISMA ALTURA REAL */
+  object-fit: cover;      /* 👈 Recorte bonito sin deformar */
+  object-position: center;
+  border-radius: 14px 14px 0 0;
+  display: block;
+}
+
+/* NOMBRE */
+.grid-nominados .nominado span {
+  display: block;
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* Efectos */
+.grid-nominados .nominado:hover {
+  transform: translateY(-5px);
+  border-color: gold;
+  box-shadow: 0 0 10px gold;
+}
+
+.grid-nominados .nominado.selected {
+  border-color: gold;
+  box-shadow: 0 0 15px gold;
 }
