@@ -778,7 +778,7 @@ const CATEGORIAS_VOTACION = {
   // LOTE 1
   "Viajero/a del año": [ { nombre: "Ines",   foto: "fotos/ines.jpeg" },
     { nombre: "Labrada",   foto: "fotos/labrada.jpeg" },
-    { nombre: "Poru",   foto: "fotos/poru.jpeg" },
+    { nombre: "Poru",   foto: "fotos/Poru.jpeg" },
     { nombre: "Manu",   foto: "fotos/manu.jpeg" }
   ],
   "Picado/a del año": [ { nombre: "Marco",   foto: "fotos/marco.jpeg" },
@@ -794,14 +794,14 @@ const CATEGORIAS_VOTACION = {
   "Papi/Mami del año": 
   [ { nombre: "Fervico",   foto: "fotos/fervico.jpeg" },
     { nombre: "Labrada",   foto: "fotos/labrada.jpeg" },
-    { nombre: "Lucía",   foto: "fotos/lucia.jpeg" },
+    { nombre: "Lucía",   foto: "fotos/Lucia.jpeg" },
     { nombre: "Ines",   foto: "fotos/ines.jpeg" }
   ],
   "Meme del año": [ 
-    { nombre: "Ivanp Gustavo", video: "fotos/meme/ivanp.mp4", poster: "fotos/meme/ivanpe.jpeg" },
-    { nombre: "Fer en las tetorras", video: "fotos/meme/fer.mp4", poster: "fotos/meme/fervico.jpeg" },
-    { nombre: "Artupa en cas", video: "fotos/meme/artupa.jpeg", poster: "fotos/meme/artupa.jpeg" },
-    { nombre: "Gusano saca lenguas", video: "fotos/meme/lengua.mp4", poster: "fotos/meme/lengua.jpg" },
+    { nombre: "Ivanp Gustavo(Poru)", video: "fotos/meme/ivanp.mp4", poster: "fotos/meme/ivanpe.jpeg" },
+    { nombre: "Fer en las tetorras(Ivanp)", video: "fotos/meme/fer.mp4", poster: "fotos/meme/fervico.jpeg" },
+    { nombre: "Artupa en cas(Rober)", video: "fotos/meme/artupa.jpeg", poster: "fotos/meme/artupa.jpeg" },
+    { nombre: "Gusano saca lenguas(Iker)", video: "fotos/meme/lengua.mp4", poster: "fotos/meme/lengua.jpg" },
   ],
   "Brainhot del año": [
     { nombre: "Geimpro e geimpra", video: "fotos/brainhot/gamepro.mp4", poster: "fotos/brainhot/gamepro.jpeg" },
@@ -819,10 +819,10 @@ const CATEGORIAS_VOTACION = {
 
   ],
   "Trio/Cuarteto del año": [
-        { nombre: "Marco, Rulas y Asier (Veterinarios)",   foto: "fotos/trio/primes.jpeg" },
-        { nombre: "Labrada, Lucia y Gamepro (Gofreros)",   foto: "fotos/trio/gofres.jpeg" },
-        { nombre: "Dani,Iker,Asier y Gamepro (Tomelloseros) ",   foto: "fotos/trio/tomelloseros.jpeg" },
-        { nombre: "Ines,Lucia y Maria (Pibardas)",   foto: "fotos/trio/pibas.jpeg" },
+        { nombre: "Marco, Rulas y Asier (Veterinarios)",   foto: "fotos/Trio/primes.jpeg" },
+        { nombre: "Labrada, Lucia y Gamepro (Gofreros)",   foto: "fotos/Trio/gofres.jpeg" },
+        { nombre: "Dani,Iker,Asier y Gamepro (Tomelloseros) ",   foto: "fotos/Trio/tomelloseros.jpeg" },
+        { nombre: "Ines,Lucia y Maria (Pibardas)",   foto: "fotos/Trio/pibas.jpeg" },
 
 
   ],
