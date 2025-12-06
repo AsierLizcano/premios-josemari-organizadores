@@ -1998,3 +1998,9 @@ header.hero{ position:relative; min-height:100vh; padding-block:0; }
   color: white;
   font-size: 0.9rem;
 }
+/* 📱 VOTACIÓN FINAL: en móvil, 2x2 (2 columnas) */
+@media (max-width: 768px) {
+  body.tab-votacion #votacion .grid-nominados {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
