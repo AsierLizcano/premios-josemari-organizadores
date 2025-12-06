@@ -798,10 +798,10 @@ const CATEGORIAS_VOTACION = {
     { nombre: "Ines",   foto: "fotos/ines.jpeg" }
   ],
   "Meme del año": [ 
-    { nombre: "Ivanp Gustavo(Poru)", video: "fotos/meme/ivanp.mp4", poster: "fotos/meme/ivanpe.jpeg" },
-    { nombre: "Fer en las tetorras(Ivanp)", video: "fotos/meme/fer.mp4", poster: "fotos/meme/fervico.jpeg" },
-    { nombre: "Artupa en cas(Rober)", video: "fotos/meme/artupa.jpeg", poster: "fotos/meme/artupa.jpeg" },
-    { nombre: "Gusano saca lenguas(Iker)", video: "fotos/meme/lengua.mp4", poster: "fotos/meme/lengua.jpg" },
+    { nombre: "Ivanp Gustavo", video: "fotos/meme/ivanp.mp4", poster: "fotos/meme/ivanpe.jpeg" },
+    { nombre: "Fer en las tetorras", video: "fotos/meme/fer.mp4", poster: "fotos/meme/fervico.jpeg" },
+    { nombre: "Artupa en cas", video: "fotos/meme/artupa.jpeg", poster: "fotos/meme/artupa.jpeg" },
+    { nombre: "Gusano saca lenguas", video: "fotos/meme/lengua.mp4", poster: "fotos/meme/lengua.jpg" },
   ],
   "Brainhot del año": [
     { nombre: "Geimpro e geimpra", video: "fotos/brainhot/gamepro.mp4", poster: "fotos/brainhot/gamepro.jpeg" },
@@ -933,7 +933,10 @@ function pintarVotacion() {
   if (!votacionWrapper) return;
 
   // Limpiar selección anterior
-  for (const cat in votosSeleccionados) delete votosSeleccionados[cat];
+  for (const cat in votosSeleccionados) {
+    delete votosSeleccionados[cat];
+  }
+
   votacionWrapper.innerHTML = "";
 
   const loteActual = getLoteVotacionActual();
@@ -943,34 +946,12 @@ function pintarVotacion() {
   categoriasDelLote.forEach((categoria) => {
     const nominados = CATEGORIAS_VOTACION[categoria];
 
+    // Si esta categoría aún no tiene finalistas definidos, la saltamos
     if (!Array.isArray(nominados) || nominados.length === 0) return;
-
-    /* ============================
-      🔥 CABECERA CON FOTO + TÍTULO
-    ============================ */
-    const header = document.createElement("div");
-    header.className = "cat-header";
-
-    const img = document.createElement("img");
-    img.className = "cat-badge";
-    img.src = categoryImages[categoria] || DEFAULT_PLACA;
-    img.alt = categoria;
-
-    const titleBox = document.createElement("div");
-    titleBox.className = "title-group";
 
     const h3 = document.createElement("h3");
     h3.textContent = categoria;
 
-    titleBox.appendChild(h3);
-    header.appendChild(img);
-    header.appendChild(titleBox);
-
-    votacionWrapper.appendChild(header);
-
-    /* ============================
-       🔥 GRID DE NOMINADOS
-    ============================ */
     const grid = document.createElement("div");
     grid.className = "grid-nominados";
 
@@ -980,55 +961,70 @@ function pintarVotacion() {
       card.dataset.nombre = nom.nombre;
       card.dataset.categoria = categoria;
 
-      let mediaHTML = "";
+// --- Media (foto o vídeo) ---
+let mediaHTML = "";
 
-      if (nom.video) {
-        mediaHTML = `
-          <video
-            src="${nom.video}"
-            poster="${nom.poster || ""}"
-            muted
-            playsinline
-            preload="metadata"
-          ></video>
-        `;
-      } else {
-        mediaHTML = `
-          <img src="${nom.foto}" alt="${nom.nombre}">
-        `;
-      }
+if (nom.video) {
+  mediaHTML = `
+    <video
+      src="${nom.video}"
+      poster="${nom.poster || ""}"
+      muted
+      playsinline
+      preload="metadata"
+    ></video>
+  `;
+} else {
+  mediaHTML = `
+    <img src="${nom.foto}" alt="${nom.nombre}">
+  `;
+}
 
-      card.innerHTML = `
-        ${mediaHTML}
-        <span>${nom.nombre}</span>
-      `;
+card.innerHTML = `
+  ${mediaHTML}
+  <span>${nom.nombre}</span>
+`;
 
-      // Botón lupa para vídeos
-      if (nom.video) {
-        const btn = document.createElement("div");
-        btn.className = "btn-expand";
-        btn.innerHTML = `
-          <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-          </svg>
-        `;
-        btn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          openVideoLightbox({
-            src: nom.video,
-            poster: nom.poster,
-            startAt: 0,
-            autoPlay: true
-          });
-        });
+/* ===== Añadir botón de lupa EXACTAMENTE igual ===== */
 
-        card.appendChild(btn);
-      }
+if (nom.video) {
+  const btn = document.createElement("div");
+  btn.className = "btn-expand";
+  btn.setAttribute("role","button");
+  btn.title = "Ver en grande";
 
-      // Selección de voto
+  btn.innerHTML = `
+    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+    </svg>
+  `;
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    openVideoLightbox({
+      src: nom.video,
+      poster: nom.poster,
+      startAt: 0,
+      autoPlay: true
+    });
+  });
+
+  card.appendChild(btn);
+}
+
+/* ===== Activar controles a todos los vídeos ===== */
+wireLightboxForVideos(card);
+
+
+
+      // SOLO 1 voto por categoría
       card.addEventListener("click", () => {
         const ya = card.classList.contains("selected");
-        grid.querySelectorAll(".nominado").forEach(c => c.classList.remove("selected"));
+
+        // Desmarcar todos los de esa categoría
+        grid.querySelectorAll(".nominado")
+            .forEach(c => c.classList.remove("selected"));
 
         if (ya) {
           delete votosSeleccionados[categoria];
@@ -1041,11 +1037,11 @@ function pintarVotacion() {
       grid.appendChild(card);
     });
 
-    // Añadir grid debajo de cabecera
+    votacionWrapper.appendChild(h3);
     votacionWrapper.appendChild(grid);
   });
 
-  // Próximamente lote siguiente
+  // Aviso "Próximamente lote X", igual que en nominaciones
   if (indice < LOTES_VOTACION.length - 1) {
     const sep = document.createElement("div");
     sep.className = "lote-separador";
@@ -2385,4 +2381,4 @@ spanCerrar.onclick = () => modal.style.display = "none";
 // Cerrar haciendo clic fuera del modal
 window.onclick = e => {
   if (e.target === modal) modal.style.display = "none";
-};
+};      
