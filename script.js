@@ -842,16 +842,78 @@ const CATEGORIAS_VOTACION = {
   ],
 
   // LOTE 2
-  "Llorón del año": [],
-  "Fiestero/a del año": [],
-  "Borracho/a del año": [],
-  "Mejor Personaje fuera de JyP del año": [],
-  "Peor momento del año": [],
-  "Mensaje del año": [],
-  "Mote del año": [],
-  "Palabra/Frase del año": [],
-  "Objeto del año": [],
-  "Baile del año": [],
+  "Llorón del año": [
+    { nombre: "Rulas",   foto: "fotos/rulillas.jpeg" },
+    { nombre: "Poru",   foto: "fotos/Poru.jpeg" },
+    { nombre: "Mario",   foto: "fotos/mario.jpeg" },
+    { nombre: "Marco",   foto: "fotos/marco.jpeg" },
+  ],
+
+  "Fiestero/a del año": [
+    { nombre: "Asier",   foto: "fotos/asieras.jpeg" },
+    { nombre: "Iker",   foto: "fotos/iker.jpeg" },
+    { nombre: "Rulas",   foto: "fotos/rulillas.jpeg" },
+    { nombre: "Ines",   foto: "fotos/ines.jpeg" },
+  ],
+  "Borracho/a del año": [
+  { nombre: "Asier",   foto: "fotos/asieras.jpeg" },
+      { nombre: "Maria",   foto: "fotos/maria.jpeg" },
+    { nombre: "Dani",   foto: "fotos/dani.jpeg" },
+    { nombre: "Labrada",   foto: "fotos/labrada.jpeg" },
+
+  ],
+  "Mejor Personaje fuera de JyP del año": [
+        { nombre: "Diegote cipote",   foto: "fotos/perosnajes/diego.jpeg" },
+        { nombre: "Iceman",   foto: "fotos/perosnajes/iceman.jpeg" },
+        { nombre: "Pepito",   foto: "fotos/perosnajes/pepito.jpeg" },
+        { nombre: "Unai el guay",   foto: "fotos/perosnajes/unai.jpeg" },
+
+
+  ],
+  "Peor momento del año": [
+          { nombre: "Desastre de la yedra(Ivanp)",   foto: "fotos/p_momento/ivanp.jpeg" },
+        { nombre: "Navidades en muletas(Rulas)",   foto: "fotos/p_momento/rulasmuletas.jpeg" },
+        { nombre: "Fermoriv en carnavales(Fermoriv)",   foto: "fotos/p_momento/fermo.jpeg" },
+        { nombre: "Vecina nos denuncia en Londres",   foto: "fotos/p_momento/londres.jpeg" },
+
+  ],
+  "Mensaje del año": [
+        { nombre: "el celoso(Gamepro)",   foto: "fotos/mensaje/gamepro.jpeg" },
+        { nombre: "Haberlo Preguntado mañana(Labrada)",   foto: "fotos/mensaje/labrada.jpeg" },
+        { nombre: "Fermoriv Solitario(Fermoriv)",   foto: "fotos/mensaje/fermo.jpeg" },
+        { nombre: "Erasmus(María)",   foto: "fotos/mensaje/maria.jpeg" },
+
+  ],
+  "Mote del año": [
+        { nombre: "Cafetera(Poru)",   foto: "fotos/mote/cafetera.jpeg" },
+        { nombre: "Fish and Chips(Darío y Rober)",   foto: "fotos/mote/fish.jpeg" },
+        { nombre: "Gamepollo(Gamepro)",   foto: "fotos/mote/gamepollo.jpeg" },
+        { nombre: "Dj Ventosa(Marco)",   foto: "fotos/mote/djventosa.jpeg" },
+
+  ],
+  "Palabra/Frase del año": [
+        { nombre: "Sirulo",   foto: "fotos/palabra/sirulo.jpeg" },
+        { nombre: "Tengo Miedo a que se me caigan las patatas(Poru)",   foto: "fotos/palabra/patatas.jpeg" },
+        { nombre: "Esa peña",   foto: "fotos/palabra/peña.jpeg" },
+        { nombre: "Vamos no me jodas",   foto: "fotos/palabra/vamos.jpeg" },
+
+  ],
+  "Objeto del año": [
+        { nombre: "Ositopro(Gamepro)",   foto: "fotos/objeto/ositopro.jpeg" },
+        { nombre: "Ana Rosa",   foto: "fotos/objeto/anarosa.jpeg" },
+        { nombre: "Tequifresi(Marco y Asier)",   foto: "fotos/objeto/tequifresi.jpeg" },
+        { nombre: "Pelusa(Rober)",   foto: "fotos/objeto/pelusa.jpeg" },
+
+  ],
+  "Baile del año": [
+    { nombre: "Señorita Surferita(Los que estan en el Baile)", video: "fotos/bailes/Surferita.mp4", poster: "fotos/bailes/Surferita.jpeg" },
+    { nombre: "Ivanp X Mozos(Ivanp)", video: "fotos/bailes/ivanp.mp4", poster: "fotos/bailes/ivanp.jpeg" },
+    { nombre: "Mambo de Labrada(Labrada)", video: "fotos/bailes/labrada.mp4", poster: "fotos/bailes/labrada.jpeg" },
+    { nombre: "Shiny(Lucia)", video: "fotos/bailes/lucia.mp4", poster: "fotos/bailes/lucia.jpeg" },
+
+
+
+  ],
 
   // LOTE 3
   "Autistada del año": [],
@@ -916,7 +978,7 @@ const LOTES_VOTACION = [LOTE_VOTACION_1, LOTE_VOTACION_2, LOTE_VOTACION_3];
 
 // 👇 Lote activo de la VOTACIÓN FINAL (1, 2 o 3)
 // Cambias este número cuando quieras pasar de lote.
-const LOTE_VOTACION_ACTIVO = 1;
+const LOTE_VOTACION_ACTIVO = 2;
 
 // Devuelve el lote actual de la votación final
 function getLoteVotacionActual() {
