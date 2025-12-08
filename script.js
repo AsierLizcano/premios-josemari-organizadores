@@ -879,7 +879,7 @@ const CATEGORIAS_VOTACION = {
   ],
   "Mensaje del año": [
         { nombre: "el celoso(Gamepro)",   foto: "fotos/mensaje/gamepro.jpeg" },
-        { nombre: "Haberlo Preguntado mañana(Labrada)",   foto: "fotos/mensaje/labrada.jpeg" },
+        { nombre: "Haberlo Preguntado mañana(Labrada)",   foto: "fotos/mensaje/labmanu.jpeg" },
         { nombre: "Fermoriv Solitario(Fermoriv)",   foto: "fotos/mensaje/fermo.jpeg" },
         { nombre: "Erasmus(María)",   foto: "fotos/mensaje/maria.jpeg" },
 
@@ -1090,6 +1090,37 @@ function pintarVotacion() {
         });
 
         card.appendChild(btn);
+      }
+      // 🔍 Botón lupa para IMÁGENES de "Mensaje del año" (votación final)
+      if (!nom.video && categoria === "Mensaje del año" && nom.foto) {
+        const btnZoom = document.createElement("div");
+        btnZoom.className = "btn-zoom";
+        btnZoom.setAttribute("role", "button");
+        btnZoom.setAttribute("aria-label", "Ver imagen en grande");
+        btnZoom.title = "Ver imagen en grande";
+
+        const svgNS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("width", "18");
+        svg.setAttribute("height", "18");
+        svg.setAttribute("fill", "currentColor");
+        svg.setAttribute("viewBox", "0 0 16 16");
+
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute(
+          "d",
+          "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
+        );
+
+        svg.appendChild(path);
+        btnZoom.appendChild(svg);
+
+        btnZoom.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openImageLightbox(nom.foto, nom.nombre);
+        });
+
+        card.appendChild(btnZoom);
       }
 
       // Activar controles de vídeo
